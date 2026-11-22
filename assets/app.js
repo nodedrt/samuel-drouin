@@ -136,15 +136,26 @@
         : '<div class="ex-fl" style="width:' + w.toFixed(0) + "px;height:" + h.toFixed(0) + 'px">' + inner + "</div>";
       return '<button type="button" class="ex-p fig" data-i="' + it.i + '"><div class="mask">' + body + "</div></button>";
     }
+    /* deux verticales côte à côte occupent la même place qu'une grande horizontale :
+       même hauteur de cadre partout, pour un accrochage régulier et cohérent */
+    var pairOK = vw >= 600, refH = Math.min(vh * (mob ? 0.5 : 0.62), (W * (mob ? 0.92 : 0.62)) / 1.5);
+    items = items.slice();
     while (i < n) {
       var a = items[i], ar = a.p.w / a.p.h, b = items[i + 1], br = b ? b.p.w / b.p.h : 0, grp, h;
+      /* verticale seule suivie d'une horizontale puis d'une verticale : on rapproche les deux verticales */
+      if (pairOK && ar < 0.95 && b && br >= 0.95) {
+        for (var k = i + 2; k < Math.min(n, i + 4); k++) if (items[k].p.w / items[k].p.h < 0.95) { items.splice(i + 1, 0, items.splice(k, 1)[0]); b = items[i + 1]; br = b.p.w / b.p.h; break; }
+      }
       var maxH = vh * (mob ? 0.5 : 0.64);
-      if (!mob && ar < 0.95 && b && br < 0.95) {
+      if (pairOK && ar < 0.95 && b && br < 0.95) {
         grp = [a, b];
-        h = Math.min(maxH, (W * 0.7 - 2 * extra - 64) / (ar + br));
+        h = Math.min(refH * 1.06, (W * 0.84 - 64) / (ar + br));
+      } else if (ar >= 0.95) {
+        grp = [a];
+        h = Math.min(refH, ((mob ? W * 0.92 : W * (ar > 1.6 ? 0.72 : 0.62))) / ar);
       } else {
         grp = [a];
-        h = Math.min(mob ? vh * 0.62 : (ar < 0.95 ? vh * 0.7 : maxH), ((mob ? W * 0.92 : W * (ar > 1.6 ? 0.72 : 0.6)) - extra) / ar);
+        h = Math.min(mob ? vh * 0.62 : refH * 1.06, (W * 0.92) / ar);
       }
       var sum = grp.reduce(function (s2, x) { return s2 + x.p.w / x.p.h; }, 0);
       var kf = kind === "cadre" ? 1.35 : 1; /* cadre + marie-louise ≈ 35 % autour de la photo */
@@ -1045,18 +1056,34 @@
       el.querySelectorAll("[data-i]").forEach(function (b) { if (anchor) return; var r = b.getBoundingClientRect(); if (r.bottom > mid) { anchor = b.dataset.i; off = (mid - r.top) / Math.max(1, r.height); } });
       var keep = {};
       el.querySelectorAll("[data-i]").forEach(function (b) { var im = b.querySelector("img"); if (im) keep[b.dataset.i] = im; });
+      /* pendant qu'on glisse, le curseur reste exactement sous le doigt / la souris (la page ne saute pas) */
+      var zin = zDrag && zActive && zActive.isConnected ? zActive : null, zy0 = zin ? zin.getBoundingClientRect().top : 0;
+      if (zin) anchor = null;
       drawG();
       el.querySelectorAll("[data-i]").forEach(function (b) {
         b.classList.add("in");
         var o = keep[b.dataset.i], n = b.querySelector("img");
         if (o && n && o !== n) { o.removeAttribute("sizes"); n.replaceWith(o); }
       });
+      if (zin) { var dz = zin.getBoundingClientRect().top - zy0; if (Math.abs(dz) > 0.5) window.scrollBy(0, dz); }
       if (anchor != null) { var nb = el.querySelector('[data-i="' + anchor + '"]'); if (nb) { var r2 = nb.getBoundingClientRect(); window.scrollBy(0, r2.top + off * r2.height - mid); } }
     }
     /* changement de taille : les photos ne bougent jamais à l'écran.
        La galerie s'efface en douceur, se réorganise pendant qu'elle est invisible,
        puis réapparaît en fondu à sa nouvelle place quand on arrête de bouger le curseur. */
     var zfOut = null, zfIn = null, zfT = 0, zfR = 0, zfHidden = false;
+    var zDrag = false, zActive = null;
+    function zfCancel() {
+      clearTimeout(zfT); if (zfR) { cancelAnimationFrame(zfR); zfR = 0; }
+      if (zfOut) { zfOut.onfinish = null; zfOut.cancel(); zfOut = null; }
+      if (zfIn) { zfIn.cancel(); zfIn = null; }
+      zfHidden = false; el.style.opacity = "";
+    }
+    main.querySelectorAll(".zm input").forEach(function (inp) {
+      inp.addEventListener("pointerdown", function () { zDrag = true; zActive = inp; zfCancel(); });
+      inp.addEventListener("touchstart", function () { zDrag = true; zActive = inp; zfCancel(); }, { passive: true });
+    });
+    ["pointerup", "pointercancel", "touchend", "touchcancel"].forEach(function (n) { window.addEventListener(n, function () { if (zDrag) { zDrag = false; zLast = zoom; } }, { passive: true }); });
     function zoomFade() {
       if (reduce || !el.animate) { liveZoom(); return; }
       if (zfIn) { zfIn.cancel(); zfIn = null; }
@@ -1084,8 +1111,11 @@
         main.querySelectorAll(".zm input").forEach(function (o) { if (o !== inp) o.value = zoom; });
         /* on glisse le curseur : les photos suivent en temps réel, comme avant ;
            un saut (clic sur −, +, Réinitialiser ou sur la barre) : fondu doux */
-        var jump = Math.abs(zoom - zLast) > 0.12; zLast = zoom;
-        if (jump && !zfHidden) zoomFade(); else if (zfHidden) zoomFade(); else if (!zr) zr = requestAnimationFrame(liveZoom);
+        /* on glisse (souris ou doigt) : toujours en direct, une seule mise en page par image affichée ;
+           un saut (−, +, Réinitialiser, clic sur la barre) : fondu doux */
+        var jump = !zDrag && Math.abs(zoom - zLast) > 0.12; zLast = zoom;
+        if (jump) zoomFade();
+        else { zfCancel(); if (!zr) zr = requestAnimationFrame(liveZoom); }
       });
       inp.addEventListener("dblclick", function () { inp.value = 1; inp.dispatchEvent(new Event("input")); });
     });
