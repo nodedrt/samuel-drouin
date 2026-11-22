@@ -120,7 +120,7 @@
   }
   function exReq() { if (!exRaf) exRaf = requestAnimationFrame(exSync); }
   /* fondu au défilement désactivé (les œuvres s'affichent directement) */
-  function expo(el, items, kind, title) {
+  function expo(el, items, kind, title, wood) {
     /* accrochage de galerie : une œuvre (ou une paire de verticales) par mur, éclairée d'en haut,
        cadre noir satiné avec passe-partout (cadre) ou tirage contrecollé suspendu (edito) */
     var W = el.clientWidth, vw = window.innerWidth, vh = window.innerHeight, mob = vw < 768, out = [], n = items.length, i = 0;
@@ -130,7 +130,7 @@
     function print(it, h) {
       var w = h * it.p.w / it.p.h, inner = img(it.p, { alt: it.alt, sizes: Math.ceil(100 * w / vw) + "vw", eager: it.i < 2 });
       var body = kind === "cadre"
-        ? '<div class="ex-fr" style="--fw:' + fw + 'px"><div class="ex-mat" style="--mw:' + mw + 'px"><div class="ex-im" style="width:' + w.toFixed(0) + "px;height:" + h.toFixed(0) + 'px">' + inner + "</div></div></div>"
+        ? '<div class="ex-fr ' + (wood || "oak") + '" style="--fw:' + fw + 'px"><div class="ex-mat" style="--mw:' + mw + 'px"><div class="ex-im" style="width:' + w.toFixed(0) + "px;height:" + h.toFixed(0) + 'px">' + inner + "</div></div></div>"
         : '<div class="ex-fl" style="width:' + w.toFixed(0) + "px;height:" + h.toFixed(0) + 'px">' + inner + "</div>";
       return '<button type="button" class="ex-p fig" data-i="' + it.i + '"><div class="mask">' + body + "</div></button>";
     }
@@ -977,7 +977,7 @@
       gal.classList.toggle("ex", vue === "expo"); gal.classList.toggle("ex-cadre", vue === "expo" && kind === "cadre"); gal.classList.toggle("ex-edito", vue === "expo" && kind === "edito");
       /* zoom différent de 1 : rangées recalculées (même ordre), sinon les rangées choisies à la main */
       var o2 = opt; if ((Math.abs(zoom - 1) > 0.02 || window.innerWidth < 600) && opt.rows) { o2 = {}; for (var kk in opt) o2[kk] = opt[kk]; delete o2.rows; delete o2.egal; }
-      if (vue === "expo") expo(el, items, kind, L(p.titre)); else justify(el, items, o2);
+      if (vue === "expo") expo(el, items, kind, L(p.titre), "black"); else justify(el, items, o2);
     }
     function setVue(v, anim) {
       vue = v; try { sessionStorage.setItem("sd-vue", v); } catch (e) {}
