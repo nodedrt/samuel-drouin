@@ -76,6 +76,7 @@
   }
   function cover(slug) { var p = proj(slug); return p.couverture ? P(p.dossier + "/" + p.couverture) : images(slug)[0]; }
   function sectionOf(slug) { return SITE.sections.filter(function (s) { return s.projets.indexOf(slug) >= 0; })[0]; }
+  function rank(slug) { var i = (SITE.ordre || []).indexOf(slug); return i < 0 ? 1000 : i; }
   function allProjects() { var a = []; SITE.sections.forEach(function (s) { s.projets.forEach(function (p) { if (proj(p) && images(p).length) a.push(p); }); }); return a; }
 
   function img(p, o) {
@@ -707,12 +708,15 @@
     var el = main.querySelector(".ix"); if (!el) return;
     var cards = [], groups = [], n = 0;
     if (mode === "photo") {
-      SITE.sections.forEach(function (s) {
-        s.projets.filter(function (slug) { return proj(slug) && images(slug).length; }).forEach(function (slug, j) {
-          n++; var c = cover(slug);
+      /* les plus beaux projets d'abord (SITE.ordre), puis les autres dans l'ordre des sections */
+      var ent = [], seenS = {};
+      SITE.sections.forEach(function (s) { s.projets.filter(function (slug) { return proj(slug) && images(slug).length; }).forEach(function (slug) { ent.push({ s: s, slug: slug, k: ent.length }); }); });
+      ent.sort(function (a, b) { return rank(a.slug) - rank(b.slug) || a.k - b.k; });
+      ent.forEach(function (e) {
+        var s = e.s, slug = e.slug, j = seenS[s.id] ? 1 : 0; seenS[s.id] = 1;
+        n++; var c = cover(slug);
           cards.push('<a class="ix-c fig"' + (j === 0 ? ' id="ix-' + s.id + '"' : "") + ' href="' + href(slug) + '"><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="' + esc(pTitle(slug)) + '" src="' + esc(src(c, true)) + '"></div>' +
             '<div class="ix-tx"><span class="ix-sec">' + esc(L(s)) + '</span><b>' + esc(pTitle(slug)) + (proj(slug).nouveau ? " <i>" + t("isNew") + "</i>" : "") + '</b><span class="ix-n">' + images(slug).length + "</span></div></a>");
-        });
       });
     } else {
       /* vidéos rangées par catégorie : un titre, puis une grille propre par groupe */
@@ -791,7 +795,8 @@
       var c = CATS.filter(function (x) { return x.ids.indexOf(s.id) >= 0; })[0] || other;
       s.projets.forEach(function (p) { if (proj(p) && images(p).length) c.ps.push(p); });
     });
-    var ph = CATS.filter(function (c) { return c.ps.length; }).map(function (c) {
+    CATS.forEach(function (c) { c.ps.sort(function (a, b) { return rank(a) - rank(b); }); });
+    var ph = CATS.filter(function (c) { return c.ps.length; }).sort(function (a, b) { return rank(a.ps[0]) - rank(b.ps[0]); }).map(function (c) {
       tot += c.ps.length;
       return cat(L(c), c.ps.length, c.ps.map(function (p) { return card({ href: href(p), img: src(cover(p), true), t: pTitle(p), n: images(p).length, nw: proj(p).nouveau }); }));
     }).join("");
