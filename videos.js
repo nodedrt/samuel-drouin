@@ -19,7 +19,11 @@ window.VIDEO_SECTIONS = [
 
 window.VIDEOS = [
   { section: "bande-demo", une: true, vedette: 1, titre: { fr: "Bande-démo", en: "Showreel" }, lien: "https://drive.google.com/file/d/16PQFUlTkXY5R09ySKLWW5eV92SCB1E9F/view" },
-  { section: "films", projet: "les-paletuviers", ambiance: true, vedette: 1.5, titre: { fr: "Les Palétuviers", en: "Les Palétuviers" }, lien: "videos/les-paletuviers/film.mp4", vertical: "videos/les-paletuviers/film-v.mp4" },
+  { section: "films", projet: "les-paletuviers", ambiance: true, format: "v", vedette: 1.5, titre: { fr: "Les Palétuviers", en: "Les Palétuviers" }, lien: "videos/les-paletuviers/film-1.mp4" },
+  { section: "films", projet: "les-paletuviers", format: "v", titre: { fr: "Les Palétuviers, II. La mangrove", en: "Les Palétuviers, II. The mangrove" }, lien: "videos/les-paletuviers/film-2.mp4" },
+  { section: "films", projet: "les-paletuviers", format: "v", titre: { fr: "Les Palétuviers, III. La forêt", en: "Les Palétuviers, III. The forest" }, lien: "videos/les-paletuviers/film-3.mp4" },
+  { section: "films", projet: "les-paletuviers", format: "v", titre: { fr: "Les Palétuviers, IV. Le lagon", en: "Les Palétuviers, IV. The lagoon" }, lien: "videos/les-paletuviers/film-4.mp4" },
+  { section: "drone", projet: "les-paletuviers", format: "h", titre: { fr: "Les Palétuviers, rushs", en: "Les Palétuviers, rushes" }, lien: "videos/les-paletuviers/film.mp4" },
   { section: "films", vedette: 4, titre: { fr: "Samaya, manucure", en: "Samaya, manicure" }, lien: "https://drive.google.com/file/d/1rS2dBFF36lKrow1QVfWk04ntoTWQmaD6/view" },
   { section: "films", titre: { fr: "Samaya, massage", en: "Samaya, massage" }, lien: "https://drive.google.com/file/d/109_ZBRzkiquWfBxgOpKGFUSLyI5U25HV/view" },
   { section: "films", projet: "peizan", vedette: 6, titre: { fr: "Peizan, Roselle", en: "Peizan, Roselle" }, lien: "https://drive.google.com/file/d/1loJhiusHv2_FjFQM6nOMPXeX_-UpLzRW/view" },

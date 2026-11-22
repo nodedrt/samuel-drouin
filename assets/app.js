@@ -32,7 +32,7 @@
       services: "Services", servicesLine: "Architecture et hôtellerie, entreprises et marques, portrait, voyage, films, drone, étalonnage.",
       clients: "Ils m’ont fait confiance", clientsLine: "Ciel Textile, Gamma Construction, Sealife, Sasha Academy, Telkom Kenya, KFC, Eclosia.",
       similar: "Un projet similaire ?", email: "E-mail", next: "Projet suivant", back: "Retour", ask: "Un projet ?", copy: "Copier", copied: "Copié", copyMail: "Copier l’adresse", seePhotos: "Voir les photos", writeMe: "Écrire à Samuel", openMail: "Ouvrir ma messagerie", close2: "Fermer",
-      rights: "Photographies protégées, toute reproduction interdite.", backHome: "Retour à l’accueil", size: "Taille des images", goHome: "Accueil", ixList: "Liste", ixImages: "Images", vGrid: "Grille", vExpo: "Exposition", prev: "Préc.", nextShort: "Suiv.", prevImg: "Image préc.", nextImg: "Image suiv.", play: "Lire",
+      rights: "Photographies protégées, toute reproduction interdite.", backHome: "Retour à l’accueil", soundOn: "Activer le son", soundOff: "Couper le son", size: "Taille des images", goHome: "Accueil", ixList: "Liste", ixImages: "Images", vGrid: "Grille", vExpo: "Exposition", prev: "Préc.", nextShort: "Suiv.", prevImg: "Image préc.", nextImg: "Image suiv.", play: "Lire",
       bio: "Samuel Drouin est photographe et vidéaste, basé à l’île Maurice. Il photographie et filme les entreprises, les marques, les lieux et les personnes qui les font vivre, du drone au plateau de tournage. Coloriste, il développe Node DRT, un plugin d’étalonnage pour DaVinci Resolve.",
       tools: "Outils", svc: ["Photographie d’entreprise et de marque", "Portrait", "Architecture et hôtellerie", "Films publicitaires et institutionnels", "Prises de vue par drone", "Contenus pour les réseaux", "Étalonnage"],
       videos: "vidéos", prevP: "Projet précédent", wa: "Bonjour Samuel, j’ai un projet : ", notfound: "Page introuvable", home: "Retour à l’accueil", isNew: "Nouveau"
@@ -43,7 +43,7 @@
       services: "Services", servicesLine: "Architecture & hospitality, corporate & brands, portrait, travel, film, drone, colour grading.",
       clients: "Clients", clientsLine: "Ciel Textile, Gamma Construction, Sealife, Sasha Academy, Telkom Kenya, KFC, Eclosia.",
       similar: "A similar project?", email: "Email", next: "Next project", back: "Back", ask: "A project in mind?", copy: "Copy", copied: "Copied", copyMail: "Copy the address", seePhotos: "See the photos", writeMe: "Write to Samuel", openMail: "Open my mail app", close2: "Close",
-      rights: "Protected photographs, all reproduction prohibited.", backHome: "Back to home", size: "Image size", goHome: "Home", ixList: "List", ixImages: "Images", vGrid: "Grid", vExpo: "Exhibition", prev: "Prev.", nextShort: "Next", prevImg: "Previous image", nextImg: "Next image", play: "Play",
+      rights: "Protected photographs, all reproduction prohibited.", backHome: "Back to home", soundOn: "Sound on", soundOff: "Sound off", size: "Image size", goHome: "Home", ixList: "List", ixImages: "Images", vGrid: "Grid", vExpo: "Exhibition", prev: "Prev.", nextShort: "Next", prevImg: "Previous image", nextImg: "Next image", play: "Play",
       bio: "Samuel Drouin is a photographer and filmmaker based in Mauritius. He photographs and films companies, brands, places and the people behind them, from drone to film set. A colourist, he develops Node DRT, a grading plugin for DaVinci Resolve.",
       tools: "Tools", svc: ["Corporate & brand photography", "Portrait", "Architecture & hospitality", "Commercial & corporate film", "Drone photography & film", "Social media content", "Colour grading"],
       videos: "videos", prevP: "Previous project", wa: "Hi Samuel, I have a project: ", notfound: "Page not found", home: "Back to home", isNew: "New"
@@ -842,9 +842,10 @@
     var amb = pvids.filter(function (v) { return v.ambiance; })[0], ambIO = null;
     function ambSrc() { return amb.vertical && window.innerWidth < 900 && window.innerHeight > window.innerWidth ? amb.vertical : amb.lien; }
     function ambHTML() {
-      var s = ambSrc();
-      return '<div class="amb' + (s === amb.vertical ? " v" : "") + '"><video muted autoplay loop playsinline preload="auto" disablepictureinpicture poster="' + esc(s.replace(/\.mp4$/, ".jpg")) + '" src="' + esc(s) + '"></video>' +
-        '<button type="button" class="amb-p" hidden aria-label="' + t("play") + '">' + t("play") + "</button></div>";
+      var s = ambSrc(), vert = s === amb.vertical || amb.format === "v", poster = s.replace(/\.mp4$/, ".jpg");
+      return '<div class="amb' + (vert ? " v" : "") + (amb.format === "v" ? " vf" : "") + '" style="--poster:url(\'' + esc(new URL(poster, location.href).href) + '\')"><video muted autoplay loop playsinline preload="auto" disablepictureinpicture poster="' + esc(poster) + '" src="' + esc(s) + '"></video>' +
+        '<button type="button" class="amb-p" hidden aria-label="' + t("play") + '">' + t("play") + "</button>" +
+        (amb.format === "v" ? '<button type="button" class="amb-s" aria-pressed="false">' + t("soundOn") + "</button>" : "") + "</div>";
     }
     function ambStart() {
       var box = el.querySelector(".amb"); if (!box) return;
@@ -852,6 +853,8 @@
       v.muted = true; v.defaultMuted = true;
       var go = function () { var pr = v.play(); if (pr && pr.catch) pr.catch(function () { b.hidden = false; }); };
       b.onclick = function () { b.hidden = true; go(); };
+      var sb = box.querySelector(".amb-s");
+      if (sb) sb.onclick = function () { v.muted = !v.muted; sb.textContent = v.muted ? t("soundOn") : t("soundOff"); sb.setAttribute("aria-pressed", !v.muted); if (!v.muted) go(); };
       v.addEventListener("playing", function () { b.hidden = true; });
       if (ambIO) ambIO.disconnect();
       if ("IntersectionObserver" in window) {
@@ -865,7 +868,7 @@
       el.innerHTML = (amb ? ambHTML() : "") + (rest.length ? '<div class="pvg">' + rest.map(function (v) {
         var k = pvids.indexOf(v);
         var q = parseVideo(v.lien);
-        return '<button type="button" class="pv-t fig' + (q.file ? " vert" : "") + '" data-vk="' + k + '"><div class="mask"><img loading="lazy" alt="" draggable="false" src="' + esc(q.th) + '"><span class="play">' + t("play") + "</span></div><span class=\"pv-n\">" + esc(L(v.titre).replace(L(p.titre) + ", ", "")) + "</span></button>";
+        return '<button type="button" class="pv-t fig' + (q.file && v.format !== "h" ? " vert" : "") + '" data-vk="' + k + '"><div class="mask"><img loading="lazy" alt="" draggable="false" src="' + esc(q.th) + '"><span class="play">' + t("play") + "</span></div><span class=\"pv-n\">" + esc(L(v.titre).replace(L(p.titre) + ", ", "")) + "</span></button>";
       }).join("") + "</div>" : "");
       observe(); if (amb) ambStart();
     }
