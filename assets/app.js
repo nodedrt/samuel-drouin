@@ -128,9 +128,11 @@
     var mw = kind === "cadre" ? (mob ? 16 : Math.round(Math.min(70, Math.max(34, vw * 0.035)))) : 0;
     var extra = 2 * (fw + mw);
     function print(it, h) {
-      var w = h * it.p.w / it.p.h, inner = img(it.p, { alt: it.alt, sizes: Math.ceil(100 * w / vw) + "vw", eager: it.i < 2 });
+      var w = h * it.p.w / it.p.h, sd = Math.min(w, h);
+      /* marie-louise et cadre proportionnels à la photo : mêmes proportions quelle que soit la taille choisie */
+      var mwI = Math.round(sd * 0.14), fwI = Math.max(5, Math.round(sd * 0.032)), inner = img(it.p, { alt: it.alt, sizes: Math.ceil(100 * w / vw) + "vw", eager: it.i < 2 });
       var body = kind === "cadre"
-        ? '<div class="ex-fr ' + (wood || "oak") + '" style="--fw:' + fw + 'px"><div class="ex-mat" style="--mw:' + mw + 'px"><div class="ex-im" style="width:' + w.toFixed(0) + "px;height:" + h.toFixed(0) + 'px">' + inner + "</div></div></div>"
+        ? '<div class="ex-fr ' + (wood || "oak") + '" style="--fw:' + fwI + 'px"><div class="ex-mat" style="--mw:' + mwI + 'px"><div class="ex-im" style="width:' + w.toFixed(0) + "px;height:" + h.toFixed(0) + 'px">' + inner + "</div></div></div>"
         : '<div class="ex-fl" style="width:' + w.toFixed(0) + "px;height:" + h.toFixed(0) + 'px">' + inner + "</div>";
       return '<button type="button" class="ex-p fig" data-i="' + it.i + '"><div class="mask">' + body + "</div></button>";
     }
@@ -145,7 +147,8 @@
         h = Math.min(mob ? vh * 0.62 : (ar < 0.95 ? vh * 0.7 : maxH), ((mob ? W * 0.92 : W * (ar > 1.6 ? 0.72 : 0.6)) - extra) / ar);
       }
       var sum = grp.reduce(function (s2, x) { return s2 + x.p.w / x.p.h; }, 0);
-      h = Math.min(h * zoom, (W * 0.96 - grp.length * extra - (grp.length - 1) * 64) / sum, vh * 0.9);
+      var kf = kind === "cadre" ? 1.35 : 1; /* cadre + marie-louise ≈ 35 % autour de la photo */
+      h = Math.min(h * zoom, (W * 0.96 - (grp.length - 1) * 64) / (sum * kf), vh * (mob ? 0.8 : 0.86) / kf);
       i += grp.length;
       var num = grp.map(function (x) { return pad(x.i + 1); }).join(", ");
       out.push('<div class="ex-wall"><div class="ex-hang">' + grp.map(function (x) { return print(x, h); }).join("") + "</div>" +
