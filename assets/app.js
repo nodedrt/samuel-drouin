@@ -908,13 +908,22 @@
     main.innerHTML = '<section class="ph grid"><div class="meta xs"><span class="mt-l">' + backBtn + '<span class="u msec">' + esc(sn) + "</span></span><span>" + (k >= 0 ? '<span class="mt-k">' + pad(k + 1) + " / " + pad(all.length) + ", </span>" : "") + list.length + " " + t("images") + '</span></div><h1><span class="roll"></span></h1>' +
       (slug === "etalonnage" ? '<p class="lead rl">' + esc(lang === "fr" ? "Images étalonnées avec Node DRT, mon plugin d’étalonnage pour DaVinci Resolve." : "Frames graded with Node DRT, my grading plugin for DaVinci Resolve.") + "</p>" : "") +
       (pvids.length ? '<div class="pm" role="tablist"><button type="button" role="tab" data-m="photos">' + t("photo") + "<sup>" + list.length + '</sup></button><button type="button" role="tab" data-m="videos">' + t("video") + "<sup>" + pvids.length + "</sup></button></div>" : "") +
-      '<div class="vue xs" role="tablist"><button type="button" role="tab" data-v="grille">' + t("vGrid") + '</button><button type="button" role="tab" data-v="expo">' + t("vExpo") + '</button><span class="zw"><label class="zm" title="' + t("size") + '"><span aria-hidden="true">−</span><input type="range" min="0.55" max="1.6" step="0.01" value="' + zoom + '" aria-label="' + t("size") + '"><span aria-hidden="true">+</span></label><button type="button" class="zm-r"' + (Math.abs(zoom - 1) < 0.005 ? " data-z1" : "") + '>' + t("reset") + '</button></span></div>' +
+      '<div class="vue xs" role="tablist"><button type="button" role="tab" data-v="grille">' + t("vGrid") + '</button><button type="button" role="tab" data-v="expo">' + t("vExpo") + '</button><span class="zw"><label class="zm" title="' + t("size") + '"><span class="zm-m" aria-hidden="true">−</span><input type="range" min="0.55" max="1.6" step="0.01" value="' + zoom + '" aria-label="' + t("size") + '"><span class="zm-p" aria-hidden="true">+</span></label><button type="button" class="zm-r"' + (Math.abs(zoom - 1) < 0.005 ? " data-z1" : "") + '>' + t("reset") + '</button></span></div>' +
       pnav(pr, nx, false) + "</section>" +
-      '<section class="gal"><div class="vue-f xs" role="tablist"><button type="button" role="tab" data-v="grille">' + t("vGrid") + '</button><button type="button" role="tab" data-v="expo">' + t("vExpo") + '</button><span class="zw"><label class="zm" title="' + t("size") + '"><span aria-hidden="true">−</span><input type="range" min="0.55" max="1.6" step="0.01" value="' + zoom + '" aria-label="' + t("size") + '"><span aria-hidden="true">+</span></label><button type="button" class="zm-r"' + (Math.abs(zoom - 1) < 0.005 ? " data-z1" : "") + '>' + t("reset") + '</button></span></div><div class="jw" id="jg"></div></section>' +
+      '<section class="gal"><div class="vue-f xs" role="tablist"><button type="button" role="tab" data-v="grille">' + t("vGrid") + '</button><button type="button" role="tab" data-v="expo">' + t("vExpo") + '</button><span class="zw"><label class="zm" title="' + t("size") + '"><span class="zm-m" aria-hidden="true">−</span><input type="range" min="0.55" max="1.6" step="0.01" value="' + zoom + '" aria-label="' + t("size") + '"><span class="zm-p" aria-hidden="true">+</span></label><button type="button" class="zm-r"' + (Math.abs(zoom - 1) < 0.005 ? " data-z1" : "") + '>' + t("reset") + '</button></span></div><div class="jw" id="jg"></div></section>' +
       '<section class="s-end grid"><p class="q"><span>' + t("similar") + '</span><a class="u" href="mailto:' + MAIL + '">' + t("email") + "</a>" +
       (slug === "etalonnage" ? '<a class="u" href="https://nodedrt.github.io/NodeDRT/" target="_blank" rel="noopener">Node DRT →</a>' : "") + "</p>" +
       pnav(pr, nx, true) + "</section>";
     roll(main.querySelector(".ph h1 .roll"), L(p.titre), 1);
+    /* titre long : il se réduit juste ce qu'il faut pour ne jamais toucher Grille / Exposition */
+    function fitTitle() {
+      var h = main.querySelector(".ph h1"), v = main.querySelector(".ph .vue"); if (!h) return;
+      h.style.fontSize = "";
+      var rw = h.querySelector(".rw") || h, w = rw.getBoundingClientRect().width;
+      var avail = (!v || window.innerWidth < 1000) ? h.getBoundingClientRect().width - 16 : 2 * (v.getBoundingClientRect().left - window.innerWidth / 2) - 48;
+      if (w > avail && avail > 0) h.style.fontSize = Math.max(26, parseFloat(getComputedStyle(h).fontSize) * avail / w) + "px";
+    }
+    fitTitle(); resizers.push(fitTitle); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitTitle);
     var bb = main.querySelector("[data-back]");
     if (bb) bb.addEventListener("click", function (e) {
       e.preventDefault(); var h = ret ? ret.h : "#/";
@@ -1064,6 +1073,13 @@
     });
     function zr1() { main.querySelectorAll(".zm-r").forEach(function (r) { r.toggleAttribute("data-z1", Math.abs(zoom - 1) < 0.005); }); }
     main.querySelectorAll(".zm input").forEach(function (inp) { inp.addEventListener("input", zr1); });
+    /* − : la plus petite taille d'un coup, + : la plus grande */
+    main.querySelectorAll(".zm-m, .zm-p").forEach(function (b) {
+      b.addEventListener("click", function (e) {
+        e.preventDefault(); e.stopPropagation();
+        var inp = main.querySelector(".zm input"); inp.value = b.classList.contains("zm-p") ? inp.max : inp.min; inp.dispatchEvent(new Event("input"));
+      });
+    });
     main.querySelectorAll(".zm-r").forEach(function (r) { r.addEventListener("click", function () { var inp = main.querySelector(".zm input"); inp.value = 1; inp.dispatchEvent(new Event("input")); }); });
     el.addEventListener("click", function (e) {
       var v = e.target.closest("[data-vk]");
