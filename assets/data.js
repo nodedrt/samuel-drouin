@@ -21,6 +21,7 @@ window.SITE = {
     { projet: "ocean-villa", img: ["immobilier/ocean-villa/23"] },
     { projet: "mr-bao", img: ["mr-bao/01"] },
     { projet: "samaya", img: ["samaya/01", "samaya/16"] },
+    { projet: "the-hive", img: ["the-hive/04"] },
     { projet: "sealife", img: ["corporate/sealife/10"] },
     { projet: "portrait", img: ["portrait/20", "portrait/18"] },
     { projet: "cafe-st-felix", img: ["cafe-st-felix/19"] },
@@ -51,7 +52,7 @@ window.SITE = {
   // Les sections, comme sur le Google Site (l'immobilier en dernier).
   // Ordre de l'index (accueil et index général) : les plus beaux projets d'abord.
   // Un projet absent de cette liste se place après, dans l'ordre des sections.
-  ordre: ["les-paletuviers", "paysage", "drone", "portrait", "cafe-st-felix", "voyage", "konekte", "abc", "samaya", "villa-horizon",
+  ordre: ["les-paletuviers", "paysage", "drone", "portrait", "cafe-st-felix", "voyage", "konekte", "abc", "samaya", "the-hive", "villa-horizon",
     "mr-bao", "melbees", "ocean-villa", "peizan", "bluemoon-villa", "vert-nature", "sealife", "kfc", "ferney", "kenya-telkom",
     "villa-anahita", "le-dalblair", "kenya-film", "villa-la-plage", "sasha-academy", "ciel-textile"],
   sections: [
@@ -66,6 +67,7 @@ window.SITE = {
     { id: "sealife", fr: "Sealife", en: "Sealife", projets: ["sealife"] },
     { id: "gamma", fr: "Gamma Construction", en: "Gamma Construction", projets: ["gamma-construction", "exposition-port-louis"] },
     { id: "sasha-academy", fr: "Sasha Academy", en: "Sasha Academy", projets: ["sasha-academy"] },
+    { id: "the-hive", fr: "The Hive", en: "The Hive", projets: ["the-hive"] },
     { id: "samaya", fr: "Samaya", en: "Samaya", projets: ["samaya"] },
     { id: "mr-bao", fr: "Mr Bao", en: "Mr Bao", projets: ["mr-bao"] },
     { id: "cafe-st-felix", fr: "Café St Félix", en: "Café St Félix", projets: ["cafe-st-felix"] },
@@ -81,6 +83,7 @@ window.SITE = {
   projets: {
     "paysage": { titre: { fr: "Paysage", en: "Landscape" }, dossier: "paysage", couverture: "03", lignes: [["03", "02"], ["05", "10"], ["04", "08", "06"], ["07", "11"]] },
     "vert-nature": { titre: { fr: "Vert nature", en: "Green nature" }, dossier: "vert-nature", couverture: "08" },
+    "the-hive": { titre: "The Hive", dossier: "the-hive", couverture: "04", nouveau: true, egal: true, lignes: [["01", "02"], ["03", "04", "05"], ["06", "07"], ["08", "09", "10"], ["11", "12", "13"], ["14", "15"], ["16", "17", "18"], ["19", "20"], ["21", "22"]] },
     "samaya": { titre: "Samaya", dossier: "samaya", couverture: "01", nouveau: true, egal: true, lignes: [["01", "02"], ["03", "04", "05"], ["06", "07", "08", "09"], ["10", "11", "12"], ["13", "14", "15"], ["16", "17"], ["18", "19", "20", "21"], ["22", "23", "24"], ["25", "26"], ["27", "28", "29", "30"]] },
     "abc": { titre: "ABC, coulisses", dossier: "abc", couverture: "04", nouveau: true, lignes: [["01", "02", "03"], ["04", "05"], ["06", "07"], ["08", "09"], ["10", "11", "12"], ["13", "14", "15", "16"], ["17", "18", "19"], ["20", "21", "22", "23"], ["24", "25", "28"], ["26", "27", "29"]] },
     "mr-bao": { titre: "Mr Bao", dossier: "mr-bao", couverture: "01", nouveau: true, egal: true, lignes: [["01", "02"], ["03", "04", "05", "06"], ["23", "09", "11", "12"], ["13", "14", "16", "17"], ["19", "20", "21", "24"]] },
