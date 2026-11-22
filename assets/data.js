@@ -53,7 +53,7 @@ window.SITE = {
   // Les sections, comme sur le Google Site (l'immobilier en dernier).
   // Ordre de l'index (accueil et index général) : les plus beaux projets d'abord.
   // Un projet absent de cette liste se place après, dans l'ordre des sections.
-  ordre: ["les-paletuviers", "paysage", "drone", "portrait", "cafe-st-felix", "voyage", "konekte", "abc", "samaya", "the-hive", "poste-lafayette", "villa-horizon",
+  ordre: ["les-paletuviers", "paysage", "drone", "portrait", "cafe-st-felix", "voyage", "konekte", "abc", "samaya", "the-hive", "ecole-de-l-ouest", "poste-lafayette", "villa-horizon",
     "mr-bao", "melbees", "ocean-villa", "peizan", "bluemoon-villa", "vert-nature", "sealife", "kfc", "ferney", "kenya-telkom",
     "villa-anahita", "le-dalblair", "kenya-film", "villa-la-plage", "sasha-academy", "ciel-textile", "ciel-aquarelle"],
   sections: [
@@ -69,6 +69,7 @@ window.SITE = {
     { id: "gamma", fr: "Gamma Construction", en: "Gamma Construction", projets: ["gamma-construction", "exposition-port-louis"] },
     { id: "sasha-academy", fr: "Sasha Academy", en: "Sasha Academy", projets: ["sasha-academy"] },
     { id: "the-hive", fr: "The Hive", en: "The Hive", projets: ["the-hive"] },
+    { id: "ecole-de-l-ouest", fr: "École de l’Ouest", en: "École de l’Ouest", projets: ["ecole-de-l-ouest"] },
     { id: "samaya", fr: "Samaya", en: "Samaya", projets: ["samaya"] },
     { id: "mr-bao", fr: "Mr Bao", en: "Mr Bao", projets: ["mr-bao"] },
     { id: "cafe-st-felix", fr: "Café St Félix", en: "Café St Félix", projets: ["cafe-st-felix"] },
@@ -95,6 +96,7 @@ window.SITE = {
     "melbees": { titre: "Melbees", dossier: "melbees", couverture: "03", nouveau: true, egal: true, lignes: [["01", "02", "03", "04"], ["05", "06", "07", "08"], ["09", "10", "11", "12"], ["13", "14", "15", "16"], ["17", "18", "19", "20"], ["21", "22", "23", "24"], ["25", "26", "27"]] },
     "konekte": { titre: "Konekte", dossier: "konekte", couverture: "01", nouveau: true },
     "drone": { titre: { fr: "Drone", en: "Drone" }, dossier: "drone", couverture: "01", lignes: [["04", "01"], ["13", "09"], ["08", "03"], ["02", "12"], ["10", "05"], ["06", "07"], ["16", "11", "19"], ["15", "17", "18"], ["22", "23"], ["24", "25"], ["20", "21"], ["26", "27"], ["28", "29"]] },
+    "ecole-de-l-ouest": { titre: "École de l’Ouest", dossier: "ecole-de-l-ouest", couverture: "07", nouveau: true, egal: true, lignes: [["01", "02"], ["03", "04", "05"], ["06", "07", "08"], ["09", "10", "11"], ["12", "13", "14"], ["15", "16"], ["17", "18"], ["19", "20", "21", "22"], ["23", "24"], ["25", "26"], ["27", "28"]] },
     "ciel-aquarelle": { titre: { fr: "Ciel, Aquarelle à la Citadelle", en: "Ciel, Aquarelle at the Citadel" }, dossier: "evenements/ciel-aquarelle", couverture: "10", nouveau: true, egal: true, lignes: [["01", "02", "03"], ["04", "05"], ["06", "07", "08"], ["09", "10", "11"], ["12", "13", "14"], ["15", "16"], ["17", "18", "19", "20"], ["21", "22"], ["23", "24"]] },
     "ciel-textile": { titre: "Ciel Textile", dossier: "corporate/ciel-textile", couverture: "16" },
     "gamma-construction": { titre: { fr: "Gamma Construction, chantier", en: "Gamma Construction, site" }, dossier: "corporate/gamma-construction", couverture: "09" },
