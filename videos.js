@@ -18,15 +18,15 @@ window.VIDEO_SECTIONS = [
 ];
 
 window.VIDEOS = [
+  { section: "drone", vedette: 3.5, titre: { fr: "Chiroulet, Pyrénées", en: "Chiroulet, Pyrenees" }, lien: "videos/chiroulet.mp4" },
   { section: "mr-bao", vedette: 4.5, titre: { fr: "Mr Bao, Crispy Chicken Bao", en: "Mr Bao, Crispy Chicken Bao" }, lien: "videos/mr-bao/crispy-chicken-bao.mp4" },
   { section: "mr-bao", titre: { fr: "Mr Bao, Dumplings", en: "Mr Bao, Dumplings" }, lien: "videos/mr-bao/dumplings.mp4" },
   { section: "mr-bao", titre: { fr: "Mr Bao, Teriyaki Chicken Fried Rice", en: "Mr Bao, Teriyaki Chicken Fried Rice" }, lien: "videos/mr-bao/teriyaki-fried-rice.mp4" },
-  { section: "mr-bao", titre: { fr: "Mr Bao, Dessert", en: "Mr Bao, Dessert" }, lien: "videos/mr-bao/dessert.mp4" },
   { section: "films", une: true, vedette: 1, titre: { fr: "Bande-démo", en: "Showreel" }, lien: "https://drive.google.com/file/d/16PQFUlTkXY5R09ySKLWW5eV92SCB1E9F/view" },
   { section: "films", vedette: 4, titre: { fr: "Samaya, manucure", en: "Samaya, manicure" }, lien: "https://drive.google.com/file/d/1rS2dBFF36lKrow1QVfWk04ntoTWQmaD6/view" },
   { section: "films", titre: { fr: "Samaya, massage", en: "Samaya, massage" }, lien: "https://drive.google.com/file/d/109_ZBRzkiquWfBxgOpKGFUSLyI5U25HV/view" },
-  { section: "films", vedette: 6, titre: { fr: "Peizan, Roselle", en: "Peizan, Roselle" }, lien: "https://drive.google.com/file/d/1loJhiusHv2_FjFQM6nOMPXeX_-UpLzRW/view" },
-  { section: "films", titre: { fr: "Peizan, Palétuviers", en: "Peizan, Mangroves" }, lien: "https://drive.google.com/file/d/1tZTpK6touwCF-iw0TzSK_J2zJP9J3fep/view" },
+  { section: "films", projet: "peizan", vedette: 6, titre: { fr: "Peizan, Roselle", en: "Peizan, Roselle" }, lien: "https://drive.google.com/file/d/1loJhiusHv2_FjFQM6nOMPXeX_-UpLzRW/view" },
+  { section: "films", projet: "peizan", titre: { fr: "Peizan, Palétuviers", en: "Peizan, Mangroves" }, lien: "https://drive.google.com/file/d/1tZTpK6touwCF-iw0TzSK_J2zJP9J3fep/view" },
   { section: "drone", vedette: 3, titre: { fr: "Après-midi, Hautacam", en: "Afternoon, Hautacam" }, lien: "https://youtu.be/QzYLXv8_BjQ" },
   { section: "drone", titre: { fr: "Le Chiroulet, France", en: "Le Chiroulet, France" }, lien: "https://youtu.be/jnvMcSBXid0" },
   { section: "interviews", vedette: 5, titre: { fr: "École de l’Ouest, II", en: "École de l’Ouest, II" }, lien: "https://youtu.be/ichzVg8sMu4" },

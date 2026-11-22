@@ -11,9 +11,9 @@ enum Chemins {
     static let home = FileManager.default.homeDirectoryForCurrentUser
     static let site = home.appendingPathComponent("Documents/samuel-drouin-site", isDirectory: true)
     static let boite = home.appendingPathComponent("Documents/samuel-drouin-nouveaux-projets", isDirectory: true)
-    static let enLigne = URL(string: "https://nodedrt.github.io/samuel-drouin/")!
-    static let depot = "https://github.com/nodedrt/samuel-drouin.git"
-    static let github = URL(string: "https://github.com/nodedrt/samuel-drouin")!
+    static let enLigne = URL(string: "https://samueldrouin.github.io/")!
+    static let depot = "https://github.com/samueldrouin/samueldrouin.github.io.git"
+    static let github = URL(string: "https://github.com/samueldrouin/samueldrouin.github.io")!
     static var ajoutsJSON: URL { site.appendingPathComponent("assets/ajouts.json") }
     static var ajoutsJS: URL { site.appendingPathComponent("assets/ajouts.js") }
     static var photosAjouts: URL { site.appendingPathComponent("photos/ajouts", isDirectory: true) }
@@ -880,7 +880,7 @@ struct Reglages: View {
             VStack(alignment: .leading, spacing: 16) {
                 Titre1(texte: "Réglages", sous: "À faire une seule fois.")
                 Carte(titre: "1. Relier le dossier à GitHub") {
-                    Text(studio.depotPret ? "C'est fait : le dossier est relié à github.com/nodedrt/samuel-drouin." : "Prépare le dossier du site pour l'envoyer sur GitHub.")
+                    Text(studio.depotPret ? "C'est fait : le dossier est relié à github.com/samueldrouin/samueldrouin.github.io." : "Prépare le dossier du site pour l'envoyer sur GitHub.")
                     Button(studio.depotPret ? "Refaire la liaison" : "Relier à GitHub") { studio.preparerDepot() }.disabled(studio.occupe || !studio.siteTrouve)
                 }
                 Carte(titre: "2. Te connecter à GitHub") {
@@ -901,7 +901,7 @@ struct Reglages: View {
                 Carte(titre: "3. Activer le site") {
                     Text("Après ta première publication : sur GitHub, dépôt samuel-drouin › Settings › Pages › Deploy from a branch › main et / (root) › Save.")
                         .fixedSize(horizontal: false, vertical: true)
-                    Button("Ouvrir les réglages Pages") { NSWorkspace.shared.open(URL(string: "https://github.com/nodedrt/samuel-drouin/settings/pages")!) }
+                    Button("Ouvrir les réglages Pages") { NSWorkspace.shared.open(URL(string: "https://github.com/samueldrouin/samueldrouin.github.io/settings/pages")!) }
                 }
                 Carte(titre: "Dossiers") {
                     Text("Site : \(Chemins.site.path)").font(.system(.caption, design: .monospaced))

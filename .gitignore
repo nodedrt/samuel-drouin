@@ -2,3 +2,21 @@
 _*.json
 _*.jpg
 _*.png
+*.tgz
+
+# Mr Bao : photos écartées (gardées sur l'ordinateur, pas en ligne)
+photos/mr-bao/07.jpg
+photos/mr-bao/min/07.jpg
+photos/mr-bao/08.jpg
+photos/mr-bao/min/08.jpg
+photos/mr-bao/10.jpg
+photos/mr-bao/min/10.jpg
+photos/mr-bao/15.jpg
+photos/mr-bao/min/15.jpg
+photos/mr-bao/18.jpg
+photos/mr-bao/min/18.jpg
+photos/mr-bao/22.jpg
+photos/mr-bao/min/22.jpg
+videos/mr-bao/dessert.mp4
+videos/mr-bao/dessert.jpg
+_cf.jpg

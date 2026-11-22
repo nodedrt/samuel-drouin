@@ -31,9 +31,9 @@
       images: "photos", projects: "projets", project: "projet", see: "Voir le projet", byProject: "Tous les projets", allVideos: "Toutes les vidéos",
       services: "Services", servicesLine: "Architecture et hôtellerie, entreprises et marques, portrait, voyage, films, drone, étalonnage.",
       clients: "Ils m’ont fait confiance", clientsLine: "Ciel Textile, Gamma Construction, Sealife, Sasha Academy, Telkom Kenya, KFC, Eclosia.",
-      similar: "Un projet similaire ?", email: "E-mail", next: "Projet suivant", back: "Retour", ask: "Un projet ?", copy: "Copier", copied: "Copié",
-      rights: "Photographies protégées, toute reproduction interdite.", backHome: "Retour à l’accueil", vGrid: "Grille", vExpo: "Exposition", prev: "Préc.", nextShort: "Suiv.", prevImg: "Image préc.", nextImg: "Image suiv.", play: "Lire",
-      bio: "Samuel Drouin est photographe et vidéaste, basé à l’île Maurice. Il photographie et filme les entreprises, les marques, les lieux et les personnes qui les font vivre, du drone au plateau de tournage. Coloriste, il développe Node DRT, un plugin d’étalonnage pour DaVinci Resolve, et Lumina, un DCTL.",
+      similar: "Un projet similaire ?", email: "E-mail", next: "Projet suivant", back: "Retour", ask: "Un projet ?", copy: "Copier", copied: "Copié", copyMail: "Copier l’adresse", seePhotos: "Voir les photos", writeMe: "Écrire à Samuel", openMail: "Ouvrir ma messagerie", close2: "Fermer",
+      rights: "Photographies protégées, toute reproduction interdite.", backHome: "Retour à l’accueil", size: "Taille des images", goHome: "Accueil", ixList: "Liste", ixImages: "Images", vGrid: "Grille", vExpo: "Exposition", prev: "Préc.", nextShort: "Suiv.", prevImg: "Image préc.", nextImg: "Image suiv.", play: "Lire",
+      bio: "Samuel Drouin est photographe et vidéaste, basé à l’île Maurice. Il photographie et filme les entreprises, les marques, les lieux et les personnes qui les font vivre, du drone au plateau de tournage. Coloriste, il développe Node DRT, un plugin d’étalonnage pour DaVinci Resolve.",
       tools: "Outils", svc: ["Photographie d’entreprise et de marque", "Portrait", "Architecture et hôtellerie", "Films publicitaires et institutionnels", "Prises de vue par drone", "Contenus pour les réseaux", "Étalonnage"],
       videos: "vidéos", prevP: "Projet précédent", wa: "Bonjour Samuel, j’ai un projet : ", notfound: "Page introuvable", home: "Retour à l’accueil", isNew: "Nouveau"
     },
@@ -42,9 +42,9 @@
       images: "photos", projects: "projects", project: "project", see: "View project", byProject: "All projects", allVideos: "All videos",
       services: "Services", servicesLine: "Architecture & hospitality, corporate & brands, portrait, travel, film, drone, colour grading.",
       clients: "Clients", clientsLine: "Ciel Textile, Gamma Construction, Sealife, Sasha Academy, Telkom Kenya, KFC, Eclosia.",
-      similar: "A similar project?", email: "Email", next: "Next project", back: "Back", ask: "A project in mind?", copy: "Copy", copied: "Copied",
-      rights: "Protected photographs, all reproduction prohibited.", backHome: "Back to home", vGrid: "Grid", vExpo: "Exhibition", prev: "Prev.", nextShort: "Next", prevImg: "Previous image", nextImg: "Next image", play: "Play",
-      bio: "Samuel Drouin is a photographer and filmmaker based in Mauritius. He photographs and films companies, brands, places and the people behind them, from drone to film set. A colourist, he develops Node DRT, a grading plugin for DaVinci Resolve, and Lumina, a DCTL.",
+      similar: "A similar project?", email: "Email", next: "Next project", back: "Back", ask: "A project in mind?", copy: "Copy", copied: "Copied", copyMail: "Copy the address", seePhotos: "See the photos", writeMe: "Write to Samuel", openMail: "Open my mail app", close2: "Close",
+      rights: "Protected photographs, all reproduction prohibited.", backHome: "Back to home", size: "Image size", goHome: "Home", ixList: "List", ixImages: "Images", vGrid: "Grid", vExpo: "Exhibition", prev: "Prev.", nextShort: "Next", prevImg: "Previous image", nextImg: "Next image", play: "Play",
+      bio: "Samuel Drouin is a photographer and filmmaker based in Mauritius. He photographs and films companies, brands, places and the people behind them, from drone to film set. A colourist, he develops Node DRT, a grading plugin for DaVinci Resolve.",
       tools: "Tools", svc: ["Corporate & brand photography", "Portrait", "Architecture & hospitality", "Commercial & corporate film", "Drone photography & film", "Social media content", "Colour grading"],
       videos: "videos", prevP: "Previous project", wa: "Hi Samuel, I have a project: ", notfound: "Page not found", home: "Back to home", isNew: "New"
     }
@@ -89,56 +89,66 @@
      edito : mise en page de magazine, grandes images et petites images en décalé, numérotées */
   var vue = "grille";
   try { vue = sessionStorage.getItem("sd-vue") === "expo" ? "expo" : "grille"; } catch (e) {}
-  function expo(el, items, kind) {
-    var W = el.clientWidth, vw = window.innerWidth, vh = window.innerHeight, mob = vw < 768, out = [];
-    function num(it) { return '<span class="ex-n">' + pad(it.i + 1) + "</span>"; }
-    function print(it, h, cls) {
-      var ar = it.p.w / it.p.h, w = h * ar;
-      return '<button type="button" class="ex-p fig' + (cls ? " " + cls : "") + '" data-i="' + it.i + '"><div class="mask"><div class="ex-fr"><div class="ex-mat">' +
-        '<div class="ex-im" style="width:' + w.toFixed(0) + "px;height:" + h.toFixed(0) + 'px">' + img(it.p, { alt: it.alt, sizes: Math.ceil(100 * w / vw) + "vw", eager: it.i < 2 }) + "</div></div></div></div>" + num(it) + "</button>";
+  /* exposition : le fondu suit exactement le défilement (aller et retour) */
+  var exRaf = 0, exK = 1, zoom = 1;
+  try { zoom = Math.max(0.55, Math.min(1.6, +sessionStorage.getItem("sd-zoom") || 1)); } catch (e) {}
+  /* à l'ouverture (ou au passage en Exposition), les œuvres déjà visibles apparaissent elles aussi en fondu */
+  function exIntro() {
+    if (reduce) { exK = 1; exSync(); return; }
+    var t0 = performance.now(), D = 1600;
+    exK = 0; exSync();
+    (function f(now) {
+      var x = Math.min(1, (now - t0) / D); exK = x * x * (3 - 2 * x); exSync();
+      if (x < 1) requestAnimationFrame(f);
+    })(t0);
+  }
+  function exSync() {
+    exRaf = 0;
+    var vh = window.innerHeight, walls = main.querySelectorAll(".gal.ex .ex-wall");
+    for (var i = 0; i < walls.length; i++) {
+      var w = walls[i], hang = w.querySelector(".ex-hang"); if (!hang) continue;
+      var r = hang.getBoundingClientRect();
+      if (r.top > vh + 50 || r.bottom < -50) { w.style.setProperty("--a", r.top > vh ? 0 : 1); continue; }
+      /* de 0 quand le haut de l'œuvre entre en bas de l'écran, à 1 quand son centre atteint 62 % de la hauteur */
+      var start = vh, end = vh * 0.62 - r.height / 2, p = (start - r.top) / Math.max(1, start - end);
+      p = Math.max(0, Math.min(1, p));
+      if (i === 0) p = 1; /* la première œuvre : son fondu vient de l'ouverture, pas du défilement */
+      p = p * p * (3 - 2 * p); /* courbe douce */
+      w.style.setProperty("--a", (p * exK).toFixed(4));
     }
-    if (kind === "cadre") {
-      var mat = mob ? 14 : Math.max(26, Math.min(64, W * 0.04)), fr = mob ? 4 : 7, extra = 2 * (mat + fr), solo = 0, i = 0;
-      while (i < items.length) {
-        var a = items[i], ar = a.p.w / a.p.h, b = items[i + 1], br = b ? b.p.w / b.p.h : 0;
-        if (ar < 0.95 && b && br < 0.95) {
-          var Wp = (mob ? W : W * 0.78) - 2 * extra - (mob ? 12 : 56), h = Math.min(vh * (mob ? 0.42 : 0.66), Wp / (ar + br));
-          out.push('<div class="ex-row c">' + print(a, h) + print(b, h) + "</div>"); i += 2; continue;
-        }
-        var pos = mob ? "c" : ["c", "l", "full", "r"][solo % 4]; solo++;
-        if (pos === "full" && ar < 1.3) pos = "c";
-        if (pos === "full") {
-          out.push('<div class="ex-row full"><button type="button" class="ex-full fig" data-i="' + a.i + '"><div class="mask">' + img(a.p, { alt: a.alt, sizes: "100vw" }) + "</div>" + num(a) + "</button></div>");
-        } else {
-          var maxW = (mob ? W : W * (pos === "c" ? 0.7 : 0.58)) - extra, hh = Math.min(vh * (mob ? 0.6 : 0.74), maxW / ar);
-          out.push('<div class="ex-row ' + pos + '">' + print(a, hh) + "</div>");
-        }
-        i++;
+  }
+  function exReq() { if (!exRaf) exRaf = requestAnimationFrame(exSync); }
+  /* fondu au défilement désactivé (les œuvres s'affichent directement) */
+  function expo(el, items, kind, title) {
+    /* accrochage de galerie : une œuvre (ou une paire de verticales) par mur, éclairée d'en haut,
+       cadre noir satiné avec passe-partout (cadre) ou tirage contrecollé suspendu (edito) */
+    var W = el.clientWidth, vw = window.innerWidth, vh = window.innerHeight, mob = vw < 768, out = [], n = items.length, i = 0;
+    var fw = kind === "cadre" ? (mob ? 7 : Math.round(Math.min(16, Math.max(10, vw * 0.009)))) : 0;
+    var mw = kind === "cadre" ? (mob ? 16 : Math.round(Math.min(70, Math.max(34, vw * 0.035)))) : 0;
+    var extra = 2 * (fw + mw);
+    function print(it, h) {
+      var w = h * it.p.w / it.p.h, inner = img(it.p, { alt: it.alt, sizes: Math.ceil(100 * w / vw) + "vw", eager: it.i < 2 });
+      var body = kind === "cadre"
+        ? '<div class="ex-fr" style="--fw:' + fw + 'px"><div class="ex-mat" style="--mw:' + mw + 'px"><div class="ex-im" style="width:' + w.toFixed(0) + "px;height:" + h.toFixed(0) + 'px">' + inner + "</div></div></div>"
+        : '<div class="ex-fl" style="width:' + w.toFixed(0) + "px;height:" + h.toFixed(0) + 'px">' + inner + "</div>";
+      return '<button type="button" class="ex-p fig" data-i="' + it.i + '"><div class="mask">' + body + "</div></button>";
+    }
+    while (i < n) {
+      var a = items[i], ar = a.p.w / a.p.h, b = items[i + 1], br = b ? b.p.w / b.p.h : 0, grp, h;
+      var maxH = vh * (mob ? 0.5 : 0.64);
+      if (!mob && ar < 0.95 && b && br < 0.95) {
+        grp = [a, b];
+        h = Math.min(maxH, (W * 0.7 - 2 * extra - 64) / (ar + br));
+      } else {
+        grp = [a];
+        h = Math.min(mob ? vh * 0.62 : (ar < 0.95 ? vh * 0.7 : maxH), ((mob ? W * 0.92 : W * (ar > 1.6 ? 0.72 : 0.6)) - extra) / ar);
       }
-    } else {
-      /* magazine : grille de 12 colonnes */
-      var k = 0, pat = 0, V = function (it) { return it.p.w / it.p.h < 0.95; };
-      function cell(it, col, cls) {
-        return '<button type="button" class="ex-e fig' + (cls ? " " + cls : "") + '" data-i="' + it.i + '" style="grid-column:' + col + '"><div class="mask">' + img(it.p, { alt: it.alt, sizes: mob ? "100vw" : "60vw", eager: it.i < 1 }) + "</div>" + num(it) + "</button>";
-      }
-      var first = items[0];
-      if (first && !V(first)) { out.push('<div class="ex-row full"><button type="button" class="ex-full fig" data-i="0"><div class="mask">' + img(first.p, { alt: first.alt, sizes: "100vw", eager: true }) + "</div>" + num(first) + "</button></div>"); k = 1; }
-      while (k < items.length) {
-        var x = items[k], y = items[k + 1], g = "";
-        if (!y) { g = cell(x, V(x) ? "4 / 10" : "3 / 11"); k++; }
-        else if (V(x) && V(y)) { g = cell(x, "2 / 7") + cell(y, "8 / 12", "lo"); k += 2; }
-        else if (V(x) || V(y)) {
-          var vv = V(x) ? x : y, ll = V(x) ? y : x;
-          g = pat % 2 ? cell(ll, "1 / 9") + cell(vv, "10 / 13", "lo") : cell(vv, "1 / 5", "hi") + cell(ll, "6 / 13");
-          k += 2; pat++;
-        } else {
-          var t3 = pat % 3; pat++;
-          if (t3 === 0) { g = cell(x, "1 / 9") + cell(y, "10 / 13", "lo"); k += 2; }
-          else if (t3 === 1) { g = cell(x, "3 / 11"); k++; }
-          else { g = cell(x, "1 / 6", "hi") + cell(y, "7 / 13"); k += 2; }
-        }
-        out.push('<div class="ex-row ed">' + g + "</div>");
-      }
+      var sum = grp.reduce(function (s2, x) { return s2 + x.p.w / x.p.h; }, 0);
+      h = Math.min(h * zoom, (W * 0.96 - grp.length * extra - (grp.length - 1) * 64) / sum, vh * 0.9);
+      i += grp.length;
+      var num = grp.map(function (x) { return pad(x.i + 1); }).join(", ");
+      out.push('<div class="ex-wall"><div class="ex-hang">' + grp.map(function (x) { return print(x, h); }).join("") + "</div>" +
+        '<p class="ex-lab"><b>' + esc(title) + "</b><span>" + num + " / " + pad(n) + "</span></p></div>");
     }
     el.innerHTML = out.join("");
     observe();
@@ -175,9 +185,14 @@
     el.innerHTML = rows.map(function (r, ri) {
       var sum = r.reduce(function (a, it) { return a + it.p.w / it.p.h; }, 0), h = (W - gap * (r.length - 1)) / sum;
       var last = lastRows.indexOf(ri) >= 0 && !o.single && !o.rows && rows.length > 1;
+      /* rangées égales : aucune rangée plus haute que la rangée typique (médiane) */
+      if (o.rows && o.egal) {
+        var hs = rows.map(function (rr) { var s2 = rr.reduce(function (x, it) { return x + it.p.w / it.p.h; }, 0); return (W - gap * (rr.length - 1)) / s2; }).sort(function (a, b) { return a - b; });
+        h = Math.min(h, hs[Math.floor((hs.length - 1) / 2)]);
+      }
       if (last && o.target) h = Math.min(h, o.target(vw) * 1.15);
       if (o.maxH) h = Math.min(h, o.maxH * vh);
-      return '<div class="jr' + (o.center ? " c" : "") + '">' + r.map(function (it) {
+      return '<div class="jr' + (o.center || o.egal ? " c" : "") + '">'  + r.map(function (it) {
         var w = h * it.p.w / it.p.h, tag = it.href ? "a" : "button";
         return "<" + tag + ' class="tile fig"' + (it.href ? ' href="' + it.href + '"' : ' type="button"') + (it.i != null ? ' data-i="' + it.i + '"' : "") + ' style="width:' + w.toFixed(1) + 'px">' +
           '<div class="mask" style="height:' + h.toFixed(1) + 'px">' + img(it.p, { alt: it.alt, sizes: Math.ceil(100 * w / vw) + "vw", eager: o.eager || ri === 0 }) + "</div>" + (it.cap || "") + "</" + tag + ">";
@@ -208,6 +223,33 @@
       try { navigator.clipboard.writeText(MAIL).then(function () { b.textContent = t("copied"); setTimeout(function () { b.textContent = t("copy"); }, 1500); }); } catch (e) {}
     });
   }
+  /* fenêtre e-mail : l'adresse en grand et un bouton pour la copier (au lieu d'ouvrir directement la messagerie) */
+  var mb = document.createElement("div"); mb.className = "mbox"; mb.hidden = true; mb.setAttribute("role", "dialog"); mb.setAttribute("aria-modal", "true");
+  document.body.appendChild(mb);
+  var mbFrom = null;
+  function openMail(from) {
+    mbFrom = from;
+    mb.innerHTML = '<div class="mb-in"><button type="button" class="mb-x" aria-label="' + t("close2") + '">×</button>' +
+      '<p class="mb-k">' + t("writeMe") + '</p><p class="mb-a">' + esc(MAIL) + "</p>" +
+      '<div class="mb-b"><button type="button" class="mb-c">' + t("copyMail") + '</button><a class="mb-o" href="mailto:' + MAIL + '">' + t("openMail") + "</a></div></div>";
+    mb.hidden = false; lock(true); requestAnimationFrame(function () { mb.classList.add("on"); });
+    var c = mb.querySelector(".mb-c");
+    c.focus();
+    c.addEventListener("click", function () {
+      var done = function () { c.textContent = t("copied") + " ✓"; c.classList.add("ok"); setTimeout(function () { c.textContent = t("copyMail"); c.classList.remove("ok"); }, 1800); };
+      try { navigator.clipboard.writeText(MAIL).then(done, function () { selAddr(); }); } catch (e) { selAddr(); }
+    });
+    mb.querySelector(".mb-x").addEventListener("click", closeMail);
+  }
+  function selAddr() { var a = mb.querySelector(".mb-a"), r = document.createRange(); r.selectNodeContents(a); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+  function closeMail() { if (mb.hidden) return; mb.classList.remove("on"); lock(false); setTimeout(function () { if (!mb.classList.contains("on")) { mb.hidden = true; mb.innerHTML = ""; } }, 350); if (mbFrom && mbFrom.isConnected) mbFrom.focus({ preventScroll: true }); }
+  mb.addEventListener("click", function (e) { if (e.target === mb) closeMail(); });
+  document.addEventListener("keydown", function (e) { if (!mb.hidden && e.key === "Escape") closeMail(); });
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="mailto:"]');
+    if (!a || a.closest(".mbox") || e.metaKey || e.ctrlKey) return;
+    e.preventDefault(); openMail(a);
+  });
   function toggleMenu(force) {
     var b = hd.querySelector(".menu-b"), open = force != null ? force : menu.hidden;
     if (open) { menu.hidden = false; requestAnimationFrame(function () { menu.classList.add("on"); }); }
@@ -333,7 +375,7 @@
     }
     me.win = 0; me.anim = null;
     /* un cran : d = 1 (vers la gauche, un nouveau nom à droite) ou -1 */
-    function step(d, dur, done) {
+    function slideLeg(d, dur, done) {
       var S = sizeLeg(), P = per();
       if (reduce || !leg.animate) { me.win += d; drawWin(); if (done) done(); return; }
       var add = li(mod(d > 0 ? me.win + P : me.win - 1)), out;
@@ -360,10 +402,10 @@
       if (!delta) { markOn(); return; }
       if (Math.abs(delta) >= P) { me.win = target; drawWin(true); return; }
       var d = delta > 0 ? 1 : -1, left = Math.abs(delta), dur = left > 1 ? 320 : 620;
-      (function next() { if (tok !== me.chain || !left--) return; step(d, dur, next); })();
+      (function next() { if (tok !== me.chain || !left--) return; slideLeg(d, dur, next); })();
     }
     me.follow = follow;
-    root.querySelectorAll(".lg-a").forEach(function (a) { a.onclick = function () { me.chain = (me.chain || 0) + 1; if (me.anim) me.anim.finish(); step(+a.dataset.d, 520); }; });
+    root.querySelectorAll(".lg-a").forEach(function (a) { a.onclick = function () { me.chain = (me.chain || 0) + 1; if (me.anim) me.anim.finish(); slideLeg(+a.dataset.d, 520); }; });
     if ("IntersectionObserver" in window) {
       me.io = new IntersectionObserver(function (es) { root.classList.toggle("away", !es[0].isIntersecting); sync(); }, { threshold: 0.25 });
       me.io.observe(frame);
@@ -676,9 +718,19 @@
           cards.push('<a class="ix-c v fig"' + (j === 0 ? ' id="ix-' + s.id + '"' : "") + ' href="#/video/' + s.id + '" data-em="' + esc(p.em) + '" data-t="' + esc(L(v.titre)) + '"><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="" src="' + esc(p.th2 || p.th) + '"><span class="play">' + t("play") + "</span></div>" +
             '<div class="ix-tx"><span class="ix-sec">' + esc(L(s)) + '</span><b>' + esc(L(v.titre)) + "</b></div></a>");
         });
+        /* projets photo liés à cette section (section du même nom ou vidéos avec projet: "…") : une carte pour basculer vers leurs photos */
+        var lies = [];
+        if (proj(s.id)) lies.push(s.id);
+        VIDEOS.forEach(function (v) { if (v.section === s.id && v.projet && lies.indexOf(v.projet) < 0) lies.push(v.projet); });
+        lies.filter(function (sl) { return proj(sl) && images(sl).length; }).forEach(function (sl) {
+          var c = cover(sl);
+          cards.push('<a class="ix-c v ph fig" href="' + href(sl) + '" data-pm="photos"><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="" src="' + esc(src(c, true)) + '"><span class="play ph">' + t("seePhotos") + " →</span></div>" +
+            '<div class="ix-tx"><span class="ix-sec">' + esc(pTitle(sl)) + '</span><b>' + t("photo") + " <i>" + images(sl).length + "</i></b></div></a>");
+        });
       });
     }
     el.innerHTML = '<h2 class="ix-h">Index<small>' + n + " " + (mode === "photo" ? t("projects") : t("videos")) + '</small></h2><div class="ix-grid">' + cards.join("") + "</div>";
+    el.querySelectorAll(".ix-c[data-pm]").forEach(function (a) { a.addEventListener("click", function () { try { sessionStorage.setItem("sd-pm-" + a.getAttribute("href").split("/").pop(), "photos"); } catch (e) {} }); });
     el.querySelectorAll(".ix-c[data-em]").forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); openVideo(a.dataset.em, a.dataset.t, a); }); });
     if (anim && !reduce && el.animate) el.querySelectorAll(".ix-h, .ix-c").forEach(function (r, i) {
       r.animate([{ opacity: 0, transform: "translateY(18px)" }, { opacity: 1, transform: "none" }], { duration: 800, delay: 100 + Math.min(i, 24) * 30, easing: OUT, fill: "backwards" });
@@ -689,34 +741,80 @@
     var x = document.getElementById("ix-" + id);
     if (x) window.scrollTo({ top: x.getBoundingClientRect().top + window.scrollY - 80, behavior: reduce ? "auto" : "smooth" });
   }
-  document.addEventListener("mousemove", function (e) { if (pv.classList.contains("on")) pv.style.transform = "translate(" + (e.clientX + 24) + "px," + (e.clientY - pv.offsetHeight / 2) + "px)"; }, { passive: true });
+  document.addEventListener("mousemove", function (e) {
+    if (!pv.classList.contains("on")) return;
+    var w = pv.offsetWidth, h = pv.offsetHeight, x = e.clientX + 28, y = e.clientY - h / 2;
+    if (x + w > window.innerWidth - 12) x = e.clientX - w - 28;
+    y = Math.max(12, Math.min(window.innerHeight - h - 12, y));
+    pv.style.transform = "translate(" + x + "px," + y + "px)";
+  }, { passive: true });
 
+  function pvAttr(slug) { var c = cover(slug); return ' data-pv="' + esc(src(c, true)) + '" data-ar="' + (c.w / c.h).toFixed(3) + '"'; }
+  function vThumb(secId) { var v = VIDEOS.filter(function (x) { return x.section === secId && parseVideo(x.lien || ""); })[0], q = v && parseVideo(v.lien); return q ? ' data-pv="' + esc(q.th2 || q.th) + '" data-ar="' + (q.file ? "0.5625" : "1.778") + '"' : ""; }
+  /* index complet, dans le style de l'index de l'accueil : des cartes rangées par catégorie */
+  function mapCards() {
+    function card(o) {
+      return '<a class="ix-c' + (o.v ? " v" : "") + '" href="' + o.href + '"' + (o.em ? ' data-em="' + esc(o.em) + '" data-t="' + esc(o.t) + '"' : "") + '><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="" src="' + esc(o.img) + '">' + (o.v ? '<span class="play">' + t("play") + "</span>" : "") + "</div>" +
+        '<div class="ix-tx"><b>' + esc(o.t) + (o.nw ? " <i>" + t("isNew") + "</i>" : "") + '</b><span class="ix-n">' + o.n + "</span></div></a>";
+    }
+    function cat(name, n, cards) { return '<div class="xc"><h4 class="xc-h"><span>' + esc(name) + "</span><i>" + n + '</i></h4><div class="xc-g">' + cards.join("") + "</div></div>"; }
+    var out = '<div class="xi">', tot = 0;
+    /* grandes catégories : chaque section de photos est rangée dans l'une d'elles (les nouvelles sections vont dans « Marques et entreprises ») */
+    var CATS = [
+      { fr: "Nature et voyage", en: "Nature and travel", ids: ["voyage", "paysage", "vert-nature", "drone"] },
+      { fr: "Portrait et reportage", en: "Portrait and documentary", ids: ["portrait", "konekte", "melbees", "associations"] },
+      { fr: "Coulisses de tournage", en: "Behind the scenes", ids: ["coulisses"] },
+      { fr: "Marques et entreprises", en: "Brands and companies", ids: [] },
+      { fr: "Immobilier", en: "Real estate", ids: ["immobilier"] }
+    ], other = CATS[3];
+    CATS.forEach(function (c) { c.ps = []; });
+    SITE.sections.forEach(function (s) {
+      var c = CATS.filter(function (x) { return x.ids.indexOf(s.id) >= 0; })[0] || other;
+      s.projets.forEach(function (p) { if (proj(p) && images(p).length) c.ps.push(p); });
+    });
+    var ph = CATS.filter(function (c) { return c.ps.length; }).map(function (c) {
+      tot += c.ps.length;
+      return cat(L(c), c.ps.length, c.ps.map(function (p) { return card({ href: href(p), img: src(cover(p), true), t: pTitle(p), n: images(p).length, nw: proj(p).nouveau }); }));
+    }).join("");
+    out += '<section class="xb"><h3 class="xb-h"><a href="#/photographie">' + t("photo") + "</a><sup>" + tot + "</sup></h3>" + ph + "</section>";
+    var vt = 0, vd = VSEC.map(function (s) {
+      var vs = VIDEOS.filter(function (v) { return v.section === s.id && parseVideo(v.lien || ""); }); if (!vs.length) return "";
+      vt += vs.length;
+      return cat(L(s), vs.length, vs.map(function (v) { var q = parseVideo(v.lien); return card({ v: 1, href: "#/video/" + s.id, em: q.em, img: q.th2 || q.th, t: L(v.titre), n: "" }); }));
+    }).join("");
+    out += '<section class="xb"><h3 class="xb-h"><a href="#/video">' + t("video") + "</a><sup>" + vt + "</sup></h3>" + vd + "</section>";
+    if (images("etalonnage").length) out += '<section class="xb"><h3 class="xb-h"><a href="#/etalonnage">' + t("grade") + "</a></h3>" + cat("DaVinci Resolve", 1, [card({ href: "#/etalonnage", img: src(cover("etalonnage"), true), t: "Node DRT", n: images("etalonnage").length })]) + "</section>";
+    return out + "</div>";
+  }
   function mapHTML() {
     return '<div class="map grid">' + '<div class="mcol"><h3><a href="#/photographie">' + t("photo") + "</a></h3>" + SITE.sections.map(function (s) {
       var ps = s.projets.filter(function (p) { return proj(p) && images(p).length; });
       if (!ps.length) return "";
       var single = ps.length === 1 && pTitle(ps[0]) === L(s);
-      if (single) return '<div class="mg one"><a href="' + href(ps[0]) + '">' + esc(L(s)) + "</a><span>" + images(ps[0]).length + "</span></div>";
-      return '<div class="mg"><h4>' + esc(L(s)) + "</h4><ul>" + ps.map(function (p) { return '<li><a href="' + href(p) + '">' + esc(pTitle(p)) + (proj(p).nouveau ? ' <i>' + t("isNew") + "</i>" : "") + "</a><span>" + images(p).length + "</span></li>"; }).join("") + "</ul></div>";
+      if (single) return '<div class="mg one"><a href="' + href(ps[0]) + '"' + pvAttr(ps[0]) + '>' + esc(L(s)) + "</a><span>" + images(ps[0]).length + "</span></div>";
+      return '<div class="mg"><h4>' + esc(L(s)) + "</h4><ul>" + ps.map(function (p) { return '<li><a href="' + href(p) + '"' + pvAttr(p) + '>' + esc(pTitle(p)) + (proj(p).nouveau ? ' <i>' + t("isNew") + "</i>" : "") + "</a><span>" + images(p).length + "</span></li>"; }).join("") + "</ul></div>";
     }).join("") + "</div>" +
       '<div class="mcol"><h3><a href="#/video">' + t("video") + "</a></h3>" + VSEC.filter(function (v) { return VIDEOS.some(function (x) { return x.section === v.id; }); }).map(function (v) {
-        return '<div class="mg one"><a href="#/video/' + v.id + '">' + esc(L(v)) + "</a><span>" + VIDEOS.filter(function (x) { return x.section === v.id; }).length + "</span></div>";
-      }).join("") + '<h3 class="h3b">' + t("grade") + '</h3><div class="mg one"><a href="#/etalonnage">DCTL Lumina</a><span>' + images("etalonnage").length + "</span></div></div></div>";
+        return '<div class="mg one"><a href="#/video/' + v.id + '"' + vThumb(v.id) + '>' + esc(L(v)) + "</a><span>" + VIDEOS.filter(function (x) { return x.section === v.id; }).length + "</span></div>";
+      }).join("") + '<h3 class="h3b">' + t("grade") + '</h3><div class="mg one"><a href="#/etalonnage"' + pvAttr("etalonnage") + '>Node DRT</a><span>' + images("etalonnage").length + "</span></div></div></div>";
   }
 
   /* ---------- projet ---------- */
   function projet(slug) {
     var p = proj(slug); if (!p || !images(slug).length) return notFound();
+    /* vidéos liées au projet : celles de la section vidéo du même nom, ou avec projet: "<slug>" */
+    var pvids = (window.VIDEOS || []).filter(function (v) { return (v.projet === slug || v.section === slug) && parseVideo(v.lien || ""); });
     var list = images(slug), s = sectionOf(slug), all = allProjects(), k = all.indexOf(slug), nx = all[(k + 1) % all.length];
     var pr = all[(k - 1 + all.length) % all.length];
     if (slug === "etalonnage") { nx = all[0]; pr = all[all.length - 1]; }
     var sn = s ? L(s) : t("grade");
     var backBtn = ret ? '<a class="back xs" href="' + esc(ret.h) + '" data-back><span aria-hidden="true">←</span> ' + t("backHome") + "</a>" : "";
-    main.innerHTML = '<section class="ph grid">' + backBtn + '<div class="meta xs"><a class="u" href="' + (slug === "etalonnage" ? "#/" : "#/photographie") + '">' + esc(sn) + "</a><span>" + (k >= 0 ? pad(k + 1) + " / " + pad(all.length) + ", " : "") + list.length + " " + t("images") + '</span></div><h1><span class="roll"></span></h1>' +
-      (slug === "etalonnage" ? '<p class="lead rl">' + esc(lang === "fr" ? "Images étalonnées avec Lumina, mon DCTL pour DaVinci Resolve. Je développe aussi Node DRT, un plugin d’étalonnage pour Resolve." : "Frames graded with Lumina, my DCTL for DaVinci Resolve. I also develop Node DRT, a grading plugin for Resolve.") + "</p>" : "") +
-      '<div class="vue xs" role="tablist"><button type="button" role="tab" data-v="grille">' + t("vGrid") + '</button><button type="button" role="tab" data-v="expo">' + t("vExpo") + "</button></div>" +
+    main.innerHTML = '<section class="ph grid"><div class="meta xs"><span class="mt-l">' + backBtn + '<a class="u" href="' + (slug === "etalonnage" ? "#/" : "#/photographie") + '">' + esc(sn) + "</a></span><span>" + (k >= 0 ? pad(k + 1) + " / " + pad(all.length) + ", " : "") + list.length + " " + t("images") + '</span></div><h1><span class="roll"></span></h1>' +
+      (slug === "etalonnage" ? '<p class="lead rl">' + esc(lang === "fr" ? "Images étalonnées avec Node DRT, mon plugin d’étalonnage pour DaVinci Resolve." : "Frames graded with Node DRT, my grading plugin for DaVinci Resolve.") + "</p>" : "") +
+      (pvids.length ? '<div class="pm" role="tablist"><button type="button" role="tab" data-m="photos">' + t("photo") + "<sup>" + list.length + '</sup></button><button type="button" role="tab" data-m="videos">' + t("video") + "<sup>" + pvids.length + "</sup></button></div>" : "") +
+      '<div class="vue xs" role="tablist"><button type="button" role="tab" data-v="grille">' + t("vGrid") + '</button><button type="button" role="tab" data-v="expo">' + t("vExpo") + '</button><label class="zm" title="' + t("size") + '"><span aria-hidden="true">−</span><input type="range" min="0.55" max="1.6" step="0.01" value="' + zoom + '" aria-label="' + t("size") + '"><span aria-hidden="true">+</span></label></div>' +
       pnav(pr, nx, false) + "</section>" +
-      '<section class="gal"><div class="jw" id="jg"></div></section>' +
+      '<section class="gal"><div class="vue-f xs" role="tablist"><button type="button" role="tab" data-v="grille">' + t("vGrid") + '</button><button type="button" role="tab" data-v="expo">' + t("vExpo") + '</button><label class="zm" title="' + t("size") + '"><span aria-hidden="true">−</span><input type="range" min="0.55" max="1.6" step="0.01" value="' + zoom + '" aria-label="' + t("size") + '"><span aria-hidden="true">+</span></label></div><div class="jw" id="jg"></div></section>' +
       '<section class="s-end grid"><p class="q"><span>' + t("similar") + '</span><a class="u" href="mailto:' + MAIL + '">' + t("email") + "</a>" +
       (slug === "etalonnage" ? '<a class="u" href="https://nodedrt.github.io/NodeDRT/" target="_blank" rel="noopener">Node DRT →</a>' : "") + "</p>" +
       pnav(pr, nx, true) + "</section>";
@@ -728,32 +826,99 @@
     });
     curPrevNext = [href(pr), href(nx)];
     var el = document.getElementById("jg");
-    var opt = { target: function (vw) { return vw < 600 ? 180 : vw < 1100 ? 280 : Math.min(500, vw * 0.3); } }, pos = {};
+    var opt = { target: function (vw) { return (vw < 600 ? 240 : vw < 1100 ? 280 : Math.min(500, vw * 0.3)) * zoom; } }, pos = {};
     list.forEach(function (q, i) { pos[q.n] = i; });
     if (p.lignes) {
       var vu = {};
       opt.rows = p.lignes.map(function (r) { return r.map(function (n) { vu[pos[n]] = 1; return pos[n]; }).filter(function (x) { return x != null; }); });
       list.forEach(function (q, i) { if (!vu[i]) opt.rows.push([i]); });
+      opt.egal = !!p.egal;
     }
     if (p.coupure) { opt.breaks = {}; p.coupure.forEach(function (n) { if (pos[n] != null) opt.breaks[pos[n]] = 1; }); }
     var items = list.map(function (q, i) { return { p: q, i: i, alt: L(p.titre) + ", " + (i + 1) }; });
     var kind = (slug === "etalonnage" || (s && ["voyage", "paysage", "portrait", "vert-nature", "drone"].indexOf(s.id) >= 0)) ? "cadre" : "edito";
     var gal = el.parentNode;
+    var pmode = "photos";
+    function drawVids() {
+      gal.classList.remove("ex", "ex-cadre", "ex-edito");
+      el.innerHTML = '<div class="pvg">' + pvids.map(function (v, k) {
+        var q = parseVideo(v.lien);
+        return '<button type="button" class="pv-t fig' + (q.file ? " vert" : "") + '" data-vk="' + k + '"><div class="mask"><img loading="lazy" alt="" draggable="false" src="' + esc(q.th) + '"><span class="play">' + t("play") + "</span></div><span class=\"pv-n\">" + esc(L(v.titre).replace(L(p.titre) + ", ", "")) + "</span></button>";
+      }).join("") + "</div>";
+      observe();
+    }
     function drawG() {
+      main.querySelector(".vue").style.visibility = pmode === "videos" ? "hidden" : "";
+      var vf = main.querySelector(".vue-f"); if (vf) vf.hidden = pmode === "videos";
+      if (pmode === "videos") { drawVids(); return; }
       gal.classList.toggle("ex", vue === "expo"); gal.classList.toggle("ex-cadre", vue === "expo" && kind === "cadre"); gal.classList.toggle("ex-edito", vue === "expo" && kind === "edito");
-      if (vue === "expo") expo(el, items, kind); else justify(el, items, opt);
+      /* zoom différent de 1 : rangées recalculées (même ordre), sinon les rangées choisies à la main */
+      var o2 = opt; if ((Math.abs(zoom - 1) > 0.02 || window.innerWidth < 600) && opt.rows) { o2 = {}; for (var kk in opt) o2[kk] = opt[kk]; delete o2.rows; delete o2.egal; }
+      if (vue === "expo") expo(el, items, kind, L(p.titre)); else justify(el, items, o2);
     }
     function setVue(v, anim) {
       vue = v; try { sessionStorage.setItem("sd-vue", v); } catch (e) {}
-      main.querySelectorAll(".vue [data-v]").forEach(function (b) { b.setAttribute("aria-selected", b.dataset.v === v); });
+      main.querySelectorAll(".vue [data-v], .vue-f [data-v]").forEach(function (b) { b.setAttribute("aria-selected", b.dataset.v === v); });
       if (anim && !reduce && el.animate) {
         var o = el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, easing: "ease-in", fill: "forwards" });
         o.onfinish = function () { drawG(); o.cancel(); el.animate([{ opacity: 0, transform: "translateY(16px)" }, { opacity: 1, transform: "none" }], { duration: 700, easing: OUT }); };
       } else drawG();
     }
-    main.querySelectorAll(".vue [data-v]").forEach(function (b) { b.addEventListener("click", function () { if (vue !== b.dataset.v) setVue(b.dataset.v, true); }); });
+    main.querySelectorAll(".vue [data-v], .vue-f [data-v]").forEach(function (b) { b.addEventListener("click", function () {
+      if (vue === b.dataset.v) return;
+      var inGal = b.closest(".vue-f"), top = gal.getBoundingClientRect().top + scrollY - 80;
+      setVue(b.dataset.v, true);
+      if (inGal && scrollY > top) setTimeout(function () { window.scrollTo({ top: top, behavior: reduce ? "auto" : "smooth" }); }, 240);
+    }); });
+    /* la bascule flottante n'apparaît qu'une fois celle du titre sortie de l'écran */
+    var vfEl = main.querySelector(".vue-f"), vTop = main.querySelector(".vue");
+    if (vfEl && vTop && "IntersectionObserver" in window) {
+      var vio = new IntersectionObserver(function (es) { vfEl.classList.toggle("on", !es[0].isIntersecting); });
+      vio.observe(vTop);
+    }
     setVue(vue, false); resizers.push(drawG);
-    el.addEventListener("click", function (e) { var b = e.target.closest("[data-i]"); if (b) openLB(list, +b.dataset.i, b, L(p.titre)); });
+    var zr = 0, zt = 0;
+    /* zoom en temps réel : on recalcule la mise en page en gardant les mêmes images (pas de rechargement, pas de clignotement),
+       et la photo au centre de l'écran reste au centre */
+    function liveZoom() {
+      zr = 0;
+      gal.classList.add("live"); clearTimeout(zt); zt = setTimeout(function () { gal.classList.remove("live"); }, 400);
+      var mid = window.innerHeight / 2, anchor = null, off = 0;
+      el.querySelectorAll("[data-i]").forEach(function (b) { if (anchor) return; var r = b.getBoundingClientRect(); if (r.bottom > mid) { anchor = b.dataset.i; off = (mid - r.top) / Math.max(1, r.height); } });
+      var keep = {};
+      el.querySelectorAll("[data-i]").forEach(function (b) { var im = b.querySelector("img"); if (im) keep[b.dataset.i] = im; });
+      drawG();
+      el.querySelectorAll("[data-i]").forEach(function (b) {
+        b.classList.add("in");
+        var o = keep[b.dataset.i], n = b.querySelector("img");
+        if (o && n && o !== n) { o.removeAttribute("sizes"); n.replaceWith(o); }
+      });
+      if (anchor != null) { var nb = el.querySelector('[data-i="' + anchor + '"]'); if (nb) { var r2 = nb.getBoundingClientRect(); window.scrollBy(0, r2.top + off * r2.height - mid); } }
+    }
+    main.querySelectorAll(".zm input").forEach(function (inp) {
+      inp.addEventListener("input", function () {
+        zoom = +inp.value; try { sessionStorage.setItem("sd-zoom", zoom); } catch (e) {}
+        main.querySelectorAll(".zm input").forEach(function (o) { if (o !== inp) o.value = zoom; });
+        if (!zr) zr = requestAnimationFrame(liveZoom);
+      });
+      inp.addEventListener("dblclick", function () { inp.value = 1; inp.dispatchEvent(new Event("input")); });
+    });
+    el.addEventListener("click", function (e) {
+      var v = e.target.closest("[data-vk]");
+      if (v) { var vv = pvids[+v.dataset.vk]; openVideo(parseVideo(vv.lien).em, L(vv.titre), v); return; }
+      var b = e.target.closest("[data-i]"); if (b) openLB(list, +b.dataset.i, b, L(p.titre));
+    });
+    function setPm(m, anim) {
+      pmode = m; try { sessionStorage.setItem("sd-pm-" + slug, m); } catch (e) {}
+      main.querySelectorAll(".pm [data-m]").forEach(function (b) { b.setAttribute("aria-selected", b.dataset.m === m); });
+      if (anim && !reduce && el.animate) {
+        var o = el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, easing: "ease-in", fill: "forwards" });
+        o.onfinish = function () { drawG(); o.cancel(); el.animate([{ opacity: 0, transform: "translateY(16px)" }, { opacity: 1, transform: "none" }], { duration: 700, easing: OUT }); };
+      } else drawG();
+    }
+    main.querySelectorAll(".pm [data-m]").forEach(function (b) { b.addEventListener("click", function () { if (pmode !== b.dataset.m) setPm(b.dataset.m, true); }); });
+    var pm0 = "photos"; try { pm0 = sessionStorage.getItem("sd-pm-" + slug) || "photos"; } catch (e) {}
+    if (pvids.length) setPm(pm0 === "videos" ? "videos" : "photos", false);
   }
 
   /* ---------- vidéo ---------- */
@@ -777,7 +942,7 @@
       '<section class="auth grid"><p class="rl" lang="fr">' + esc(AUTH) + "</p>" + (lang === "en" ? '<p class="tr">' + esc(AUTH_EN) + "</p>" : "") + "</section>" +
       '<section class="bio grid"><p class="rl">' + esc(t("bio")) + "</p></section>" +
       '<section class="cols grid"><div><h3>' + t("services") + "</h3><ul>" + t("svc").map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></div>" +
-      "<div><h3>" + t("tools") + '</h3><ul><li><a class="u" href="https://nodedrt.github.io/NodeDRT/" target="_blank" rel="noopener">Node DRT, DaVinci Resolve plugin</a></li><li><a class="u" href="#/etalonnage">Lumina, DCTL</a></li></ul></div>' +
+      "<div><h3>" + t("tools") + '</h3><ul><li><a class="u" href="https://nodedrt.github.io/NodeDRT/" target="_blank" rel="noopener">Node DRT, DaVinci Resolve plugin</a></li><li><a class="u" href="#/etalonnage">' + t("grade") + '</a></li></ul></div>' +
       "<div><h3>" + t("contact") + '</h3><ul><li><a class="u" href="mailto:' + MAIL + '">' + MAIL + "</a></li><li>" + TEL + "</li></ul></div></section>" +
       '<section class="after grid"><p class="row"><span>' + t("clients") + "</span><span>" + t("clientsLine") + "</span></p></section>";
   }
@@ -870,15 +1035,14 @@
   ixo.id = "ixo"; ixo.className = "ixo"; ixo.hidden = true; ixo.setAttribute("role", "dialog"); ixo.setAttribute("aria-label", "Index");
   document.body.appendChild(ixo);
   function openIxo() {
-    ixo.innerHTML = '<div class="top"><span>Index</span><button type="button" class="x">' + t("close") + "</button></div>" + mapHTML();
-    ixo.querySelectorAll(".mg").forEach(function (g, i) { g.style.setProperty("--i", i); });
-    var cur = location.hash;
-    ixo.querySelectorAll("a").forEach(function (a) { if (a.getAttribute("href") === cur) a.classList.add("cur"); });
+    ixo.innerHTML = '<div class="top"><span>Index</span><button type="button" class="x">' + t("close") + "</button></div>" + mapCards();
+    ixo.querySelectorAll(".ix-c").forEach(function (g, i) { g.style.setProperty("--i", Math.min(i, 20)); if (g.getAttribute("href") === location.hash) g.classList.add("cur"); });
+    ixo.querySelectorAll(".ix-c[data-em]").forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); closeIxo(); openVideo(a.dataset.em, a.dataset.t, a); }); });
     ixo.hidden = false; document.body.style.overflow = "hidden"; lock(true);
     requestAnimationFrame(function () { ixo.classList.add("on"); });
     ixo.querySelector(".x").focus();
   }
-  function closeIxo() { if (ixo.hidden) return; ixo.classList.remove("on"); document.body.style.overflow = ""; lock(false); setTimeout(function () { if (!ixo.classList.contains("on")) ixo.hidden = true; }, 500); }
+  function closeIxo() { if (ixo.hidden) return; pv.classList.remove("on", "ixp"); ixo.classList.remove("on"); document.body.style.overflow = ""; lock(false); setTimeout(function () { if (!ixo.classList.contains("on")) ixo.hidden = true; }, 500); }
 
   /* ---------- protection ---------- */
   document.addEventListener("contextmenu", function (e) { if (e.target.tagName === "IMG" || e.target.closest(".lb, .st-frame")) e.preventDefault(); });
@@ -927,7 +1091,7 @@
       else if (r === "etalonnage") { page = "etalonnage"; projet("etalonnage"); }
       else if (r === "info") { page = "info"; info(); }
       else { page = "404"; notFound(); }
-      navOn(); setTitle(R);
+      navOn(); setTitle(R); setTimeout(fnSync, 50);
       var back = hm && from === "projet" && scrollMem[location.hash || "#/"];
       if (hm && back == null && from === "projet") back = homeY;
       if (back) window.scrollTo(0, back); else if (!keepScroll) window.scrollTo(0, 0);
@@ -945,15 +1109,31 @@
     if (location.hash && !/^#\//.test(location.hash)) return;
     scrollMem[lastHash || "#/"] = window.scrollY;
     if (page === "home") { lastHome = lastHash || "#/"; homeY = window.scrollY; }
-    lastHash = location.hash;
+    lastHash = location.hash; navDepth++;
     render();
   });
+  /* navigation flottante : Retour et Accueil, toujours à portée dès qu'on descend dans une page */
+  var navDepth = 0;
+  var fn = document.createElement("nav"); fn.className = "fnav"; fn.setAttribute("aria-label", "Navigation");
+  fn.innerHTML = '<button type="button" class="fn-b"><span aria-hidden="true">←</span> ' + t("back") + '</button><i aria-hidden="true"></i><a class="fn-h" href="#/">' + t("goHome") + "</a>";
+  document.body.appendChild(fn);
+  fn.querySelector(".fn-b").addEventListener("click", function () { if (navDepth > 0) { navDepth -= 2; history.back(); } else location.hash = "#/"; });
+  fn.querySelector(".fn-h").addEventListener("click", function (e) {
+    e.preventDefault();
+    var h = ret && ret.h ? ret.h : "#/";
+    if (location.hash === h) window.scrollTo({ top: 0, behavior: "smooth" }); else location.hash = h;
+  });
+  function fnSync() {
+    var show = page !== "home" && window.scrollY > 260 && ixo.hidden && lb.hidden && vm.hidden;
+    fn.classList.toggle("on", show);
+  }
   var rt, lastW = window.innerWidth, lastH = window.innerHeight;
   window.addEventListener("resize", function () { if (window.innerWidth === lastW && Math.abs(window.innerHeight - lastH) < 90) return; lastW = window.innerWidth; lastH = window.innerHeight; clearTimeout(rt); rt = setTimeout(function () { resizers.forEach(function (f) { f(); }); }, 150); });
   window.addEventListener("scroll", function () {
     var past = window.scrollY > window.innerHeight * 0.8, ftv = ft.getBoundingClientRect().top < window.innerHeight;
     bar.classList.toggle("on", past && !ftv && !curPrevNext);
     var pb = main.querySelector(".pbar"); if (pb) pb.classList.toggle("on", window.scrollY > 200 && !ftv);
+    fnSync();
   }, { passive: true });
 
   chrome(); render();
