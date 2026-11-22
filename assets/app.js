@@ -600,7 +600,6 @@
         d.style.visibility = "";
         if (!same) { roll(cap.querySelector(".st-n .roll"), pad(k + 1) + " / " + pad(n), dir); roll(tt.querySelector(".roll"), it.titre, dir); }
         cap.querySelector(".st-m").textContent = it.meta;
-        if (it.video) setTimeout(function () { if (tok === me.tok && !me.dead && me.i === k && !root.classList.contains("away")) open(true); }, 650);
         var olds = [].filter.call(frame.children, function (o) { return o !== d; });
         if (reduce || !d.animate) { olds.forEach(function (o) { o.remove(); }); return; }
         if (firstShow) {
