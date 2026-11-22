@@ -945,8 +945,11 @@
       gal.classList.add("live"); clearTimeout(zt); zt = setTimeout(function () { gal.classList.remove("live"); }, 400);
       var mid = window.innerHeight / 2, anchor = null, off = 0;
       el.querySelectorAll("[data-i]").forEach(function (b) { if (anchor) return; var r = b.getBoundingClientRect(); if (r.bottom > mid) { anchor = b.dataset.i; off = (mid - r.top) / Math.max(1, r.height); } });
-      var keep = {};
-      el.querySelectorAll("[data-i]").forEach(function (b) { var im = b.querySelector("img"); if (im) keep[b.dataset.i] = im; });
+      var keep = {}, was = {}, vh = window.innerHeight, sy0 = window.scrollY;
+      el.querySelectorAll("[data-i]").forEach(function (b) {
+        var im = b.querySelector("img"); if (im) keep[b.dataset.i] = im;
+        var r = b.getBoundingClientRect(); if (r.bottom > -vh * 0.5 && r.top < vh * 1.5) was[b.dataset.i] = { x: r.left, y: r.top + sy0, w: r.width, h: r.height };
+      });
       drawG();
       el.querySelectorAll("[data-i]").forEach(function (b) {
         b.classList.add("in");
@@ -954,6 +957,20 @@
         if (o && n && o !== n) { o.removeAttribute("sizes"); n.replaceWith(o); }
       });
       if (anchor != null) { var nb = el.querySelector('[data-i="' + anchor + '"]'); if (nb) { var r2 = nb.getBoundingClientRect(); window.scrollBy(0, r2.top + off * r2.height - mid); } }
+      /* transition douce : chaque photo glisse de son ancienne place vers la nouvelle (FLIP) */
+      if (reduce || !el.animate) return;
+      var sy1 = window.scrollY;
+      el.querySelectorAll("[data-i]").forEach(function (b) {
+        var r = b.getBoundingClientRect(); if (r.bottom < -vh * 0.3 || r.top > vh * 1.3) return;
+        var o = was[b.dataset.i];
+        if (!o) { b.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 380, easing: "ease-out" }); return; }
+        var dx = o.x - r.left, dy = (o.y - sy1) - r.top, sx = o.w / Math.max(1, r.width), sy = o.h / Math.max(1, r.height);
+        if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5 && Math.abs(sx - 1) < 0.004) return;
+        b.animate([
+          { transformOrigin: "0 0", transform: "translate(" + dx + "px," + dy + "px) scale(" + sx + "," + sy + ")" },
+          { transformOrigin: "0 0", transform: "none" }
+        ], { duration: 460, easing: "cubic-bezier(.22,1,.36,1)" });
+      });
     }
     main.querySelectorAll(".zm input").forEach(function (inp) {
       inp.addEventListener("input", function () {
