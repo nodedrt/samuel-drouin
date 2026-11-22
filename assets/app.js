@@ -179,8 +179,14 @@
       items.forEach(function (it, i) { if (o.breaks && o.breaks[i] && segs[segs.length - 1].length) segs.push([]); segs[segs.length - 1].push(it); });
       segs.forEach(function (seg) {
         var row = [], sum = 0;
-        seg.forEach(function (it) { row.push(it); sum += it.p.w / it.p.h; if (sum * target + gap * (row.length - 1) >= W) { rows.push(row); row = []; sum = 0; } });
-        if (row.length) { rows.push(row); lastRows.push(rows.length - 1); }
+        seg.forEach(function (it) { row.push(it); sum += it.p.w / it.p.h; if (sum * target + gap * (row.length - 1) >= W) { row.segId = seg; rows.push(row); row = []; sum = 0; } });
+        if (row.length) {
+          /* dernière rangée trop courte : on la rééquilibre avec la précédente pour que tout remplisse la largeur */
+          if (sum * target < W * 0.75 && rows.length && rows[rows.length - 1].segId === seg) {
+            var all = rows.pop().concat(row), half = Math.ceil(all.length / 2), r1 = all.slice(0, half), r2 = all.slice(half);
+            r1.segId = seg; r2.segId = seg; rows.push(r1, r2);
+          } else { row.segId = seg; rows.push(row); lastRows.push(rows.length - 1); }
+        }
       });
     }
     el.innerHTML = rows.map(function (r, ri) {
@@ -189,7 +195,7 @@
       /* rangées égales : aucune rangée plus haute que la rangée typique (médiane) */
       if (o.rows && o.egal) {
         var hs = rows.map(function (rr) { var s2 = rr.reduce(function (x, it) { return x + it.p.w / it.p.h; }, 0); return (W - gap * (rr.length - 1)) / s2; }).sort(function (a, b) { return a - b; });
-        h = Math.min(h, hs[Math.floor((hs.length - 1) / 2)]);
+        h = Math.min(h, hs[Math.floor((hs.length - 1) / 2)] * 1.5);
       }
       if (last && o.target) h = Math.min(h, o.target(vw) * 1.15);
       if (o.maxH) h = Math.min(h, o.maxH * vh);
