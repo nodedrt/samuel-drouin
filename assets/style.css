@@ -215,13 +215,14 @@ main.fade{animation:vt-in .6s var(--out) both}
 .rw{grid-area:1/1;white-space:nowrap}
 .rw span{display:inline-block}
 .st-lg{display:flex;align-items:flex-start;gap:14px;padding:22px var(--m) 0;margin-bottom:var(--gap-y)}
-.st-leg{list-style:none;display:flex;gap:var(--g);flex:1;min-width:0;will-change:opacity,transform}
+.st-vp{flex:1;min-width:0;overflow:hidden}
+.st-leg{list-style:none;display:flex;gap:var(--g);will-change:transform}
 .lg-a{flex:none;color:var(--mute);padding:0 4px 10px;line-height:inherit;transition:color .3s,transform .4s var(--out)}
 .lg-a:hover{color:var(--tx)}
 .lg-a[data-d="-1"]:hover{transform:translateX(-3px)}
 .lg-a[data-d="1"]:hover{transform:translateX(3px)}
 .st-clock{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
-.st-leg li{flex:1 1 0;min-width:0}
+.st-leg li{flex:0 0 var(--w,16%);min-width:0}
 .st-leg button{display:block;width:100%;color:var(--mute);padding:0 0 10px;position:relative;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .4s}
 .st-leg button:hover,.st-leg button.on{color:var(--tx)}
 .st-leg i{position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--line);overflow:hidden}
@@ -229,6 +230,7 @@ main.fade{animation:vt-in .6s var(--out) both}
 @keyframes prog{to{transform:scaleX(1)}}
 @media (max-width:900px){.st-intro{text-align:left;padding-bottom:0}.st-t{grid-column:1/-1;order:-1}.st-n{grid-column:1/3}.st-m{grid-column:3/9}.st-go{grid-column:9/13}}
 @media (max-width:767px){.st-frame{height:min(122vw,calc(100svh - 300px))}.st-n{grid-column:1/2}.st-m{grid-column:2/4}.st-go{grid-column:4/5}.st-lg{gap:8px}}
+.lg-a:focus:not(:focus-visible),.st-leg button:focus:not(:focus-visible){outline:none}
 
 /* ===== index (légende des projets) ===== */
 .ix{padding-bottom:var(--gap-y)}
@@ -346,3 +348,6 @@ main.fade{animation:vt-in .6s var(--out) both}
   .ex-row.ed{display:block}.ex-e{margin-top:0!important}.ex-row.ed .ex-e+.ex-e{margin-top:48px}
 }
 .ph .pnav:not(.big){margin-top:clamp(16px,1.8vw,28px)}
+.st-i video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}
+.vm .fr.file{aspect-ratio:auto;width:auto;height:calc(100svh - 110px);max-width:100%;background:none;display:flex;justify-content:center}
+.vm .fr video{display:block;height:100%;max-width:100%;object-fit:contain;background:#000}

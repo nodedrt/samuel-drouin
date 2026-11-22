@@ -10,6 +10,7 @@
 */
 window.VIDEO_SECTIONS = [
   { id: "films", fr: "Films", en: "Films" },
+  { id: "mr-bao", fr: "Mr Bao", en: "Mr Bao" },
   { id: "concepts", fr: "Fake Ads", en: "Fake Ads", note: { fr: "Films concept réalisés et étalonnés par Samuel Drouin, non commandés par les marques citées.", en: "Spec films directed and graded by Samuel Drouin, not commissioned by the brands shown." } },
   { id: "drone", fr: "Drone", en: "Drone" },
   { id: "interviews", fr: "Interview", en: "Interview" },
@@ -17,6 +18,10 @@ window.VIDEO_SECTIONS = [
 ];
 
 window.VIDEOS = [
+  { section: "mr-bao", vedette: 4.5, titre: { fr: "Mr Bao, Crispy Chicken Bao", en: "Mr Bao, Crispy Chicken Bao" }, lien: "videos/mr-bao/crispy-chicken-bao.mp4" },
+  { section: "mr-bao", titre: { fr: "Mr Bao, Dumplings", en: "Mr Bao, Dumplings" }, lien: "videos/mr-bao/dumplings.mp4" },
+  { section: "mr-bao", titre: { fr: "Mr Bao, Teriyaki Chicken Fried Rice", en: "Mr Bao, Teriyaki Chicken Fried Rice" }, lien: "videos/mr-bao/teriyaki-fried-rice.mp4" },
+  { section: "mr-bao", titre: { fr: "Mr Bao, Dessert", en: "Mr Bao, Dessert" }, lien: "videos/mr-bao/dessert.mp4" },
   { section: "films", une: true, vedette: 1, titre: { fr: "Bande-démo", en: "Showreel" }, lien: "https://drive.google.com/file/d/16PQFUlTkXY5R09ySKLWW5eV92SCB1E9F/view" },
   { section: "films", vedette: 4, titre: { fr: "Samaya, manucure", en: "Samaya, manicure" }, lien: "https://drive.google.com/file/d/1rS2dBFF36lKrow1QVfWk04ntoTWQmaD6/view" },
   { section: "films", titre: { fr: "Samaya, massage", en: "Samaya, massage" }, lien: "https://drive.google.com/file/d/109_ZBRzkiquWfBxgOpKGFUSLyI5U25HV/view" },
