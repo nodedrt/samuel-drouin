@@ -349,7 +349,7 @@
         var cur = frame.lastElementChild;
         if (cur && Math.abs(drag.dx) > 4) { cur.style.transform = "translateX(" + (drag.dx * 0.4) + "px)"; root.classList.add("dragging"); }
       }
-      if (e.pointerType === "mouse") cursor.show(label(drag ? drag.dx : 0, e.clientX), e.clientX, e.clientY);
+      if (e.pointerType === "mouse") cursor.show(label(drag ? drag.dx : 0, e.clientX), e.clientX, e.clientY, !!(e.target.closest && e.target.closest(".st-i")));
     };
     function endDrag(cancel, x) {
       if (!drag) return;
@@ -468,16 +468,11 @@
 
   /* curseur natif (pas d'effet) */
   var cursor = (function () {
-    /* curseur discret : un point blanc et une légende fine, qui suivent la souris avec un léger retard */
+    /* curseur discret : un point et une légende fine, collés à la souris ; blancs sur l'image, noirs sur le fond */
     var el = document.createElement("div"); el.className = "st-hint"; el.setAttribute("aria-hidden", "true");
     el.innerHTML = '<i class="h-dot"></i><span class="h-t"><span></span></span>';
     document.body.appendChild(el);
-    var tx = el.querySelector(".h-t span"), x = 0, y = 0, cx = 0, cy = 0, raf = 0, on = false, cur = "";
-    function loop() {
-      cx += (x - cx) * 0.22; cy += (y - cy) * 0.22;
-      el.style.transform = "translate3d(" + cx.toFixed(1) + "px," + cy.toFixed(1) + "px,0)";
-      raf = (on || Math.abs(x - cx) + Math.abs(y - cy) > 0.3) ? requestAnimationFrame(loop) : 0;
-    }
+    var tx = el.querySelector(".h-t span"), on = false, cur = "";
     function setText(txt) {
       if (txt === cur) return; cur = txt;
       if (reduce || !tx.animate || !tx.textContent) { tx.textContent = txt; return; }
@@ -485,12 +480,12 @@
       o.onfinish = function () { tx.textContent = cur; o.cancel(); tx.animate([{ transform: "translateY(100%)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 340, easing: OUT }); };
     }
     return {
-      show: function (txt, px, py) {
+      show: function (txt, px, py, onImg) {
         if (touch) return;
-        if (!on) { cx = px; cy = py; }
-        x = px; y = py; setText(txt);
+        el.style.transform = "translate3d(" + px + "px," + py + "px,0)";
+        el.classList.toggle("dark", !onImg);
+        setText(txt);
         if (!on) { on = true; el.classList.add("on"); document.documentElement.classList.add("hint-on"); }
-        if (!raf) raf = requestAnimationFrame(loop);
       },
       hide: function () { if (!on) return; on = false; el.classList.remove("on"); document.documentElement.classList.remove("hint-on"); },
       press: function (p) { el.classList.toggle("down", !!p); }
