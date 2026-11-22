@@ -894,7 +894,7 @@
     if (slug === "etalonnage") { nx = all[0]; pr = all[all.length - 1]; }
     var sn = s ? L(s) : t("grade");
     var backBtn = '<a class="back xs" href="' + esc(ret ? ret.h : "#/") + '" data-back><span aria-hidden="true">←</span> ' + t("backHome") + "</a>";
-    main.innerHTML = '<section class="ph grid"><div class="meta xs"><span class="mt-l">' + backBtn + '<span class="u sec">' + esc(sn) + "</span></span><span>" + (k >= 0 ? '<span class="mt-k">' + pad(k + 1) + " / " + pad(all.length) + ", </span>" : "") + list.length + " " + t("images") + '</span></div><h1><span class="roll"></span></h1>' +
+    main.innerHTML = '<section class="ph grid"><div class="meta xs"><span class="mt-l">' + backBtn + '<span class="u msec">' + esc(sn) + "</span></span><span>" + (k >= 0 ? '<span class="mt-k">' + pad(k + 1) + " / " + pad(all.length) + ", </span>" : "") + list.length + " " + t("images") + '</span></div><h1><span class="roll"></span></h1>' +
       (slug === "etalonnage" ? '<p class="lead rl">' + esc(lang === "fr" ? "Images étalonnées avec Node DRT, mon plugin d’étalonnage pour DaVinci Resolve." : "Frames graded with Node DRT, my grading plugin for DaVinci Resolve.") + "</p>" : "") +
       (pvids.length ? '<div class="pm" role="tablist"><button type="button" role="tab" data-m="photos">' + t("photo") + "<sup>" + list.length + '</sup></button><button type="button" role="tab" data-m="videos">' + t("video") + "<sup>" + pvids.length + "</sup></button></div>" : "") +
       '<div class="vue xs" role="tablist"><button type="button" role="tab" data-v="grille">' + t("vGrid") + '</button><button type="button" role="tab" data-v="expo">' + t("vExpo") + '</button><span class="zw"><label class="zm" title="' + t("size") + '"><span aria-hidden="true">−</span><input type="range" min="0.55" max="1.6" step="0.01" value="' + zoom + '" aria-label="' + t("size") + '"><span aria-hidden="true">+</span></label><button type="button" class="zm-r"' + (Math.abs(zoom - 1) < 0.005 ? " data-z1" : "") + '>' + t("reset") + '</button></span></div>' +
@@ -1251,7 +1251,7 @@
     if (!vs || !vs.length) return notFound();
     sec = vsec(vs[0].section);
     var backBtn = '<a class="back xs" href="' + esc(ret ? ret.h : "#/video") + '" data-back><span aria-hidden="true">←</span> ' + t("backHome") + "</a>";
-    main.innerHTML = '<section class="ph grid"><div class="meta xs"><span class="mt-l">' + backBtn + '<span class="u sec">' + esc(sec ? L(sec) : t("video")) + "</span></span><span>" + vs.length + " " + (vs.length > 1 ? t("videos") : t("video").toLowerCase()) + '</span></div><h1><span class="roll"></span></h1></section>' +
+    main.innerHTML = '<section class="ph grid"><div class="meta xs"><span class="mt-l">' + backBtn + '<span class="u msec">' + esc(sec ? L(sec) : t("video")) + "</span></span><span>" + vs.length + " " + (vs.length > 1 ? t("videos") : t("video").toLowerCase()) + '</span></div><h1><span class="roll"></span></h1></section>' +
       '<section class="gal"><div class="jw" id="jg"></div></section>' +
       '<section class="s-end grid"><p class="q"><span>' + t("similar") + '</span><a class="u" href="mailto:' + MAIL + '">' + t("email") + "</a></p></section>";
     roll(main.querySelector(".ph h1 .roll"), title, 1);
