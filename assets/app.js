@@ -584,9 +584,8 @@
     return {
       show: function (txt, px, py) {
         if (touch) return;
-        el.style.transform = "translate3d(" + px + "px," + py + "px,0)";
+        el.style.transform = "translate3d(" + (px + 18) + "px," + (py + 20) + "px,0)";
         setText(txt);
-        el.classList.toggle("dark", lightAt(tx.parentNode.getBoundingClientRect()));
         if (!on) { on = true; el.classList.add("on"); document.documentElement.classList.add("hint-on"); }
       },
       hide: function () { if (!on) return; on = false; el.classList.remove("on"); document.documentElement.classList.remove("hint-on"); },
