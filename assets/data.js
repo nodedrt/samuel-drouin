@@ -18,11 +18,26 @@ window.SITE = {
     { projet: "villa-la-plage", img: ["immobilier/villa-la-plage/01"] },
     { projet: "portrait", img: ["portrait/20", "portrait/18"] },
     { projet: "paysage", img: ["paysage/03"] },
-    { projet: "sealife", img: ["corporate/sealife/09"] },
+    { projet: "sealife", img: ["corporate/sealife/10"] },
     { projet: "kenya-telkom", img: ["corporate/kenya-telkom/02", "corporate/kenya-telkom/03"] },
-    { projet: "vert-nature", img: ["vert-nature/02"] },
+    { projet: "vert-nature", img: ["vert-nature/08"] },
     { projet: "gamma-construction", img: ["corporate/gamma-construction/09", "corporate/gamma-construction/01"] },
-    { projet: "ciel-textile", img: ["corporate/ciel-textile/16"] }
+    { projet: "drone", img: ["drone/01"] },
+    { projet: "ciel-textile", img: ["corporate/ciel-textile/16"] },
+    { projet: "kenya-film", img: ["coulisses/26"] },
+    { projet: "ocean-villa", img: ["immobilier/ocean-villa/23"] },
+    { projet: "sasha-academy", img: ["corporate/sasha-academy/18", "corporate/sasha-academy/03"] },
+    { projet: "eclosia", img: ["evenements/09"] },
+    { projet: "le-dalblair", img: ["immobilier/le-dalblair/10"] },
+    { projet: "kfc", img: ["coulisses/35", "coulisses/36"] },
+    { projet: "exposition-port-louis", img: ["corporate/exposition-port-louis/01"] },
+    { projet: "villa-anahita", img: ["immobilier/villa-anahita/02"] },
+    { projet: "ciel-group", img: ["evenements/24"] },
+    { projet: "yesterday-rodrigues", img: ["immobilier/yesterday-rodrigues/05"] },
+    { projet: "ome-fam-uni", img: [] },
+    { projet: "villa-horizon", img: ["immobilier/villa-horizon/15"] },
+    { projet: "bluemoon-villa", img: ["immobilier/bluemoon-villa/03"] },
+    { projet: "details", img: ["immobilier/details/24", "immobilier/details/08"] }
   ],
 
   // Les sections, comme sur le Google Site (l'immobilier en dernier).
@@ -30,6 +45,7 @@ window.SITE = {
     { id: "voyage", fr: "Voyage", en: "Travel", projets: ["voyage"] },
     { id: "paysage", fr: "Paysage", en: "Landscape", projets: ["paysage"] },
     { id: "vert-nature", fr: "Vert nature", en: "Green nature", projets: ["vert-nature"] },
+    { id: "drone", fr: "Drone", en: "Drone", projets: ["drone"] },
     { id: "portrait", fr: "Portrait", en: "Portrait", projets: ["portrait"] },
     { id: "coulisses", fr: "Coulisses de tournage", en: "Behind the scenes", projets: ["ferney", "kenya-film", "kfc"] },
     { id: "kenya-telkom", fr: "Kenya Telkom", en: "Kenya Telkom", projets: ["kenya-telkom"] },
@@ -39,20 +55,21 @@ window.SITE = {
     { id: "sasha-academy", fr: "Sasha Academy", en: "Sasha Academy", projets: ["sasha-academy"] },
     { id: "associations", fr: "Associations", en: "Associations", projets: ["eclosia", "ciel-group", "ome-fam-uni"] },
     { id: "immobilier", fr: "Immobilier", en: "Real estate",
-      projets: ["villa-la-plage", "ocean-villa", "villa-anahita", "le-dalblair", "yesterday-rodrigues", "villa-horizon", "west-island", "bluemoon-villa", "details", "drone-paletuviers"] }
+      projets: ["villa-la-plage", "ocean-villa", "villa-anahita", "le-dalblair", "yesterday-rodrigues", "villa-horizon", "bluemoon-villa", "details"] }
   ],
 
   projets: {
-    "paysage": { titre: { fr: "Paysage", en: "Landscape" }, dossier: "paysage", couverture: "01" },
-    "vert-nature": { titre: { fr: "Vert nature", en: "Green nature" }, dossier: "vert-nature", couverture: "02" },
+    "paysage": { titre: { fr: "Paysage", en: "Landscape" }, dossier: "paysage", couverture: "03", lignes: [["03", "02"], ["05", "10"], ["04", "08", "06"], ["07", "11"]] },
+    "vert-nature": { titre: { fr: "Vert nature", en: "Green nature" }, dossier: "vert-nature", couverture: "08" },
+    "drone": { titre: { fr: "Drone", en: "Drone" }, dossier: "drone", couverture: "01" },
     "ciel-textile": { titre: "Ciel Textile", dossier: "corporate/ciel-textile", couverture: "16" },
     "gamma-construction": { titre: { fr: "Gamma Construction, chantier", en: "Gamma Construction, site" }, dossier: "corporate/gamma-construction", couverture: "09" },
-    "sealife": { titre: "Sealife", dossier: "corporate/sealife", couverture: "09" },
+    "sealife": { titre: "Sealife", dossier: "corporate/sealife", couverture: "05" },
     "sasha-academy": { titre: "Sasha Academy", dossier: "corporate/sasha-academy", couverture: "18" },
     "kenya-telkom": { titre: { fr: "Kenya Telkom", en: "Kenya Telkom" }, dossier: "corporate/kenya-telkom", couverture: "02" },
     "exposition-port-louis": { titre: { fr: "Exposition à Port-Louis", en: "Port Louis exhibition" }, dossier: "corporate/exposition-port-louis" },
-    "portrait": { titre: "Portrait", dossier: "portrait", apercu: ["20", "18", "23", "19"] },
-    "voyage": { titre: { fr: "Voyage", en: "Travel" }, dossier: "voyage", sauf: ["35", "36"], apercu: ["32", "24", "25", "08"] },
+    "portrait": { titre: "Portrait", dossier: "portrait", coupure: ["02"], apercu: ["20", "18", "23", "19"] },
+    "voyage": { titre: { fr: "Voyage", en: "Travel" }, dossier: "voyage", apercu: ["32", "24", "25", "08"] },
     "kenya-film": { titre: { fr: "Kenya Telkom, film", en: "Kenya Telkom, film" }, dossier: "coulisses", partie: "Kenya Film Telkom", couverture: "26" },
     "ferney": { titre: { fr: "Ferney, film", en: "Ferney, film" }, dossier: "coulisses", partie: "Ferney Film", couverture: "14" },
     "kfc": { titre: { fr: "KFC, film", en: "KFC, film" }, dossier: "coulisses", partie: "KFC Film" },
@@ -64,12 +81,10 @@ window.SITE = {
     "le-dalblair": { titre: "Le Dalblair", dossier: "immobilier/le-dalblair" },
     "yesterday-rodrigues": { titre: "Yesterday Rodrigues", dossier: "immobilier/yesterday-rodrigues" },
     "villa-horizon": { titre: "Villa Horizon", dossier: "immobilier/villa-horizon", couverture: "03" },
-    "west-island": { titre: "West Island", dossier: "immobilier/west-island" },
     "villa-la-plage": { titre: "Villa La Plage", dossier: "immobilier/villa-la-plage", couverture: "01" },
     "bluemoon-villa": { titre: "Bluemoon Villa", dossier: "immobilier/bluemoon-villa" },
     "details": { titre: { fr: "Détails", en: "Details" }, dossier: "immobilier/details", couverture: "24" },
-    "drone-paletuviers": { titre: { fr: "Palétuviers, drone", en: "Mangroves, drone" }, dossier: "immobilier/drone-paletuviers" },
-    "etalonnage": { titre: { fr: "Étalonnage, DCTL Lumina", en: "Colour grading, Lumina DCTL" }, dossier: "etalonnage-dctl-lumina", sauf: ["01"], couverture: "09" }
+    "etalonnage": { titre: { fr: "Étalonnage, DCTL Lumina", en: "Colour grading, Lumina DCTL" }, dossier: "etalonnage-dctl-lumina", couverture: "09" }
   },
 
   // Photos de l'accueil d'origine (sans les affiches ni les collages), pour la visionneuse de l'accueil.
