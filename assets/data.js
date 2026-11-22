@@ -20,6 +20,7 @@ window.SITE = {
     { projet: "voyage", img: ["voyage/40"] },
     { projet: "ocean-villa", img: ["immobilier/ocean-villa/23"] },
     { projet: "mr-bao", img: ["mr-bao/01"] },
+    { projet: "samaya", img: ["samaya/01", "samaya/16"] },
     { projet: "sealife", img: ["corporate/sealife/10"] },
     { projet: "portrait", img: ["portrait/20", "portrait/18"] },
     { projet: "cafe-st-felix", img: ["cafe-st-felix/19"] },
@@ -59,6 +60,7 @@ window.SITE = {
     { id: "sealife", fr: "Sealife", en: "Sealife", projets: ["sealife"] },
     { id: "gamma", fr: "Gamma Construction", en: "Gamma Construction", projets: ["gamma-construction", "exposition-port-louis"] },
     { id: "sasha-academy", fr: "Sasha Academy", en: "Sasha Academy", projets: ["sasha-academy"] },
+    { id: "samaya", fr: "Samaya", en: "Samaya", projets: ["samaya"] },
     { id: "mr-bao", fr: "Mr Bao", en: "Mr Bao", projets: ["mr-bao"] },
     { id: "cafe-st-felix", fr: "Café St Félix", en: "Café St Félix", projets: ["cafe-st-felix"] },
     { id: "les-paletuviers", fr: "Les Palétuviers", en: "Les Palétuviers", projets: ["les-paletuviers"] },
@@ -73,6 +75,7 @@ window.SITE = {
   projets: {
     "paysage": { titre: { fr: "Paysage", en: "Landscape" }, dossier: "paysage", couverture: "03", lignes: [["03", "02"], ["05", "10"], ["04", "08", "06"], ["07", "11"]] },
     "vert-nature": { titre: { fr: "Vert nature", en: "Green nature" }, dossier: "vert-nature", couverture: "08" },
+    "samaya": { titre: "Samaya", dossier: "samaya", couverture: "01", nouveau: true, egal: true, lignes: [["01", "02"], ["03", "04", "05"], ["06", "07", "08", "09"], ["10", "11", "12"], ["13", "14", "15"], ["16", "17"], ["18", "19", "20", "21"], ["22", "23", "24"], ["25", "26"], ["27", "28", "29", "30"]] },
     "mr-bao": { titre: "Mr Bao", dossier: "mr-bao", couverture: "01", nouveau: true, egal: true, lignes: [["01", "02"], ["03", "04", "05", "06"], ["23", "09", "11", "12"], ["13", "14", "16", "17"], ["19", "20", "21", "24"]] },
     "cafe-st-felix": { titre: "Café St Félix", dossier: "cafe-st-felix", couverture: "19", nouveau: true, egal: true, lignes: [["01", "02"], ["03", "04", "05"], ["06", "07", "08", "09"], ["10", "11", "12"], ["13", "14", "15"], ["16", "17", "18"], ["19", "20"], ["21", "22", "23"]] },
     "les-paletuviers": { titre: "Les Palétuviers", dossier: "les-paletuviers", couverture: "01", nouveau: true, egal: true, lignes: [["01", "02", "03", "04"], ["05", "06"], ["07", "08", "09"], ["10", "11", "12", "13"], ["14", "15"], ["16", "17", "18", "19"], ["20", "21"], ["22", "23", "24", "25"], ["26", "27", "28", "29"], ["30", "31", "32"], ["33", "34", "35", "36"], ["37", "38"]] },
