@@ -618,3 +618,7 @@ html{touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-t
 .zm input:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 4px rgba(20,20,20,.12)}
 .ph .meta .sec{cursor:default;pointer-events:none;background:none;text-decoration:none}
 .ph .meta .sec::after,.ph .meta .sec::before{display:none}
+.lb .hint{display:none!important}
+.lb ~ .st-hint,.st-hint{z-index:200}
+.lb{cursor:pointer!important}
+@media (hover:none){.lb{cursor:auto}}

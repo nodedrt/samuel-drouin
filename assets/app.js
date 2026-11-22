@@ -1299,16 +1299,18 @@
     lbShow(i, from.querySelector(".mask"));
     lb.querySelector(".lx").focus();
   }
-  function closeLB() { if (lb.hidden) return; lb.classList.remove("on"); document.body.style.overflow = ""; lock(false); setTimeout(function () { if (!lb.classList.contains("on")) lb.hidden = true; }, 450); if (lbs.from && lbs.from.isConnected) lbs.from.focus({ preventScroll: true }); }
+  function closeLB() { if (lb.hidden) return; cursor.hide(); lb.classList.remove("on"); document.body.style.overflow = ""; lock(false); setTimeout(function () { if (!lb.classList.contains("on")) lb.hidden = true; }, 450); if (lbs.from && lbs.from.isConnected) lbs.from.focus({ preventScroll: true }); }
   lb.addEventListener("click", function (e) {
     if (e.target.closest(".lx")) return closeLB();
     if (e.target.closest(".top")) return;
     lbShow(lbs.i + (e.clientX < window.innerWidth / 2 ? -1 : 1));
   });
+  /* même légende qu'à l'accueil : elle suit la souris */
   lb.addEventListener("mousemove", function (e) {
-    hint.style.left = e.clientX + "px"; hint.style.top = e.clientY + "px";
-    hint.textContent = e.target.closest(".top") ? "" : (e.clientX < window.innerWidth / 2 ? t("prev") : t("nextShort"));
+    if (e.target.closest(".top")) { cursor.hide(); return; }
+    cursor.show(e.clientX < window.innerWidth / 2 ? "← " + t("prevImg") : t("nextImg") + " →", e.clientX, e.clientY);
   });
+  lb.addEventListener("mouseleave", function () { cursor.hide(); });
   var sx = null;
   lb.addEventListener("touchstart", function (e) { sx = e.touches[0].clientX; }, { passive: true });
   lb.addEventListener("touchend", function (e) { if (sx === null) return; var dx = e.changedTouches[0].clientX - sx; sx = null; if (Math.abs(dx) > 45) lbShow(lbs.i + (dx < 0 ? 1 : -1)); });
