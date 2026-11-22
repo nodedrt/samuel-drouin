@@ -647,11 +647,10 @@ html{touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-t
 /* ===================== AMBIANCES V1 / V2 / V3 =====================
    V1 Clair : le site d'origine (blanc cassé chaud, mur taupe).
    V2 Basalte : brun-noir chaud de la pierre volcanique de Maurice, comme une salle de projection.
-   V3 Lagon : un autre modèle — vert lagon profond, titres en serif élégante (Cormorant Garamond),
-      touches de laiton ; inspiré des grandes maisons d'hôtellerie de luxe, très flatteur pour les images tropicales. */
+   V3 Sable : beige sable clair et lumineux, texte encre, même typo que V1. */
 :root{--wall:#E7E5E0;--band:#F4F4F1;--glass:rgba(247,247,245,.97);--glass2:rgba(247,247,245,.9);--dim:#CBCBC6;--dim2:#BDBDB8;--lbg:var(--bg);--acc:var(--tx)}
 html[data-th=v2]{--bg:#1A1917;--surf:#24221F;--tx:#ECE8E0;--mute:#9A958C;--line:rgba(236,232,224,.13);--wall:#24221F;--band:#201E1B;--glass:rgba(26,25,23,.93);--glass2:rgba(32,30,27,.9);--dim:#4A4741;--dim2:#57534C;--lbg:#0C0B0A;color-scheme:dark}
-html[data-th=v3]{--bg:#0F2B27;--surf:#143630;--tx:#F1EBDF;--mute:#A3B5AD;--line:rgba(241,235,223,.15);--wall:#0B2420;--band:#123430;--glass:rgba(15,43,39,.94);--glass2:rgba(20,54,48,.92);--dim:#3E6159;--dim2:#4B6E66;--lbg:#061613;--acc:#D6B27A;color-scheme:dark}
+html[data-th=v3]{--bg:#EAE3D6;--surf:#DFD6C6;--tx:#1E1B16;--mute:#7A7164;--line:rgba(30,27,22,.14);--wall:#E0D7C7;--band:#E5DDCF;--glass:rgba(234,227,214,.95);--glass2:rgba(238,232,221,.92);--dim:#C2B8A6;--dim2:#B4A996;--lbg:#1E1B16;--acc:#1E1B16}
 html[data-th] .hd{background:var(--glass)}
 html[data-th] .gal:not(.ex),html[data-th] .gal.ex{background:var(--wall)}
 html[data-th] .ph .meta::before{background:var(--band);border-bottom-color:var(--line)}
@@ -670,25 +669,13 @@ html[data-th] .ex-fr{box-shadow:0 0 0 1px rgba(255,255,255,.07),0 2px 3px rgba(0
 html[data-th] .ex-fl{box-shadow:0 0 0 1px rgba(255,255,255,.06),0 18px 30px -12px rgba(0,0,0,.7)}
 html[data-th] .st-hint{background:rgba(236,232,224,.94);color:#141414}
 html[data-th] .ft{border-top-color:var(--line)}
-/* --- V3 Lagon : le modèle à part --- */
-html[data-th=v3] .st-hint{background:var(--acc);color:#10231F}
-html[data-th=v3] .mode,html[data-th=v3] .ph h1,html[data-th=v3] .st-t,html[data-th=v3] .pnav b,html[data-th=v3] .s-end .nx b,html[data-th=v3] .ixo h3,html[data-th=v3] .xb-h,html[data-th=v3] .ix-h,html[data-th=v3] .cn-h,html[data-th=v3] .menu .big,html[data-th=v3] .ft a.big,html[data-th=v3] .pm,html[data-th=v3] .auth p,html[data-th=v3] .ix-tx b{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;letter-spacing:-.005em}
-html[data-th=v3] .mode{font-size:clamp(50px,7vw,126px);line-height:.95}
-html[data-th=v3] .ph h1{font-size:clamp(42px,5.4vw,96px);line-height:1.02}
-html[data-th=v3] .st-t{font-size:clamp(34px,4.8vw,82px)}
-html[data-th=v3] .mode a[aria-selected="true"],html[data-th=v3] .pm button[aria-selected="true"]{font-style:italic}
-html[data-th=v3] .ix-tx b{font-size:clamp(19px,1.5vw,25px)}
-html[data-th=v3] .hd nav a.on,html[data-th=v3] .hd nav a[aria-current],html[data-th=v3] .u.on{border-color:var(--acc)}
-html[data-th=v3] .u::after{background:var(--acc)}
-html[data-th=v3] a:hover{color:var(--acc)}
-html[data-th=v3] .th button[aria-pressed="true"]{color:var(--acc)}
-html[data-th=v3] .zm input::-webkit-slider-thumb{background:var(--acc)}
-html[data-th=v3] .zm input::-moz-range-thumb{background:var(--acc)}
-html[data-th=v3] .zm input::-webkit-slider-runnable-track{background:rgba(241,235,223,.5)}
-html[data-th=v3] .ix-tx b i,html[data-th=v3] .ixo .ix-tx b i{color:var(--acc);font-style:italic}
-html[data-th=v3] .vue-f button[aria-selected="true"],html[data-th=v3] .mb-c{background:var(--acc);color:#10231F}
-html[data-th=v3] .ex-lab b{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.25em;font-weight:500;font-style:italic}
-html[data-th=v3] .ex-fr{box-shadow:0 0 0 1px rgba(214,178,122,.28),0 2px 3px rgba(0,0,0,.5),6px 20px 34px -12px rgba(0,0,0,.6)}
+/* --- V3 Sable : clair, chaud et lumineux, comme le sable fin de Maurice ; même typo que V1 --- */
+html[data-th=v3] .ex-wall::before{display:block;opacity:.55}
+html[data-th=v3] .ex-fr{box-shadow:0 1px 1px rgba(40,30,15,.22),2px 4px 6px -2px rgba(40,30,15,.18),5px 16px 24px -10px rgba(40,30,15,.28),10px 38px 60px -26px rgba(40,30,15,.26)}
+html[data-th=v3] .ex-fl{box-shadow:0 0 0 1px rgba(40,30,15,.05),0 2px 3px rgba(40,30,15,.14),0 18px 28px -12px rgba(40,30,15,.28)}
+html[data-th=v3] .st-hint{background:rgba(30,27,22,.9);color:#F3EEE5}
+html[data-th=v3] .ft{border-top-color:var(--tx)}
+@media (hover:none),(max-width:1024px){html[data-th=v3] .ex-fr{box-shadow:0 1px 1px rgba(40,30,15,.2),3px 12px 20px -10px rgba(40,30,15,.28)}}
 html.thx,html.thx body,html.thx .hd,html.thx .gal,html.thx .ph .meta::before,html.thx .ixo,html.thx .fnav{transition:background-color .45s ease,color .45s ease}
 /* le choix d'ambiance, juste après le nom */
 .whw{grid-column:1/4;display:flex;align-items:baseline;gap:clamp(18px,1.8vw,30px);min-width:0}

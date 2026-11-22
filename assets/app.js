@@ -214,7 +214,7 @@
   var hd = document.getElementById("hd"), main = document.getElementById("main"), ft = document.getElementById("contact"), bar = document.getElementById("bar"), menu = document.getElementById("menu");
   function chrome() {
     document.documentElement.lang = lang;
-    var th = document.documentElement.getAttribute("data-th") || "v1", TH = { v1: lang === "fr" ? "Clair" : "Light", v2: lang === "fr" ? "Basalte" : "Basalt", v3: lang === "fr" ? "Lagon" : "Lagoon" };
+    var th = document.documentElement.getAttribute("data-th") || "v1", TH = { v1: lang === "fr" ? "Clair" : "Light", v2: lang === "fr" ? "Basalte" : "Basalt", v3: lang === "fr" ? "Sable" : "Sand" };
     hd.innerHTML = '<span class="whw intro-hd"><a class="who" href="#/">' + t("who") + '</a><span class="th" role="group" aria-label="' + (lang === "fr" ? "Ambiance du site" : "Site mood") + '">' +
       ["v1", "v2", "v3"].map(function (k) { return '<button type="button" data-th="' + k + '" title="' + TH[k] + '" aria-pressed="' + (k === th) + '">' + k.toUpperCase() + "</button>"; }).join("") + '</span></span><span class="loc intro-hd">' + esc(t("role")) + "</span>" +
       '<nav class="intro-hd" aria-label="Navigation"><button type="button" class="u ixb" data-ixo>Index,</button> <a class="u" data-nav="photographie" href="#/photographie">' + t("photo") + ',</a> <a class="u" data-nav="video" href="#/video">' + t("video") + ',</a> ' +
