@@ -13,11 +13,13 @@ window.VIDEO_SECTIONS = [
   { id: "films", fr: "Films de marque", en: "Brand films" },
   { id: "contenu", fr: "Réseaux sociaux", en: "Social media", note: { fr: "Formats courts et verticaux pour Instagram et TikTok.", en: "Short vertical formats for Instagram and TikTok." } },
   { id: "concepts", fr: "Fake Ads", en: "Fake Ads", note: { fr: "Films concept réalisés et étalonnés par Samuel Drouin, non commandés par les marques citées.", en: "Spec films directed and graded by Samuel Drouin, not commissioned by the brands shown." } },
+  { id: "creations", fr: "Créations", en: "Personal work", note: { fr: "Films personnels, sans commande.", en: "Personal films, not commissioned." } },
   { id: "drone", fr: "Drone", en: "Drone" },
   { id: "interviews", fr: "Interviews", en: "Interviews" }
 ];
 
 window.VIDEOS = [
+  { vedette: 11, section: "creations", format: "h", titre: { fr: "Lumière", en: "Light" }, duree: 103.6, lien: "videos/creations/lumiere.mp4" },
   { vedette: 8, section: "bande-demo", une: true, titre: { fr: "Bande-démo", en: "Showreel" }, lien: "https://drive.google.com/file/d/16PQFUlTkXY5R09ySKLWW5eV92SCB1E9F/view" },
   { vedette: 1, section: "films", projet: "les-paletuviers", ambiance: true, format: "v", titre: { fr: "Les Palétuviers", en: "Les Palétuviers" }, chap: { fr: "I. Le lac", en: "I. The lake" }, duree: 30.3, lien: "videos/les-paletuviers/film-1.mp4" },
   { section: "films", projet: "les-paletuviers", format: "v", titre: { fr: "Les Palétuviers, II. La mangrove", en: "Les Palétuviers, II. The mangrove" }, chap: { fr: "II. La mangrove", en: "II. The mangrove" }, duree: 21.4, lien: "videos/les-paletuviers/film-2.mp4" },
@@ -38,8 +40,6 @@ window.VIDEOS = [
   { vedette: 2, section: "concepts", titre: { fr: "Gucci Flora", en: "Gucci Flora" }, lien: "https://youtu.be/j_BfIGbbTws" },
   { section: "concepts", titre: { fr: "San Pellegrino", en: "San Pellegrino" }, lien: "https://youtu.be/4DG1AfIPeeo" },
   { section: "concepts", titre: { fr: "Brio, citron et menthe", en: "Brio, lemon and mint" }, lien: "https://youtu.be/FhllkeRPY00" },
-  { vedette: 5, section: "drone", titre: { fr: "Chiroulet, Pyrénées", en: "Chiroulet, Pyrenees" }, lien: "videos/chiroulet.mp4" },
-  { section: "drone", titre: { fr: "Le Chiroulet, France", en: "Le Chiroulet, France" }, lien: "https://youtu.be/jnvMcSBXid0" },
   { vedette: 10, section: "drone", titre: { fr: "Après-midi, Hautacam", en: "Afternoon, Hautacam" }, lien: "https://youtu.be/QzYLXv8_BjQ" },
   { section: "interviews", projet: "ecole-de-l-ouest", titre: { fr: "École de l’Ouest, I", en: "École de l’Ouest, I" }, lien: "https://youtu.be/UPFtghfB5oE" },
   { vedette: 7, section: "interviews", projet: "ecole-de-l-ouest", titre: { fr: "École de l’Ouest, II", en: "École de l’Ouest, II" }, lien: "https://youtu.be/ichzVg8sMu4" },

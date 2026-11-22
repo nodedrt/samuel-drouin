@@ -737,3 +737,22 @@ html[data-th=v2] .ex-wall::before{display:block;opacity:1;width:min(1000px,92%);
 .hero + .st{margin-top:clamp(28px,5vh,64px)}
 @media (max-width:767px){.hero{height:56.25vw;--side:0px}.hr-l{font-size:11px}.hr-l{bottom:10px;max-width:52%}.hr-p{bottom:15px}.hr-p i{width:12px}.hr-d{display:none}}
 @media (prefers-reduced-motion:reduce){.hr-v{clip-path:none;transition:none}.hr-v video.z,.hr-d i{animation:none}.hero{animation:none}}
+
+/* lecteur de films horizontaux (fichiers 16:9) : même cadre que les vidéos intégrées */
+.cine.hz .cn-frame{height:auto;aspect-ratio:16/9;width:min(calc(100% - 2 * clamp(12px,1.6vw,28px)),calc((100svh - 49px - 2 * clamp(12px,2vh,24px)) * 16 / 9))}
+.cine.hz .cn-frame video{object-fit:contain}
+.cine.hz .cn-th{aspect-ratio:16/9}
+@media (max-width:899px){.cine.hz .cn-frame{width:100%;height:auto;aspect-ratio:16/9}}
+.hr-b{position:absolute;z-index:3;left:calc(var(--side) + var(--pad,20px));top:18px;padding:7px 12px;border-radius:99px;background:rgba(13,12,11,.35);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#F3EFE8;font-size:var(--t-xs,12px);text-decoration:none;opacity:0;transition:opacity 1.2s ease .6s,background .3s}
+.hero.open .hr-b{opacity:1}.hr-b:hover{background:rgba(13,12,11,.6)}
+@media (max-width:767px){.hr-b{top:10px;padding:6px 10px}}
+@media (prefers-reduced-motion:reduce){.hr-b{opacity:1}}
+/* flèche vers le bas de l'ouverture vidéo */
+.hero .hr-d{bottom:clamp(16px,3vh,34px);gap:0;padding:10px;width:56px;height:56px;justify-content:center;border-radius:50%;background:rgba(13,12,11,.18);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(243,239,232,.35)}
+.hero .hr-d svg{width:26px;height:26px;fill:none;stroke:#F3EFE8;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;animation:hrA 2.4s ease-in-out infinite}
+@keyframes hrA{0%,100%{transform:translateY(-2px)}50%{transform:translateY(4px)}}
+.hero.open .hr-d.gone{opacity:0;pointer-events:none;transition:opacity .5s ease}
+.hero .hr-d:hover{border-color:#F3EFE8;background:rgba(13,12,11,.3)}
+@media (max-width:767px){.hero .hr-d{display:flex;width:40px;height:40px;bottom:10px}.hero .hr-d svg{width:20px;height:20px}.hr-l{max-width:38%}}
+@media (prefers-reduced-motion:reduce){.hero .hr-d svg{animation:none}}
+.hero.rdy .hr-d{transition:opacity .5s ease,border-color .3s,background .3s}

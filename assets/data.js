@@ -82,7 +82,7 @@ window.SITE = {
   ],
 
   projets: {
-    "paysage": { titre: { fr: "Paysage", en: "Landscape" }, dossier: "paysage", couverture: "03", lignes: [["03", "02"], ["05", "10"], ["04", "08", "06"], ["07", "11"]] },
+    "paysage": { titre: { fr: "Paysage", en: "Landscape" }, dossier: "paysage", couverture: "03", lignes: [["03", "02"], ["05", "10"], ["04", "08", "06"], ["07", "11"], ["12", "13"], ["14", "15"]] },
     "vert-nature": { titre: { fr: "Vert nature", en: "Green nature" }, dossier: "vert-nature", couverture: "08" },
     "the-hive": { titre: "The Hive", dossier: "the-hive", couverture: "04", nouveau: true, egal: true, lignes: [["01", "03"], ["04", "05", "06"], ["07", "08"], ["09", "11", "14"], ["15", "16"], ["20", "21", "22"]] },
     "samaya": { titre: "Samaya", dossier: "samaya", couverture: "01", nouveau: true, egal: true, lignes: [["01", "02"], ["03", "04", "05"], ["06", "07", "08", "09"], ["10", "11", "12"], ["13", "14", "15"], ["16", "17"], ["18", "19", "20", "21"], ["22", "23", "24"], ["25", "26"], ["27", "28", "29", "30"]] },

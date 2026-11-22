@@ -370,16 +370,18 @@
     var ex = main.querySelector(".hero");
     if (mode !== "video") { if (heroOff) { heroOff(); heroOff = null; } if (ex) ex.remove(); return; }
     var st0 = main.querySelector(".st"); if (ex || !st0) return;
-    var N = 9, XF = 1.8, big = window.innerWidth * (window.devicePixelRatio || 1) > 2200;
-    var src = function (i) { return "videos/hero/" + pad(i + 1) + (big ? "-1440" : "") + ".mp4"; };
+    var N = 5, FIRST = 5, XF = 1.8, big = window.innerWidth * (window.devicePixelRatio || 1) > 2200;
+    var src = function (i) { return "videos/hero/" + pad(i + FIRST) + (big ? "-1440" : "") + ".mp4"; };
     var h = document.createElement("section"); h.className = "hero";
     h.setAttribute("aria-label", lang === "fr" ? "Extraits de films" : "Film excerpts");
     var segs = ""; for (var s = 0; s < N; s++) segs += "<i><b></b></i>";
     h.innerHTML = '<div class="hr-v"><video muted playsinline preload="auto" poster="videos/hero/poster.jpg" aria-hidden="true"></video><video muted playsinline preload="auto" aria-hidden="true"></video></div>' +
+      '<a class="hr-b" href="#/photographie">← ' + (lang === "fr" ? "Accueil" : "Home") + "</a>" +
       '<p class="hr-l">' + (lang === "fr" ? "Images en mouvement" : "Moving pictures") + "</p>" +
       '<div class="hr-p" aria-hidden="true">' + segs + "</div>" +
-      '<button type="button" class="hr-d" aria-label="' + (lang === "fr" ? "Voir les films" : "See the films") + '"><span>' + (lang === "fr" ? "Les films" : "The films") + "</span><i></i></button>";
+      '<button type="button" class="hr-d" aria-label="' + (lang === "fr" ? "Voir les films" : "See the films") + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg></button>';
     st0.parentNode.insertBefore(h, st0);
+    var hd0 = document.getElementById("hd"); if (hd0) h.style.marginTop = Math.round(hd0.getBoundingClientRect().height) + "px";
     var vs = h.querySelectorAll("video"), segEl = h.querySelectorAll(".hr-p i"), cur = 0, k = 0, dead = false, vis = true, crossing = false;
     function load(v, i) { v.src = src(i); v.load(); }
     function play(v) { if (!vis || document.hidden) return; var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); }
@@ -409,7 +411,10 @@
     if (io) io.observe(h);
     var onVis = function () { if (document.hidden) vs.forEach(function (v) { v.pause(); }); else play(vs[cur]); };
     document.addEventListener("visibilitychange", onVis);
-    heroOff = function () { dead = true; if (io) io.disconnect(); document.removeEventListener("visibilitychange", onVis); vs.forEach(function (v) { v.pause(); v.removeAttribute("src"); v.load(); }); };
+    /* flèche vers le bas : elle s'efface dès qu'on commence à descendre, revient en haut de page */
+    var hd = h.querySelector(".hr-d"), onSc = function () { hd.classList.toggle("gone", window.scrollY > 30); };
+    window.addEventListener("scroll", onSc, { passive: true }); onSc(); setTimeout(function () { h.classList.add("rdy"); }, 3400);
+    heroOff = function () { dead = true; window.removeEventListener("scroll", onSc); if (io) io.disconnect(); document.removeEventListener("visibilitychange", onVis); vs.forEach(function (v) { v.pause(); v.removeAttribute("src"); v.load(); }); };
   }
   /* changer de mode : seuls la vitrine et l'index changent */
   function setMode(m) {
@@ -1224,7 +1229,8 @@
     function nm(v) { if (v.chap) return L(v.chap); var s = L(v.titre), r = s.replace(title + ", ", ""); if (r === s) return s; return /^[IVX]+$/.test(r) ? (lang === "fr" ? "Partie " : "Part ") + r : cCap(r); }
     function th(v) { var q = parseVideo(v.lien); return q.file ? q.th : (q.th2 || q.th); }
     var p0 = th(CH[0]), cnt = CH.length + " " + (isFilm ? t("chapters") : CH.length > 1 ? t("videos") : t("video").toLowerCase()) + (tot && !emb ? ", " + cFmt(tot) : "");
-    host.innerHTML = '<div class="cine' + (emb ? " emb" : "") + '" data-st="play" tabindex="-1">' +
+    var hz = !emb && CH.every(function (v) { return v.format === "h"; });
+    host.innerHTML = '<div class="cine' + (emb ? " emb" : "") + (hz ? " hz" : "") + '" data-st="play" tabindex="-1">' +
       '<div class="cn-stage"><div class="cn-bg" style="background-image:url(\'' + esc(cAbs(p0)) + '\')"></div>' +
       '<div class="cn-frame">' + (emb ? "" : '<video playsinline preload="auto" disablepictureinpicture poster="' + esc(p0) + '"></video>' +
         '<button type="button" class="cn-go"><span class="cn-pi"></span><span class="cn-gl"></span><small></small></button>' +
