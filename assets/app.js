@@ -380,7 +380,7 @@
       var sum = list.reduce(function (a, x) { return a + x.ar; }, 0), h = Math.min(H, (W - gap * (list.length - 1)) / sum);
       var d = document.createElement("div"); d.className = "st-l";
       d.innerHTML = list.map(function (x) {
-        var im = x.p ? '<img draggable="false" alt="' + esc(it.titre) + '" src="' + esc(src(x.p)) + '">' :
+        var im = x.p ? '<img draggable="false" data-c="' + esc(x.p.f + "/" + x.p.n) + '" alt="' + esc(it.titre) + '" src="' + esc(src(x.p)) + '">' :
           '<img draggable="false" alt="" src="' + esc(it.th || "") + '"' + (it.th2 ? ' data-fb="' + esc(it.th2) + '"' : "") + ">";
         return '<div class="st-i" style="width:' + (h * x.ar).toFixed(1) + "px;height:" + h.toFixed(1) + 'px"><div class="dr">' + im + "</div>" + (it.video ? '<span class="play">' + t("play") + "</span>" : "") + "</div>";
       }).join("");
@@ -470,6 +470,13 @@
   /* clarté de la photo sous la légende : une petite carte 24×24 par image, calculée une fois */
   function lumMap(im) {
     if (im._lum !== undefined) return im._lum;
+    /* carte précalculée (fonctionne aussi en ouvrant le site depuis le Mac) */
+    var pre = window.CLARTE && im.dataset.c && window.CLARTE[im.dataset.c];
+    if (pre) {
+      var g = new Float32Array(576);
+      for (var v = 0; v < 24; v++) for (var u = 0; u < 24; u++) g[v * 24 + u] = parseInt(pre.charAt(Math.floor(v / 3) * 8 + Math.floor(u / 3)), 16) / 15;
+      return (im._lum = g);
+    }
     im._lum = null;
     try {
       if (!im.complete || !im.naturalWidth) { im._lum = undefined; return null; }
