@@ -36,7 +36,7 @@ window.SITE = {
     { projet: "yesterday-rodrigues", img: ["immobilier/yesterday-rodrigues/05"] },
     { projet: "ome-fam-uni", img: [] },
     { projet: "villa-horizon", img: ["immobilier/villa-horizon/15"] },
-    { projet: "bluemoon-villa", img: ["immobilier/bluemoon-villa/03"] },
+    { projet: "bluemoon-villa", img: ["immobilier/bluemoon-villa/05"] },
     { projet: "details", img: ["immobilier/details/24", "immobilier/details/08"] }
   ],
 
@@ -61,7 +61,7 @@ window.SITE = {
   projets: {
     "paysage": { titre: { fr: "Paysage", en: "Landscape" }, dossier: "paysage", couverture: "03", lignes: [["03", "02"], ["05", "10"], ["04", "08", "06"], ["07", "11"]] },
     "vert-nature": { titre: { fr: "Vert nature", en: "Green nature" }, dossier: "vert-nature", couverture: "08" },
-    "drone": { titre: { fr: "Drone", en: "Drone" }, dossier: "drone", couverture: "01" },
+    "drone": { titre: { fr: "Drone", en: "Drone" }, dossier: "drone", couverture: "01", lignes: [["04", "01"], ["13", "09"], ["08", "03"], ["02", "12"], ["10", "05"], ["06", "07"], ["16", "11", "19"], ["15", "17", "18"]] },
     "ciel-textile": { titre: "Ciel Textile", dossier: "corporate/ciel-textile", couverture: "16" },
     "gamma-construction": { titre: { fr: "Gamma Construction, chantier", en: "Gamma Construction, site" }, dossier: "corporate/gamma-construction", couverture: "09" },
     "sealife": { titre: "Sealife", dossier: "corporate/sealife", couverture: "05" },
@@ -82,7 +82,7 @@ window.SITE = {
     "yesterday-rodrigues": { titre: "Yesterday Rodrigues", dossier: "immobilier/yesterday-rodrigues" },
     "villa-horizon": { titre: "Villa Horizon", dossier: "immobilier/villa-horizon", couverture: "03" },
     "villa-la-plage": { titre: "Villa La Plage", dossier: "immobilier/villa-la-plage", couverture: "01" },
-    "bluemoon-villa": { titre: "Bluemoon Villa", dossier: "immobilier/bluemoon-villa" },
+    "bluemoon-villa": { titre: "Bluemoon Villa", dossier: "immobilier/bluemoon-villa", couverture: "05" },
     "details": { titre: { fr: "Détails", en: "Details" }, dossier: "immobilier/details", couverture: "24" },
     "etalonnage": { titre: { fr: "Étalonnage, DCTL Lumina", en: "Colour grading, Lumina DCTL" }, dossier: "etalonnage-dctl-lumina", couverture: "09" }
   },

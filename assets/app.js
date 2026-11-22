@@ -32,7 +32,7 @@
       services: "Services", servicesLine: "Architecture et hôtellerie, entreprises et marques, portrait, voyage, films, drone, étalonnage.",
       clients: "Ils m’ont fait confiance", clientsLine: "Ciel Textile, Gamma Construction, Sealife, Sasha Academy, Telkom Kenya, KFC, Eclosia.",
       similar: "Un projet similaire ?", email: "E-mail", next: "Projet suivant", back: "Retour", ask: "Un projet ?", copy: "Copier", copied: "Copié",
-      rights: "Photographies protégées, toute reproduction interdite.", prev: "Préc.", nextShort: "Suiv.", play: "Lire",
+      rights: "Photographies protégées, toute reproduction interdite.", prev: "Préc.", nextShort: "Suiv.", prevImg: "Image préc.", nextImg: "Image suiv.", play: "Lire",
       bio: "Samuel Drouin est photographe et vidéaste, basé à l’île Maurice. Il photographie et filme les entreprises, les marques, les lieux et les personnes qui les font vivre, du drone au plateau de tournage. Coloriste, il développe Node DRT, un plugin d’étalonnage pour DaVinci Resolve, et Lumina, un DCTL.",
       tools: "Outils", svc: ["Photographie d’entreprise et de marque", "Portrait", "Architecture et hôtellerie", "Films publicitaires et institutionnels", "Prises de vue par drone", "Contenus pour les réseaux", "Étalonnage"],
       videos: "vidéos", prevP: "Projet précédent", wa: "Bonjour Samuel, j’ai un projet : ", notfound: "Page introuvable", home: "Retour à l’accueil", isNew: "Nouveau"
@@ -43,7 +43,7 @@
       services: "Services", servicesLine: "Architecture & hospitality, corporate & brands, portrait, travel, film, drone, colour grading.",
       clients: "Clients", clientsLine: "Ciel Textile, Gamma Construction, Sealife, Sasha Academy, Telkom Kenya, KFC, Eclosia.",
       similar: "A similar project?", email: "Email", next: "Next project", back: "Back", ask: "A project in mind?", copy: "Copy", copied: "Copied",
-      rights: "Protected photographs, all reproduction prohibited.", prev: "Prev.", nextShort: "Next", play: "Play",
+      rights: "Protected photographs, all reproduction prohibited.", prev: "Prev.", nextShort: "Next", prevImg: "Previous image", nextImg: "Next image", play: "Play",
       bio: "Samuel Drouin is a photographer and filmmaker based in Mauritius. He photographs and films companies, brands, places and the people behind them, from drone to film set. A colourist, he develops Node DRT, a grading plugin for DaVinci Resolve, and Lumina, a DCTL.",
       tools: "Tools", svc: ["Corporate & brand photography", "Portrait", "Architecture & hospitality", "Commercial & corporate film", "Drone photography & film", "Social media content", "Colour grading"],
       videos: "videos", prevP: "Previous project", wa: "Hi Samuel, I have a project: ", notfound: "Page not found", home: "Back to home", isNew: "New"
@@ -97,7 +97,12 @@
       var groups = vw < 768 && items.length > 2 ? [items.slice(0, 2), items.slice(2)] : [items];
       groups.forEach(function (g) { rows.push(g); });
     } else if (o.rows) {
-      o.rows.forEach(function (r) { var x = r.map(function (i) { return items[i]; }).filter(Boolean); if (x.length) rows.push(x); });
+      o.rows.forEach(function (r) {
+        var x = r.map(function (i) { return items[i]; }).filter(Boolean);
+        /* sur téléphone, pas plus de deux images par rangée pour garder des photos lisibles */
+        while (vw < 600 && x.length > 2) rows.push(x.splice(0, 2));
+        if (x.length) rows.push(x);
+      });
     } else {
       var target = o.target ? o.target(vw) : 300, segs = [[]];
       items.forEach(function (it, i) { if (o.breaks && o.breaks[i] && segs[segs.length - 1].length) segs.push([]); segs[segs.length - 1].push(it); });
@@ -270,9 +275,15 @@
 
     /* minuterie : elle s'arrête tant que la souris est sur la vitrine */
     var DUR = 4500, clock = root.querySelector(".st-clock");
-    function pauseNow() { return me.hold || root.classList.contains("playing") || root.classList.contains("away"); }
+    /* souris sur la vitrine : le temps ralentit (x2,5) sans s'arrêter ; pause seulement pendant une vidéo ou hors écran */
+    function pauseNow() { return root.classList.contains("playing") || root.classList.contains("away"); }
     function sync() {
-      [me.bar, me.vis].forEach(function (a) { if (!a) return; if (pauseNow()) { if (a.playState === "running") a.pause(); } else if (a.playState === "paused") a.play(); });
+      var r = me.hold ? 0.4 : 1;
+      [me.bar, me.vis].forEach(function (a) {
+        if (!a) return;
+        if (a.playbackRate !== r) { if (a.updatePlaybackRate) a.updatePlaybackRate(r); else a.playbackRate = r; }
+        if (pauseNow()) { if (a.playState === "running") a.pause(); } else if (a.playState === "paused") a.play();
+      });
     }
     function mirror() {
       if (me.vis) { me.vis.cancel(); me.vis = null; }
@@ -280,7 +291,7 @@
       if (reduce || !b.animate || !me.bar) { b.style.transform = "scaleX(1)"; return; }
       me.vis = b.animate([{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], { duration: DUR, easing: "linear", fill: "forwards" });
       me.vis.currentTime = me.bar.currentTime || 0;
-      if (me.bar.playState === "paused") me.vis.pause();
+      sync();
     }
     function bar() {
       if (me.bar) { me.bar.onfinish = null; me.bar.cancel(); me.bar = null; }
@@ -296,11 +307,34 @@
 
     /* glisser, cliquer à gauche / à droite, étiquette qui suit la souris */
     var drag = null;
-    function zone(x) { var r = frame.getBoundingClientRect(), f = (x - r.left) / r.width; return f < 0.3 ? -1 : f > 0.7 ? 1 : 0; }
+    /* zones : bords extrêmes = projet précédent / suivant ; côtés de l'image = image précédente / suivante du projet ; centre = ouvrir */
+    function multi() { var it = me.items[me.i]; return it && !it.video && pool(it.u).length > 1; }
+    function zone(x) {
+      var r = frame.getBoundingClientRect(), f = (x - r.left) / r.width;
+      var ims = frame.lastElementChild ? frame.lastElementChild.querySelectorAll(".st-i") : [];
+      var a = ims.length ? ims[0].getBoundingClientRect().left : r.left, b = ims.length ? ims[ims.length - 1].getBoundingClientRect().right : r.right;
+      var edge = Math.max(r.width * 0.1, 48);
+      if (x < Math.max(a, r.left + edge)) return -2;
+      if (x > Math.min(b, r.right - edge)) return 2;
+      var g = (x - a) / (b - a);
+      return !multi() ? (f < 0.3 ? -2 : f > 0.7 ? 2 : 0) : g < 0.33 ? -1 : g > 0.67 ? 1 : 0;
+    }
     function label(dx, x) {
       var it = me.items[me.i]; if (!it) return "";
       if (drag && Math.abs(dx) > 8) return dx < 0 ? "→" : "←";
-      var z = zone(x); return z < 0 ? "← " + t("prev") : z > 0 ? t("nextShort") + " →" : (it.video ? t("play") : t("see"));
+      var z = zone(x), n = me.items.length;
+      if (z === -2) return "← " + me.items[(me.i - 1 + n) % n].titre;
+      if (z === 2) return me.items[(me.i + 1) % n].titre + " →";
+      if (z === -1) return "← " + t("prevImg");
+      if (z === 1) return t("nextImg") + " →";
+      return it.video ? t("play") : t("see");
+    }
+    function step(d) {
+      var it = me.items[me.i];
+      if (!multi()) { show(me.i + d, d); return; }
+      var L = pool(it.u).length;
+      if (d < 0) { rot[it.key] = ((rot[it.key] || 0) - 2) % L; if (rot[it.key] < 0) rot[it.key] += L; }
+      show(me.i, d, true);
     }
     frame.onpointerdown = function (e) {
       if (e.button || root.classList.contains("playing")) return;
@@ -323,7 +357,7 @@
       var cur = frame.lastElementChild;
       if (!cancel && Math.abs(dx) > 70) { show(me.i + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1); return; }
       if (cur && cur.style.transform) { var from = cur.style.transform; cur.style.transform = ""; if (cur.animate && !reduce) cur.animate([{ transform: from }, { transform: "none" }], { duration: 600, easing: OUT }); }
-      if (!cancel && Math.abs(dx) < 6) { var z = zone(x); if (z) show(me.i + z, z); else open(); }
+      if (!cancel && Math.abs(dx) < 6) { var z = zone(x); if (z === -2 || z === 2) show(me.i + z / 2, z / 2); else if (z) step(z); else open(); }
     }
     frame.onpointerup = function (e) { endDrag(false, e.clientX); };
     frame.onpointercancel = function () { endDrag(true); };
@@ -364,10 +398,10 @@
       d.querySelectorAll(".dr").forEach(function (x) { x.animate([{ transform: "scale(1.06)" }, { transform: "scale(1)" }], { duration: 8000, delay: delay, easing: "cubic-bezier(.3,.1,.3,1)", fill: "both" }); });
     }
 
-    function show(k, dir) {
+    function show(k, dir, same) {
       if (me.dead || !me.items.length) return;
       var n = me.items.length; k = (k + n) % n;
-      if (k === me.i) return;
+      if (k === me.i && !same) return;
       if (dir == null) dir = me.i < 0 ? 1 : (me.i === n - 1 && k === 0) ? 1 : (me.i === 0 && k === n - 1) ? -1 : (k > me.i ? 1 : -1);
       var firstShow = me.i < 0 && !frame.firstElementChild;
       me.i = k; root.classList.remove("playing");
@@ -391,8 +425,7 @@
       ready(d, function () {
         if (tok !== me.tok || me.dead) { d.remove(); return; }
         d.style.visibility = "";
-        roll(cap.querySelector(".st-n .roll"), pad(k + 1) + " / " + pad(n), dir);
-        roll(tt.querySelector(".roll"), it.titre, dir);
+        if (!same) { roll(cap.querySelector(".st-n .roll"), pad(k + 1) + " / " + pad(n), dir); roll(tt.querySelector(".roll"), it.titre, dir); }
         cap.querySelector(".st-m").textContent = it.meta;
         var olds = [].filter.call(frame.children, function (o) { return o !== d; });
         if (reduce || !d.animate) { olds.forEach(function (o) { o.remove(); }); return; }
@@ -435,17 +468,32 @@
 
   /* curseur natif (pas d'effet) */
   var cursor = (function () {
+    /* curseur discret : un point blanc et une légende fine, qui suivent la souris avec un léger retard */
     var el = document.createElement("div"); el.className = "st-hint"; el.setAttribute("aria-hidden", "true");
+    el.innerHTML = '<i class="h-dot"></i><span class="h-t"><span></span></span>';
     document.body.appendChild(el);
+    var tx = el.querySelector(".h-t span"), x = 0, y = 0, cx = 0, cy = 0, raf = 0, on = false, cur = "";
+    function loop() {
+      cx += (x - cx) * 0.22; cy += (y - cy) * 0.22;
+      el.style.transform = "translate3d(" + cx.toFixed(1) + "px," + cy.toFixed(1) + "px,0)";
+      raf = (on || Math.abs(x - cx) + Math.abs(y - cy) > 0.3) ? requestAnimationFrame(loop) : 0;
+    }
+    function setText(txt) {
+      if (txt === cur) return; cur = txt;
+      if (reduce || !tx.animate || !tx.textContent) { tx.textContent = txt; return; }
+      var o = tx.animate([{ transform: "none", opacity: 1 }, { transform: "translateY(-100%)", opacity: 0 }], { duration: 160, easing: "ease-in", fill: "forwards" });
+      o.onfinish = function () { tx.textContent = cur; o.cancel(); tx.animate([{ transform: "translateY(100%)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 340, easing: OUT }); };
+    }
     return {
-      show: function (txt, x, y) {
+      show: function (txt, px, py) {
         if (touch) return;
-        if (el.textContent !== txt) el.textContent = txt;
-        el.style.transform = "translate3d(" + (x + 16) + "px," + (y + 18) + "px,0)";
-        el.classList.add("on");
+        if (!on) { cx = px; cy = py; }
+        x = px; y = py; setText(txt);
+        if (!on) { on = true; el.classList.add("on"); document.documentElement.classList.add("hint-on"); }
+        if (!raf) raf = requestAnimationFrame(loop);
       },
-      hide: function () { el.classList.remove("on"); },
-      press: function () {}
+      hide: function () { if (!on) return; on = false; el.classList.remove("on"); document.documentElement.classList.remove("hint-on"); },
+      press: function (p) { el.classList.toggle("down", !!p); }
     };
   })();
   document.addEventListener("visibilitychange", function () { if (st && st.sync) st.sync(); });
