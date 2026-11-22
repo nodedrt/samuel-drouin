@@ -586,3 +586,28 @@ html{touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-t
 .ph h1{margin-top:clamp(22px,2.6vw,44px)}
 .ph .pnav{margin-top:clamp(20px,2.2vw,34px)}
 .ph .vue{margin-bottom:clamp(10px,1.2vw,18px)}
+/* ===== téléphone et tablette : lisible, et tout se touche facilement au doigt ===== */
+@media (hover:none),(pointer:coarse){
+  :root{--t-xs:12px}
+  .zm-r,.vue .zm-r,.vue-f .zm-r{font-size:12px}
+  /* zones de toucher agrandies (sans changer la mise en page) */
+  .hd a,.hd button,.intro-hd a,.intro-hd button,.menu-b,.lg-a,.st-go,.st-t,.back,.meta a,.vue button,.pm button,.zm-r,.ft a,.ft button,.s-end a,.lang button{padding-top:12px;padding-bottom:12px;margin-top:-12px;margin-bottom:-12px}
+  .lg-a{padding-left:12px;padding-right:12px;margin-left:-12px;margin-right:-12px}
+  .zm-r,.vue .zm-r,.vue-f .zm-r{padding:10px 14px;margin-top:0}
+  /* curseur de taille : un rond assez grand pour le doigt */
+  .zm input{height:34px}
+  .zm input::-webkit-slider-thumb{width:22px;height:22px;margin-top:-10.5px}
+  .zm input::-moz-range-thumb{width:22px;height:22px}
+  .cn-row button{padding:12px 4px}
+  .cn-bar{height:28px}.cn-bar::before,.cn-bar i{top:13px}
+}
+@media (max-width:767px){
+  /* ligne du haut : « Retour à l'accueil » sur une ligne, le nombre de photos à droite */
+  .ph .meta{display:flex;justify-content:space-between;align-items:baseline;gap:14px}
+  .ph .meta .mt-l{display:flex;gap:14px;min-width:0}
+  .ph .meta .back{white-space:nowrap}
+  .ph .meta .mt-l .u,.ph .meta .mt-k{display:none}
+  .ph .meta>span:last-child{white-space:nowrap}
+}
+@media (hover:none),(pointer:coarse){.pnav .pi{padding:12px 8px;margin:-12px -8px}}
+@media (max-width:400px){.pnav .xs{white-space:nowrap;letter-spacing:.02em}}
