@@ -55,7 +55,7 @@ window.SITE = {
   // Un projet absent de cette liste se place après, dans l'ordre des sections.
   ordre: ["les-paletuviers", "paysage", "drone", "portrait", "cafe-st-felix", "voyage", "konekte", "abc", "samaya", "the-hive", "poste-lafayette", "villa-horizon",
     "mr-bao", "melbees", "ocean-villa", "peizan", "bluemoon-villa", "vert-nature", "sealife", "kfc", "ferney", "kenya-telkom",
-    "villa-anahita", "le-dalblair", "kenya-film", "villa-la-plage", "sasha-academy", "ciel-textile"],
+    "villa-anahita", "le-dalblair", "kenya-film", "villa-la-plage", "sasha-academy", "ciel-textile", "ciel-aquarelle"],
   sections: [
     { id: "voyage", fr: "Voyage", en: "Travel", projets: ["voyage"] },
     { id: "paysage", fr: "Paysage", en: "Landscape", projets: ["paysage"] },
@@ -64,7 +64,7 @@ window.SITE = {
     { id: "portrait", fr: "Portrait", en: "Portrait", projets: ["portrait"] },
     { id: "coulisses", fr: "Coulisses de tournage", en: "Behind the scenes", projets: ["abc", "ferney", "kenya-film", "kfc"] },
     { id: "kenya-telkom", fr: "Kenya Telkom", en: "Kenya Telkom", projets: ["kenya-telkom"] },
-    { id: "ciel-textile", fr: "Ciel Textile", en: "Ciel Textile", projets: ["ciel-textile"] },
+    { id: "ciel-textile", fr: "Groupe Ciel", en: "Ciel Group", projets: ["ciel-textile", "ciel-aquarelle"] },
     { id: "sealife", fr: "Sealife", en: "Sealife", projets: ["sealife"] },
     { id: "gamma", fr: "Gamma Construction", en: "Gamma Construction", projets: ["gamma-construction", "exposition-port-louis"] },
     { id: "sasha-academy", fr: "Sasha Academy", en: "Sasha Academy", projets: ["sasha-academy"] },
@@ -95,6 +95,7 @@ window.SITE = {
     "melbees": { titre: "Melbees", dossier: "melbees", couverture: "03", nouveau: true, egal: true, lignes: [["01", "02", "03", "04"], ["05", "06", "07", "08"], ["09", "10", "11", "12"], ["13", "14", "15", "16"], ["17", "18", "19", "20"], ["21", "22", "23", "24"], ["25", "26", "27"]] },
     "konekte": { titre: "Konekte", dossier: "konekte", couverture: "01", nouveau: true },
     "drone": { titre: { fr: "Drone", en: "Drone" }, dossier: "drone", couverture: "01", lignes: [["04", "01"], ["13", "09"], ["08", "03"], ["02", "12"], ["10", "05"], ["06", "07"], ["16", "11", "19"], ["15", "17", "18"], ["22", "23"], ["24", "25"], ["20", "21"], ["26", "27"], ["28", "29"]] },
+    "ciel-aquarelle": { titre: { fr: "Ciel, Aquarelle à la Citadelle", en: "Ciel, Aquarelle at the Citadel" }, dossier: "evenements/ciel-aquarelle", couverture: "10", nouveau: true, egal: true, lignes: [["01", "02", "03"], ["04", "05"], ["06", "07", "08"], ["09", "10", "11"], ["12", "13", "14"], ["15", "16"], ["17", "18", "19", "20"], ["21", "22"], ["23", "24"]] },
     "ciel-textile": { titre: "Ciel Textile", dossier: "corporate/ciel-textile", couverture: "16" },
     "gamma-construction": { titre: { fr: "Gamma Construction, chantier", en: "Gamma Construction, site" }, dossier: "corporate/gamma-construction", couverture: "09" },
     "sealife": { titre: "Sealife", dossier: "corporate/sealife", couverture: "05" },
