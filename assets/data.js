@@ -104,7 +104,7 @@ window.SITE = {
     "kenya-film": { titre: { fr: "Kenya Telkom, film", en: "Kenya Telkom, film" }, dossier: "coulisses", partie: "Kenya Film Telkom", couverture: "26" },
     "ferney": { titre: { fr: "Ferney, film", en: "Ferney, film" }, dossier: "coulisses", partie: "Ferney Film", couverture: "14" },
     "kfc": { titre: { fr: "KFC, film", en: "KFC, film" }, dossier: "coulisses", partie: "KFC Film" },
-    "eclosia": { titre: "Groupe Eclosia", dossier: "evenements", partie: "Eclosia Groupe associations", couverture: "09" },
+    "eclosia": { titre: "Groupe Eclosia", dossier: "evenements", partie: "Eclosia Groupe associations", couverture: "13", sauf: ["06", "01", "31", "32", "35", "36"], egal: true, lignes: [["13", "10", "14"], ["15", "09"], ["11", "08", "16"], ["12", "07"], ["04", "05", "03"], ["02", "33", "34", "37"]] },
     "ciel-group": { titre: "Ciel Groupe", dossier: "evenements", partie: "Ciel Groupe association" },
     "ome-fam-uni": { titre: "Ome Fam Uni", dossier: "evenements", partie: "Ome fam uni assiociation" },
     "ocean-villa": { titre: "Ocean Villa", dossier: "immobilier/ocean-villa", couverture: "23" },
