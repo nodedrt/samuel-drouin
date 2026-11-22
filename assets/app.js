@@ -1422,7 +1422,11 @@
       if (!first && !keepScroll) main.focus({ preventScroll: true });
       if (hm && R.sub) setTimeout(function () { scrollIx(R.sub); }, 120);
     };
-    if (!first && !reduce && document.startViewTransition) document.startViewTransition(draw);
+    if (!first && !reduce && document.startViewTransition) {
+      /* navigation rapide (double tap) : une transition peut en remplacer une autre, sans erreur */
+      var vt = document.startViewTransition(draw), nop = function () {};
+      ["ready", "finished", "updateCallbackDone"].forEach(function (k) { if (vt && vt[k] && vt[k].catch) vt[k].catch(nop); });
+    }
     else { draw(); if (!first && !reduce) { main.classList.remove("fade"); void main.offsetWidth; main.classList.add("fade"); } }
     first = false;
   }
