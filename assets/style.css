@@ -288,7 +288,7 @@ main.fade{animation:vt-in .6s var(--out) both}
 .h-dot{flex:none;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.08),0 1px 8px rgba(0,0,0,.25);transform:scale(.4);transition:transform .3s var(--out),background .25s}
 .st-hint.on .h-dot{transform:scale(1)}
 .st-hint.down .h-dot{transform:scale(.6)}
-.h-t{display:block;overflow:hidden;font-size:var(--t-s);line-height:1.3;letter-spacing:.01em;text-shadow:0 1px 10px rgba(0,0,0,.35)}
+.h-t{display:block;overflow:hidden;font-size:clamp(14px,1vw,16px);font-weight:500;line-height:1.3;letter-spacing:0;text-shadow:0 1px 10px rgba(0,0,0,.35)}
 .h-t span{display:block}
 .hint-on .st-frame{cursor:none}
 .st-hint.dark{color:var(--tx)}
