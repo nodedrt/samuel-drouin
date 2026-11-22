@@ -714,19 +714,19 @@ html[data-th=v2] .ex-wall::before{display:block;opacity:1;width:min(1000px,92%);
 .vcov[hidden]{display:none}
 
 /* ---- ouverture plein écran de la page Vidéo ---- */
-.hero{position:relative;width:100vw;margin-left:calc(50% - 50vw);height:calc(100svh - 49px);overflow:hidden;background:#0d0c0b;color:#F3EFE8;animation:hrIn .9s ease both}
+.hero{position:relative;width:100vw;margin-left:calc(50% - 50vw);height:min(calc(100svh - 49px),56.25vw);overflow:hidden;background:#0d0c0b;color:#F3EFE8;animation:hrIn .9s ease both}
 @keyframes hrIn{from{opacity:0}to{opacity:1}}
 .hr-v{position:absolute;inset:0;clip-path:inset(47% 0 47% 0);transition:clip-path 2.4s cubic-bezier(.65,0,.2,1)}
 .hero.open .hr-v{clip-path:inset(0 0 0 0)}
-.hr-v video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.8s cubic-bezier(.4,0,.2,1)}
+.hr-v video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity 1.8s cubic-bezier(.4,0,.2,1)}
 .hr-v video.on{opacity:1}
-.hr-v video.z{animation:hrZ 11s linear both}
 @keyframes hrZ{from{transform:scale(1.07)}to{transform:scale(1)}}
 .hr-v::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.38) 100%)}
 .hr-l,.hr-p,.hr-d{position:absolute;opacity:0;transition:opacity 1.6s ease 1.6s}
 .hero.open .hr-l,.hero.open .hr-p,.hero.open .hr-d{opacity:1}
-.hr-l{left:var(--pad,20px);bottom:26px;margin:0;font-size:var(--t-s,14px);letter-spacing:.01em;color:rgba(243,239,232,.86)}
-.hr-p{right:var(--pad,20px);bottom:32px;display:flex;gap:6px}
+.hero{--side:max(0px,calc((100vw - (100svh - 49px) * 16 / 9) / 2))}
+.hr-l{left:calc(var(--side) + var(--pad,20px));bottom:26px;margin:0;font-size:var(--t-s,14px);letter-spacing:.01em;color:rgba(243,239,232,.86)}
+.hr-p{right:calc(var(--side) + var(--pad,20px));bottom:32px;display:flex;gap:6px}
 .hr-p i{display:block;width:22px;height:1px;background:rgba(243,239,232,.28);overflow:hidden}
 .hr-p i b{display:block;height:100%;width:100%;background:#F3EFE8;transform:scaleX(0);transform-origin:left}
 .hr-p i.past b{transform:scaleX(1);opacity:.55}
@@ -735,5 +735,5 @@ html[data-th=v2] .ex-wall::before{display:block;opacity:1;width:min(1000px,92%);
 .hr-d i{display:block;width:1px;height:26px;background:linear-gradient(rgba(243,239,232,.9),rgba(243,239,232,0));animation:hrD 2.6s ease-in-out infinite}
 @keyframes hrD{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 .hero + .st{margin-top:clamp(28px,5vh,64px)}
-@media (max-width:767px){.hero{height:min(78svh,140vw)}.hr-l{bottom:22px;max-width:52%}.hr-p{bottom:28px}.hr-p i{width:12px}.hr-d{display:none}}
+@media (max-width:767px){.hero{height:56.25vw;--side:0px}.hr-l{font-size:11px}.hr-l{bottom:10px;max-width:52%}.hr-p{bottom:15px}.hr-p i{width:12px}.hr-d{display:none}}
 @media (prefers-reduced-motion:reduce){.hr-v{clip-path:none;transition:none}.hr-v video.z,.hr-d i{animation:none}.hero{animation:none}}
