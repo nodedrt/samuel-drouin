@@ -472,3 +472,8 @@ html{touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-t
   .ex-fl{box-shadow:0 2px 4px rgba(0,0,0,.14),0 16px 28px -14px rgba(0,0,0,.3)}
   .ex-fr::after{display:none}
 }
+/* film d'ambiance d'un projet : plein cadre, sans contrôles */
+.amb{position:relative;margin:0 calc(-1*var(--m)) clamp(30px,4vw,60px);background:#0c0c0c;overflow:hidden;height:min(86vh,56.25vw);height:min(86svh,56.25vw)}
+.amb video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.amb.v{height:auto;aspect-ratio:9/16;max-height:88svh}
+.amb-p{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:12px 22px;background:rgba(247,247,245,.92);color:var(--tx);font-weight:500}

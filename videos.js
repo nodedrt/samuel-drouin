@@ -18,6 +18,7 @@ window.VIDEO_SECTIONS = [
 ];
 
 window.VIDEOS = [
+  { section: "films", projet: "les-paletuviers", ambiance: true, vedette: 1.5, titre: { fr: "Les Palétuviers", en: "Les Palétuviers" }, lien: "videos/les-paletuviers/film.mp4", vertical: "videos/les-paletuviers/film-v.mp4" },
   { section: "drone", vedette: 3.5, titre: { fr: "Chiroulet, Pyrénées", en: "Chiroulet, Pyrenees" }, lien: "videos/chiroulet.mp4" },
   { section: "mr-bao", vedette: 4.5, titre: { fr: "Mr Bao, Crispy Chicken Bao", en: "Mr Bao, Crispy Chicken Bao" }, lien: "videos/mr-bao/crispy-chicken-bao.mp4" },
   { section: "mr-bao", titre: { fr: "Mr Bao, Dumplings", en: "Mr Bao, Dumplings" }, lien: "videos/mr-bao/dumplings.mp4" },

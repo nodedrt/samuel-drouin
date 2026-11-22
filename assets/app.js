@@ -842,13 +842,36 @@
     var kind = (slug === "etalonnage" || (s && ["voyage", "paysage", "portrait", "vert-nature", "drone"].indexOf(s.id) >= 0)) ? "cadre" : "edito";
     var gal = el.parentNode;
     var pmode = "photos";
+    /* film d'ambiance : grand, plein cadre, lecture automatique en boucle, sans clic (vertical sur téléphone tenu droit) */
+    var amb = pvids.filter(function (v) { return v.ambiance; })[0], ambIO = null;
+    function ambSrc() { return amb.vertical && window.innerWidth < 900 && window.innerHeight > window.innerWidth ? amb.vertical : amb.lien; }
+    function ambHTML() {
+      var s = ambSrc();
+      return '<div class="amb' + (s === amb.vertical ? " v" : "") + '"><video muted autoplay loop playsinline preload="auto" disablepictureinpicture poster="' + esc(s.replace(/\.mp4$/, ".jpg")) + '" src="' + esc(s) + '"></video>' +
+        '<button type="button" class="amb-p" hidden aria-label="' + t("play") + '">' + t("play") + "</button></div>";
+    }
+    function ambStart() {
+      var box = el.querySelector(".amb"); if (!box) return;
+      var v = box.querySelector("video"), b = box.querySelector(".amb-p");
+      v.muted = true; v.defaultMuted = true;
+      var go = function () { var pr = v.play(); if (pr && pr.catch) pr.catch(function () { b.hidden = false; }); };
+      b.onclick = function () { b.hidden = true; go(); };
+      v.addEventListener("playing", function () { b.hidden = true; });
+      if (ambIO) ambIO.disconnect();
+      if ("IntersectionObserver" in window) {
+        ambIO = new IntersectionObserver(function (es) { if (!v.isConnected) { ambIO.disconnect(); return; } if (es[0].isIntersecting) go(); else v.pause(); }, { threshold: 0.15 });
+        ambIO.observe(v);
+      } else go();
+    }
     function drawVids() {
       gal.classList.remove("ex", "ex-cadre", "ex-edito");
-      el.innerHTML = '<div class="pvg">' + pvids.map(function (v, k) {
+      var rest = pvids.filter(function (v) { return !v.ambiance; });
+      el.innerHTML = (amb ? ambHTML() : "") + (rest.length ? '<div class="pvg">' + rest.map(function (v) {
+        var k = pvids.indexOf(v);
         var q = parseVideo(v.lien);
         return '<button type="button" class="pv-t fig' + (q.file ? " vert" : "") + '" data-vk="' + k + '"><div class="mask"><img loading="lazy" alt="" draggable="false" src="' + esc(q.th) + '"><span class="play">' + t("play") + "</span></div><span class=\"pv-n\">" + esc(L(v.titre).replace(L(p.titre) + ", ", "")) + "</span></button>";
-      }).join("") + "</div>";
-      observe();
+      }).join("") + "</div>" : "");
+      observe(); if (amb) ambStart();
     }
     function drawG() {
       main.querySelector(".vue").style.visibility = pmode === "videos" ? "hidden" : "";
