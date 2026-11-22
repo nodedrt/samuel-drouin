@@ -963,11 +963,8 @@
       gal.classList.add("live"); clearTimeout(zt); zt = setTimeout(function () { gal.classList.remove("live"); }, 400);
       var mid = window.innerHeight / 2, anchor = null, off = 0;
       el.querySelectorAll("[data-i]").forEach(function (b) { if (anchor) return; var r = b.getBoundingClientRect(); if (r.bottom > mid) { anchor = b.dataset.i; off = (mid - r.top) / Math.max(1, r.height); } });
-      var keep = {}, was = {}, vh = window.innerHeight, sy0 = window.scrollY;
-      el.querySelectorAll("[data-i]").forEach(function (b) {
-        var im = b.querySelector("img"); if (im) keep[b.dataset.i] = im;
-        var r = b.getBoundingClientRect(); if (r.bottom > -vh * 0.5 && r.top < vh * 1.5) was[b.dataset.i] = { x: r.left, y: r.top + sy0, w: r.width, h: r.height };
-      });
+      var keep = {};
+      el.querySelectorAll("[data-i]").forEach(function (b) { var im = b.querySelector("img"); if (im) keep[b.dataset.i] = im; });
       drawG();
       el.querySelectorAll("[data-i]").forEach(function (b) {
         b.classList.add("in");
@@ -975,26 +972,33 @@
         if (o && n && o !== n) { o.removeAttribute("sizes"); n.replaceWith(o); }
       });
       if (anchor != null) { var nb = el.querySelector('[data-i="' + anchor + '"]'); if (nb) { var r2 = nb.getBoundingClientRect(); window.scrollBy(0, r2.top + off * r2.height - mid); } }
-      /* transition douce : chaque photo glisse de son ancienne place vers la nouvelle (FLIP) */
-      if (reduce || !el.animate) return;
-      var sy1 = window.scrollY;
-      el.querySelectorAll("[data-i]").forEach(function (b) {
-        var r = b.getBoundingClientRect(); if (r.bottom < -vh * 0.3 || r.top > vh * 1.3) return;
-        var o = was[b.dataset.i];
-        if (!o) { b.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 380, easing: "ease-out" }); return; }
-        var dx = o.x - r.left, dy = (o.y - sy1) - r.top, sx = o.w / Math.max(1, r.width), sy = o.h / Math.max(1, r.height);
-        if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5 && Math.abs(sx - 1) < 0.004) return;
-        b.animate([
-          { transformOrigin: "0 0", transform: "translate(" + dx + "px," + dy + "px) scale(" + sx + "," + sy + ")" },
-          { transformOrigin: "0 0", transform: "none" }
-        ], { duration: 460, easing: "cubic-bezier(.22,1,.36,1)" });
-      });
+    }
+    /* changement de taille : fondu enchaîné entre l'ancienne et la nouvelle mise en page (doux et classe) */
+    var ztBusy = false, ztMore = false, ztGhost = null;
+    function zoomFade() {
+      if (ztBusy) { ztMore = true; return; }
+      if (reduce || !el.animate) { liveZoom(); return; }
+      ztBusy = true;
+      var r = el.getBoundingClientRect(), g = el.cloneNode(true);
+      g.removeAttribute("id"); g.setAttribute("aria-hidden", "true");
+      g.style.cssText = "position:fixed;left:" + r.left + "px;top:" + r.top + "px;width:" + r.width + "px;margin:0;pointer-events:none;z-index:4";
+      g.querySelectorAll("[data-i]").forEach(function (b) { b.removeAttribute("data-i"); b.removeAttribute("tabindex"); });
+      gal.appendChild(g); ztGhost = g;
+      liveZoom();
+      /* l'ancienne image ne déborde jamais sur le haut de page */
+      var cut = Math.max(0, gal.getBoundingClientRect().top - r.top); if (cut) g.style.clipPath = "inset(" + cut + "px 0 0 0)";
+      var D = 460, E = "cubic-bezier(.4,0,.2,1)";
+      el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: D, easing: E });
+      g.animate([{ opacity: 1 }, { opacity: 0 }], { duration: D, easing: E, fill: "forwards" }).onfinish = function () {
+        g.remove(); if (ztGhost === g) ztGhost = null; ztBusy = false;
+        if (ztMore) { ztMore = false; zoomFade(); }
+      };
     }
     main.querySelectorAll(".zm input").forEach(function (inp) {
       inp.addEventListener("input", function () {
         zoom = +inp.value; try { sessionStorage.setItem("sd-zoom", zoom); } catch (e) {}
         main.querySelectorAll(".zm input").forEach(function (o) { if (o !== inp) o.value = zoom; });
-        if (!zr) zr = requestAnimationFrame(liveZoom);
+        zoomFade();
       });
       inp.addEventListener("dblclick", function () { inp.value = 1; inp.dispatchEvent(new Event("input")); });
     });
