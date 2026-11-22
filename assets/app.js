@@ -349,7 +349,7 @@
         var cur = frame.lastElementChild;
         if (cur && Math.abs(drag.dx) > 4) { cur.style.transform = "translateX(" + (drag.dx * 0.4) + "px)"; root.classList.add("dragging"); }
       }
-      if (e.pointerType === "mouse") cursor.show(label(drag ? drag.dx : 0, e.clientX), e.clientX, e.clientY, !!(e.target.closest && e.target.closest(".st-i")));
+      if (e.pointerType === "mouse") cursor.show(label(drag ? drag.dx : 0, e.clientX), e.clientX, e.clientY, lightUnder(e));
     };
     function endDrag(cancel, x) {
       if (!drag) return;
@@ -467,6 +467,32 @@
   }
 
   /* curseur natif (pas d'effet) */
+  /* clarté de la photo sous la légende : une petite carte 24×24 par image, calculée une fois */
+  function lumMap(im) {
+    if (im._lum !== undefined) return im._lum;
+    im._lum = null;
+    try {
+      if (!im.complete || !im.naturalWidth) { im._lum = undefined; return null; }
+      var c = document.createElement("canvas"); c.width = c.height = 24;
+      var x = c.getContext("2d", { willReadFrequently: true }); x.drawImage(im, 0, 0, 24, 24);
+      var d = x.getImageData(0, 0, 24, 24).data, m = new Float32Array(576);
+      for (var i = 0; i < 576; i++) m[i] = (0.2126 * d[i * 4] + 0.7152 * d[i * 4 + 1] + 0.0722 * d[i * 4 + 2]) / 255;
+      im._lum = m;
+    } catch (e) {}
+    return im._lum;
+  }
+  /* vrai = fond clair sous le texte (donc texte noir) */
+  function lightUnder(e) {
+    var box = e.target.closest && e.target.closest(".st-i"); if (!box) return true;
+    var im = box.querySelector("img"), m = im && lumMap(im); if (!m) return false;
+    var r = box.getBoundingClientRect(), sum = 0, n = 0;
+    for (var dx = 0; dx <= 150; dx += 15) for (var dy = -12; dy <= 12; dy += 12) {
+      var u = Math.floor((e.clientX + dx - r.left) / r.width * 24), v = Math.floor((e.clientY + dy - r.top) / r.height * 24);
+      if (u < 0 || v < 0 || u > 23 || v > 23) continue;
+      sum += m[v * 24 + u]; n++;
+    }
+    return n ? sum / n > 0.62 : false;
+  }
   var cursor = (function () {
     /* curseur discret : un point et une légende fine, collés à la souris ; blancs sur l'image, noirs sur le fond */
     var el = document.createElement("div"); el.className = "st-hint"; el.setAttribute("aria-hidden", "true");
@@ -480,10 +506,10 @@
       o.onfinish = function () { tx.textContent = cur; o.cancel(); tx.animate([{ transform: "translateY(100%)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 340, easing: OUT }); };
     }
     return {
-      show: function (txt, px, py, onImg) {
+      show: function (txt, px, py, light) {
         if (touch) return;
         el.style.transform = "translate3d(" + px + "px," + py + "px,0)";
-        el.classList.toggle("dark", !onImg);
+        el.classList.toggle("dark", !!light);
         setText(txt);
         if (!on) { on = true; el.classList.add("on"); document.documentElement.classList.add("hint-on"); }
       },
