@@ -710,3 +710,5 @@ html[data-th=v2] .ex-fr{border-width:max(6px,calc(var(--fw) * .6));border-image-
 html[data-th=v2] .ex-fr::after{background:linear-gradient(122deg,rgba(255,255,255,.08) 0%,rgba(255,255,255,.02) 22%,rgba(255,255,255,0) 36%)}
 html[data-th=v2] .ex-mat{background-image:linear-gradient(rgba(214,196,160,.14),rgba(214,196,160,.14)),url(tex/paper.jpg)}
 html[data-th=v2] .ex-wall::before{display:block;opacity:1;width:min(1000px,92%);background:radial-gradient(ellipse 46% 52% at 50% 42%,rgba(255,236,200,.085),rgba(255,236,200,.03) 55%,rgba(255,236,200,0) 75%)}
+.vcov{position:absolute;inset:0;z-index:4;cursor:pointer;background:transparent}
+.vcov[hidden]{display:none}

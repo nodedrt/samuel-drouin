@@ -555,12 +555,24 @@
       var tokP = me.tok;
       function back() {
         if (tokP !== me.tok || me.dead) return;
-        var f = box.querySelector("video, iframe"), fin = function () { if (f && f.isConnected) f.remove(); root.classList.remove("playing"); sync(); };
+        var f = box.querySelector("video, iframe"), fin = function () { if (f && f.isConnected) f.remove(); var cv = box.querySelector(".vcov"); if (cv) cv.remove(); root.classList.remove("playing"); sync(); };
         if (f && !reduce && f.animate) f.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, easing: "ease-out", fill: "forwards" }).onfinish = fin; else fin();
       }
       var v0 = box.querySelector("video");
       if (v0) {
         v0.muted = !act;
+        /* commandes discrètes : elles disparaissent vite ; un toucher (voile transparent au-dessus de la vidéo)
+           ou un mouvement de souris les fait revenir un court instant, sans mettre la vidéo en pause */
+        var cov = document.createElement("i"); cov.className = "vcov"; box.appendChild(cov);
+        var ctT = 0, showCt = function (ms) { v0.controls = true; cov.hidden = true; clearTimeout(ctT); ctT = setTimeout(function () { if (!v0.paused) { v0.controls = false; cov.hidden = false; } }, ms); };
+        showCt(1400);
+        box.addEventListener("pointermove", function (e) { if (e.pointerType === "mouse") showCt(1600); });
+        cov.addEventListener("pointerdown", function (e) { e.preventDefault(); e.stopPropagation(); });
+        cov.addEventListener("pointerup", function (e) { e.stopPropagation(); });
+        cov.addEventListener("click", function (e) { e.preventDefault(); e.stopPropagation(); showCt(2600); });
+        v0.addEventListener("pause", function () { clearTimeout(ctT); v0.controls = true; cov.hidden = true; });
+        v0.addEventListener("play", function () { showCt(1200); });
+        v0.addEventListener("ended", function () { cov.remove(); });
         var pr0 = v0.play();
         if (pr0 && pr0.catch) pr0.catch(function () { if (!v0.muted) { v0.muted = true; var p2 = v0.play(); if (p2 && p2.catch) p2.catch(function () {}); } });
         v0.addEventListener("ended", back);
@@ -618,7 +630,7 @@
       var d = layer(it, grp), tok = ++me.tok;
       d.style.visibility = "hidden";
       frame.appendChild(d);
-      [].forEach.call(frame.querySelectorAll("iframe, video"), function (f) { f.remove(); });
+      [].forEach.call(frame.querySelectorAll("iframe, video, .vcov"), function (f) { f.remove(); });
 
       /* légende, titre, compteur : tout de suite */
       var cap = root.querySelector(".st-cap"), tt = cap.querySelector(".st-t"), go = cap.querySelector(".st-go");
@@ -923,8 +935,8 @@
       var h = main.querySelector(".ph h1"), v = main.querySelector(".ph .vue"); if (!h) return;
       h.style.fontSize = "";
       var rw = h.querySelector(".rw") || h, w = rw.getBoundingClientRect().width;
-      var avail = (!v || window.innerWidth < 1000) ? h.getBoundingClientRect().width - 16 : 2 * (v.getBoundingClientRect().left - window.innerWidth / 2) - 48;
-      if (w > avail && avail > 0) h.style.fontSize = Math.max(26, parseFloat(getComputedStyle(h).fontSize) * avail / w) + "px";
+      var avail = (!v || window.innerWidth < 1000) ? (main.querySelector(".ph").clientWidth - 2 * (parseFloat(getComputedStyle(main.querySelector(".ph")).paddingLeft) || 14) - 8) : 2 * (v.getBoundingClientRect().left - window.innerWidth / 2) - 48;
+      if (w > avail && avail > 0) h.style.fontSize = Math.max(window.innerWidth < 600 ? 18 : 26, parseFloat(getComputedStyle(h).fontSize) * avail / w) + "px";
     }
     fitTitle(); resizers.push(fitTitle); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitTitle);
     var bb = main.querySelector("[data-back]");
