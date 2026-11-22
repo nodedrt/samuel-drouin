@@ -611,3 +611,4 @@ html{touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-t
 }
 @media (hover:none),(pointer:coarse){.pnav .pi{padding:12px 8px;margin:-12px -8px}}
 @media (max-width:400px){.pnav .xs{white-space:nowrap;letter-spacing:.02em}}
+.ixo .xc.hl .xc-h span{background:linear-gradient(transparent 60%,rgba(20,20,20,.12) 60%);transition:background .6s}

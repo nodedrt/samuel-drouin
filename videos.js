@@ -44,7 +44,7 @@ window.VIDEOS = [
 ];
 
 /* projets dont les vidéos s’ouvrent sur une page dédiée (le projet, onglet Vidéo) */
-window.VIDEO_PAGES = ["les-paletuviers", "mr-bao", "samaya", "caprizzio", "ecole-de-l-ouest"];
+window.VIDEO_PAGES = ["les-paletuviers", "mr-bao", "samaya", "peizan", "caprizzio", "ecole-de-l-ouest"];
 
 /* séries vidéo sans projet photo : elles ont leur propre page (#/film/<id>) */
 window.VIDEO_PROJETS = {

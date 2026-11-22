@@ -265,6 +265,8 @@
     var l = e.target.closest("[data-lang]");
     if (l) { lang = l.dataset.lang; try { localStorage.setItem("sd-lang", lang); } catch (x) {} chrome(); page = ""; render(true); return; }
     if (e.target.closest("[data-ixo]")) { e.preventDefault(); toggleMenu(false); openIxo(); return; }
+    var xs = e.target.closest("[data-ixs]");
+    if (xs) { e.preventDefault(); toggleMenu(false); openIxo(xs.dataset.ixs); return; }
     if (e.target.closest("#ixo .x") || e.target.closest("#ixo a")) { closeIxo(); }
     var c = e.target.closest("[data-contact]");
     if (c) { e.preventDefault(); toggleMenu(false); ft.scrollIntoView({ behavior: reduce ? "auto" : "smooth" }); }
@@ -769,7 +771,7 @@
                 '<div class="ix-tx"><b>' + esc(vpTitle(it.pj)) + '</b><span class="ix-n">' + it.vs.length + " " + (it.vs.some(function (x) { return x.chap || /^films$/.test(x.section); }) ? t("films") : t("videos")) + "</span></div></a>";
             }
             var v = it.v, p = parseVideo(v.lien);
-            return '<a class="ix-c v fig" href="#/video/' + s.id + '" data-em="' + esc(p.em) + '" data-t="' + esc(L(v.titre)) + '"><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="" src="' + esc(p.th2 || p.th) + '"><span class="play">' + t("play") + "</span></div>" +
+            return '<a class="ix-c v fig" href="#/film/' + s.id + "/" + secLoose(s.id).indexOf(v) + '"><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="" src="' + esc(p.th2 || p.th) + '"><span class="play">' + t("play") + "</span></div>" +
               '<div class="ix-tx"><b>' + esc(L(v.titre)) + "</b></div></a>";
           }).join("") + "</div></div>");
       });
@@ -817,7 +819,7 @@
       return '<a class="ix-c' + (o.v ? " v" : "") + '" href="' + o.href + '"' + (o.pmv ? ' data-pmv="' + esc(o.pmv) + '"' : "") + (o.em ? ' data-em="' + esc(o.em) + '" data-t="' + esc(o.t) + '"' : "") + '><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="" src="' + esc(o.img) + '">' + (o.v ? '<span class="play">' + (o.pmv ? t("seeFilms") : t("play")) + "</span>" : "") + "</div>" +
         '<div class="ix-tx"><b>' + esc(o.t) + (o.nw ? " <i>" + t("isNew") + "</i>" : "") + '</b><span class="ix-n">' + o.n + "</span></div></a>";
     }
-    function cat(name, n, cards) { return '<div class="xc"><h4 class="xc-h"><span>' + esc(name) + "</span><i>" + n + '</i></h4><div class="xc-g">' + cards.join("") + "</div></div>"; }
+    function cat(name, n, cards, ks) { return '<div class="xc"' + (ks ? ' data-s="' + esc(ks) + '"' : "") + '><h4 class="xc-h"><span>' + esc(name) + "</span><i>" + n + '</i></h4><div class="xc-g">' + cards.join("") + "</div></div>"; }
     var out = '<div class="xi">', tot = 0;
     /* grandes catégories : chaque section de photos est rangée dans l'une d'elles (les nouvelles sections vont dans « Marques et entreprises ») */
     var CATS = [
@@ -835,7 +837,8 @@
     CATS.forEach(function (c) { c.ps.sort(function (a, b) { return rank(a) - rank(b); }); });
     var ph = CATS.filter(function (c) { return c.ps.length; }).sort(function (a, b) { return rank(a.ps[0]) - rank(b.ps[0]); }).map(function (c) {
       tot += c.ps.length;
-      return cat(L(c), c.ps.length, c.ps.map(function (p) { return card({ href: href(p), img: src(cover(p), true), t: pTitle(p), n: images(p).length, nw: proj(p).nouveau }); }));
+      var ks = c.ps.map(function (p) { var s = sectionOf(p); return s ? s.id : ""; }).join(" ");
+      return cat(L(c), c.ps.length, c.ps.map(function (p) { return card({ href: href(p), img: src(cover(p), true), t: pTitle(p), n: images(p).length, nw: proj(p).nouveau }); }), ks);
     }).join("");
     out += '<section class="xb"><h3 class="xb-h"><a href="#/photographie">' + t("photo") + "</a><sup>" + tot + "</sup></h3>" + ph + "</section>";
     var vt = 0, vd = VSEC.map(function (s) {
@@ -843,7 +846,7 @@
       vt += vs.length;
       return cat(L(s), vs.length, vItems(vs).map(function (it) {
         if (it.pj) { var q0 = parseVideo(it.vs[0].lien); return card({ v: 1, pmv: it.pj, href: vpHref(it.pj), img: q0.th2 || q0.th, t: vpTitle(it.pj), n: it.vs.length + " " + (it.vs.some(function (x) { return x.chap || x.section === "films"; }) ? t("films") : t("videos")) }); }
-        var q = parseVideo(it.v.lien); return card({ v: 1, href: "#/video/" + s.id, em: q.em, img: q.th2 || q.th, t: L(it.v.titre), n: "" });
+        var q = parseVideo(it.v.lien); return card({ v: 1, href: "#/film/" + s.id + "/" + secLoose(s.id).indexOf(it.v), img: q.th2 || q.th, t: L(it.v.titre), n: "" });
       }));
     }).join("");
     out += '<section class="xb"><h3 class="xb-h"><a href="#/video">' + t("video") + "</a><sup>" + vt + "</sup></h3>" + vd + "</section>";
@@ -873,7 +876,7 @@
     if (slug === "etalonnage") { nx = all[0]; pr = all[all.length - 1]; }
     var sn = s ? L(s) : t("grade");
     var backBtn = '<a class="back xs" href="' + esc(ret ? ret.h : "#/") + '" data-back><span aria-hidden="true">←</span> ' + t("backHome") + "</a>";
-    main.innerHTML = '<section class="ph grid"><div class="meta xs"><span class="mt-l">' + backBtn + '<a class="u" href="' + (slug === "etalonnage" ? "#/" : "#/photographie") + '">' + esc(sn) + "</a></span><span>" + (k >= 0 ? '<span class="mt-k">' + pad(k + 1) + " / " + pad(all.length) + ", </span>" : "") + list.length + " " + t("images") + '</span></div><h1><span class="roll"></span></h1>' +
+    main.innerHTML = '<section class="ph grid"><div class="meta xs"><span class="mt-l">' + backBtn + '<a class="u" href="' + (slug === "etalonnage" ? "#/etalonnage" : "#/photographie") + '"' + (s && slug !== "etalonnage" ? ' data-ixs="' + esc(s.id) + '"' : "") + '>' + esc(sn) + "</a></span><span>" + (k >= 0 ? '<span class="mt-k">' + pad(k + 1) + " / " + pad(all.length) + ", </span>" : "") + list.length + " " + t("images") + '</span></div><h1><span class="roll"></span></h1>' +
       (slug === "etalonnage" ? '<p class="lead rl">' + esc(lang === "fr" ? "Images étalonnées avec Node DRT, mon plugin d’étalonnage pour DaVinci Resolve." : "Frames graded with Node DRT, my grading plugin for DaVinci Resolve.") + "</p>" : "") +
       (pvids.length ? '<div class="pm" role="tablist"><button type="button" role="tab" data-m="photos">' + t("photo") + "<sup>" + list.length + '</sup></button><button type="button" role="tab" data-m="videos">' + t("video") + "<sup>" + pvids.length + "</sup></button></div>" : "") +
       '<div class="vue xs" role="tablist"><button type="button" role="tab" data-v="grille">' + t("vGrid") + '</button><button type="button" role="tab" data-v="expo">' + t("vExpo") + '</button><span class="zw"><label class="zm" title="' + t("size") + '"><span aria-hidden="true">−</span><input type="range" min="0.55" max="1.6" step="0.01" value="' + zoom + '" aria-label="' + t("size") + '"><span aria-hidden="true">+</span></label><button type="button" class="zm-r"' + (Math.abs(zoom - 1) < 0.005 ? " data-z1" : "") + '>' + t("reset") + '</button></span></div>' +
@@ -929,7 +932,7 @@
     }
     /* page vidéo dédiée : le lecteur de cinéma (voir cineMount) */
     var CH = VPAGES.indexOf(slug) >= 0 ? cineList(pvids) : [];
-    if (CH.length < 2) CH = []; else amb = null;
+    if (!CH.length) CH = []; else amb = null;
     function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
     function drawVids() {
       gal.classList.remove("ex", "ex-cadre", "ex-edito");
@@ -1078,13 +1081,13 @@
     return f.length > 1 ? f : list.filter(function (v) { return parseVideo(v.lien || ""); });
   }
   var cineOff = null;
-  function cineMount(host, CH, title, after) {
+  function cineMount(host, CH, title, after, start) {
     if (cineOff) { cineOff(); cineOff = null; }
     var emb = !CH.every(function (v) { var q = parseVideo(v.lien); return q.file; });
     var isFilm = CH.some(function (v) { return v.chap; }), tot = CH.reduce(function (a, v) { return a + (v.duree || 0); }, 0);
     function nm(v) { if (v.chap) return L(v.chap); var s = L(v.titre), r = s.replace(title + ", ", ""); if (r === s) return s; return /^[IVX]+$/.test(r) ? (lang === "fr" ? "Partie " : "Part ") + r : cCap(r); }
     function th(v) { var q = parseVideo(v.lien); return q.file ? q.th : (q.th2 || q.th); }
-    var p0 = th(CH[0]), cnt = CH.length + " " + (isFilm ? t("chapters") : t("videos")) + (tot && !emb ? ", " + cFmt(tot) : "");
+    var p0 = th(CH[0]), cnt = CH.length + " " + (isFilm ? t("chapters") : CH.length > 1 ? t("videos") : t("video").toLowerCase()) + (tot && !emb ? ", " + cFmt(tot) : "");
     host.innerHTML = '<div class="cine' + (emb ? " emb" : "") + '" data-st="play" tabindex="-1">' +
       '<div class="cn-stage"><div class="cn-bg" style="background-image:url(\'' + esc(cAbs(p0)) + '\')"></div>' +
       '<div class="cn-frame">' + (emb ? "" : '<video playsinline preload="auto" disablepictureinpicture poster="' + esc(p0) + '"></video>' +
@@ -1111,13 +1114,20 @@
         var q = parseVideo(CH[cur].lien), src = q.em;
         /* lecture immédiate : avec le son si la personne a déjà cliqué sur le site, sinon sans le son (seule façon autorisée) */
         var act = navigator.userActivation ? navigator.userActivation.hasBeenActive : !!auto;
-        if (!act && /youtube/.test(src)) src += "&mute=1";
-        if (!act && /vimeo/.test(src)) src += "&muted=1";
-        fr.innerHTML = '<iframe src="' + esc(src) + '" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen title="' + esc(nm(CH[cur])) + '"></iframe>';
+        if (q.file) {
+          fr.innerHTML = '<video src="' + esc(src) + '" controls autoplay playsinline preload="auto" poster="' + esc(q.th) + '"></video>';
+          var fv = fr.querySelector("video"); fv.muted = !act;
+          var pr = fv.play(); if (pr && pr.catch) pr.catch(function () { if (!fv.muted) { fv.muted = true; fv.play().catch(function () {}); } });
+          fv.addEventListener("ended", function () { if (cur < CH.length - 1) loadE(cur + 1, true); });
+        } else {
+          if (!act && /youtube/.test(src)) src += "&mute=1";
+          if (!act && /vimeo/.test(src)) src += "&muted=1";
+          fr.innerHTML = '<iframe src="' + esc(src) + '" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen title="' + esc(nm(CH[cur])) + '"></iframe>';
+        }
         setBg(CH[cur]); mark();
       };
       items.forEach(function (b) { b.addEventListener("click", function () { loadE(+b.dataset.c, true); }); });
-      loadE(0, false);
+      loadE(start || 0, false);
       return;
     }
 
@@ -1209,23 +1219,27 @@
     }
     cineOff = off;
     v.muted = false;
-    load(0);
+    load(start || 0);
   }
 
   /* ---------- page d'une série vidéo sans photos (#/film/<id>) ---------- */
-  function filmPage(slug) {
-    var vp = (window.VIDEO_PROJETS || {})[slug];
-    var vs = (window.VIDEOS || []).filter(function (v) { return v.projet === slug && parseVideo(v.lien || ""); });
-    if (!vp || !vs.length) return notFound();
-    var title = L(vp), sec = vsec(vs[0].section);
+  function vpOwned(v) { return v.projet && VPAGES.indexOf(v.projet) >= 0 && (proj(v.projet) || VPROJ[v.projet]); }
+  function secLoose(id) { return (window.VIDEOS || []).filter(function (v) { return v.section === id && !vpOwned(v) && parseVideo(v.lien || ""); }); }
+  function filmPage(slug, n) {
+    var vp = (window.VIDEO_PROJETS || {})[slug], vs, title, sec;
+    if (vp) { vs = (window.VIDEOS || []).filter(function (v) { return v.projet === slug && parseVideo(v.lien || ""); }); title = L(vp); }
+    else if (vsec(slug)) { vs = secLoose(slug); title = L(vsec(slug)); }
+    if (!vs || !vs.length) return notFound();
+    sec = vsec(vs[0].section);
     var backBtn = '<a class="back xs" href="' + esc(ret ? ret.h : "#/video") + '" data-back><span aria-hidden="true">←</span> ' + t("backHome") + "</a>";
-    main.innerHTML = '<section class="ph grid"><div class="meta xs"><span class="mt-l">' + backBtn + '<a class="u" href="#/video">' + esc(sec ? L(sec) : t("video")) + "</a></span><span>" + vs.length + " " + t("videos") + '</span></div><h1><span class="roll"></span></h1></section>' +
+    main.innerHTML = '<section class="ph grid"><div class="meta xs"><span class="mt-l">' + backBtn + '<a class="u" href="' + (sec ? "#/video/" + sec.id : "#/video") + '">' + esc(sec ? L(sec) : t("video")) + "</a></span><span>" + vs.length + " " + (vs.length > 1 ? t("videos") : t("video").toLowerCase()) + '</span></div><h1><span class="roll"></span></h1></section>' +
       '<section class="gal"><div class="jw" id="jg"></div></section>' +
       '<section class="s-end grid"><p class="q"><span>' + t("similar") + '</span><a class="u" href="mailto:' + MAIL + '">' + t("email") + "</a></p></section>";
     roll(main.querySelector(".ph h1 .roll"), title, 1);
     var bb = main.querySelector("[data-back]");
     if (bb) bb.addEventListener("click", function (e) { e.preventDefault(); var h = ret ? ret.h : "#/video"; if (location.hash === h) render(); else location.hash = h; });
-    cineMount(document.getElementById("jg"), cineList(vs), title);
+    var CHf = cineList(vs), sv = vs[n || 0];
+    cineMount(document.getElementById("jg"), CHf, title, "", Math.max(0, CHf.indexOf(sv)));
   }
 
   /* ---------- info ---------- */
@@ -1327,14 +1341,20 @@
   var ixo = document.createElement("div"), curPrevNext = null;
   ixo.id = "ixo"; ixo.className = "ixo"; ixo.hidden = true; ixo.setAttribute("role", "dialog"); ixo.setAttribute("aria-label", "Index");
   document.body.appendChild(ixo);
-  function openIxo() {
+  function openIxo(focus) {
     ixo.innerHTML = '<div class="top"><span>Index</span><button type="button" class="x">' + t("close") + "</button></div>" + mapCards();
     ixo.querySelectorAll(".ix-c").forEach(function (g, i) { g.style.setProperty("--i", Math.min(i, 20)); if (g.getAttribute("href") === location.hash) g.classList.add("cur"); });
     ixo.querySelectorAll(".ix-c[data-em]").forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); closeIxo(); openVideo(a.dataset.em, a.dataset.t, a); }); });
     ixo.querySelectorAll(".ix-c[data-pmv]").forEach(function (a) { a.addEventListener("click", pjVids); });
     ixo.hidden = false; document.body.style.overflow = "hidden"; lock(true);
     requestAnimationFrame(function () { ixo.classList.add("on"); });
-    ixo.querySelector(".x").focus();
+    ixo.querySelector(".x").focus({ preventScroll: true });
+    ixo.scrollTop = 0;
+    /* ouvert depuis le nom d'une section : on arrive directement sur sa catégorie */
+    if (focus) {
+      var tg = [].filter.call(ixo.querySelectorAll(".xc[data-s]"), function (x) { return (" " + x.dataset.s + " ").indexOf(" " + focus + " ") >= 0; })[0];
+      if (tg) { var y = tg.getBoundingClientRect().top - ixo.getBoundingClientRect().top + ixo.scrollTop - 80; ixo.scrollTop = Math.max(0, y); tg.classList.add("hl"); setTimeout(function () { tg.classList.remove("hl"); }, 1600); }
+    }
   }
   function closeIxo() { if (ixo.hidden) return; pv.classList.remove("on", "ixp"); ixo.classList.remove("on"); document.body.style.overflow = ""; lock(false); setTimeout(function () { if (!ixo.classList.contains("on")) ixo.hidden = true; }, 500); }
 
@@ -1348,7 +1368,7 @@
     var hs = /^#\//.test(location.hash) ? location.hash : "#/";
     var h = hs.replace(/^#\/?/, "").split("/"), r = h[0] || "";
     if (r === "travaux") r = "photographie";
-    return { r: r, sub: h[1] ? decodeURIComponent(h[1]) : "" };
+    return { r: r, sub: h[1] ? decodeURIComponent(h[1]) : "", n: h[2] ? +h[2] || 0 : 0 };
   }
   function navOn() {
     hd.querySelectorAll("[data-nav]").forEach(function (a) {
@@ -1357,7 +1377,7 @@
     });
   }
   function setTitle(R) {
-    var ttl = page === "projet" && proj(R.sub) ? pTitle(R.sub) : page === "film" && (window.VIDEO_PROJETS || {})[R.sub] ? L(window.VIDEO_PROJETS[R.sub]) : page === "home" ? (mode === "video" ? t("video") : t("photo")) : page === "etalonnage" ? t("grade") : page === "info" ? t("info") : t("role");
+    var ttl = page === "projet" && proj(R.sub) ? pTitle(R.sub) : page === "film" && (window.VIDEO_PROJETS || {})[R.sub] ? L(window.VIDEO_PROJETS[R.sub]) : page === "film" && vsec(R.sub) ? L(vsec(R.sub)) : page === "home" ? (mode === "video" ? t("video") : t("photo")) : page === "etalonnage" ? t("grade") : page === "info" ? t("info") : t("role");
     document.title = "Samuel Drouin — " + ttl;
   }
   /* retour à l'accueil : on garde la page, l'image de la vitrine et la position */
@@ -1384,7 +1404,7 @@
       else if (r === "photographie") { page = "projet"; projet(R.sub); }
       else if (r === "etalonnage") { page = "etalonnage"; projet("etalonnage"); }
       else if (r === "info") { page = "info"; info(); }
-      else if (r === "film") { page = "film"; filmPage(R.sub); }
+      else if (r === "film") { page = "film"; filmPage(R.sub, R.n); }
       else { page = "404"; notFound(); }
       navOn(); setTitle(R); setTimeout(fnSync, 50);
       var back = hm && from === "projet" && scrollMem[location.hash || "#/"];
