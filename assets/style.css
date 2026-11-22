@@ -570,3 +570,12 @@ html{touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-t
 /* mode Grille : le même fond taupe grisé que l'exposition */
 .gal:not(.ex){background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),linear-gradient(180deg,#E9E7E2,#E4E1DB);padding-top:clamp(14px,2vw,30px)}
 @media (hover:none),(max-width:1024px){.gal:not(.ex){background:#E7E5E0}}
+/* curseur de taille : « Réinitialiser » juste en dessous */
+.zw{position:relative;display:inline-flex}
+.vue-f .zw{pointer-events:auto}
+.zm-r,.vue .zm-r,.vue-f .zm-r{position:absolute;left:50%;top:100%;transform:translateX(-50%);margin-top:4px;padding:2px 4px;background:none;border:0;color:var(--mute);font-size:11px;letter-spacing:.01em;line-height:1.2;white-space:nowrap;cursor:pointer;opacity:1;transition:color .3s,opacity .3s}
+.zm-r:hover,.vue .zm-r:hover{color:var(--tx)}
+.zm-r[data-z1]{opacity:.35;pointer-events:none}
+.vue-f .zm-r{opacity:0}
+.vue-f.on .zm-r{opacity:1}
+.vue-f.on .zm-r[data-z1]{opacity:.35}
