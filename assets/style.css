@@ -646,13 +646,12 @@ html{touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-t
 .ph h1{margin-top:clamp(40px,5.2vw,88px);margin-bottom:clamp(6px,.8vw,14px)}
 /* ===================== AMBIANCES V1 / V2 / V3 =====================
    V1 Clair : le site d'origine (blanc cassé chaud, mur taupe).
-   V2 Galerie : gris neutre de salle d'exposition (proche des normes de lecture d'images ISO 3664) :
-      aucune teinte ne tire les couleurs des photos, les blancs et les couchers de soleil restent les points les plus lumineux.
-   V3 Basalte : brun-noir chaud de la pierre volcanique de Maurice, comme une salle de projection :
-      les lagons, les verts et la lumière dorée ressortent, et le lecteur vidéo se fond dans la page. */
-:root{--wall:#E7E5E0;--band:#F4F4F1;--glass:rgba(247,247,245,.97);--glass2:rgba(247,247,245,.9);--dim:#CBCBC6;--dim2:#BDBDB8;--lbg:var(--bg)}
-html[data-th=v2]{--bg:#DCDBD8;--surf:#CFCECA;--tx:#141414;--mute:#5C5B57;--line:rgba(20,20,20,.14);--wall:#CBCAC6;--band:#E3E2DF;--glass:rgba(220,219,216,.95);--glass2:rgba(227,226,223,.92);--dim:#A8A7A2;--dim2:#9C9B96;--lbg:#2B2A28}
-html[data-th=v3]{--bg:#1A1917;--surf:#24221F;--tx:#ECE8E0;--mute:#9A958C;--line:rgba(236,232,224,.13);--wall:#24221F;--band:#201E1B;--glass:rgba(26,25,23,.93);--glass2:rgba(32,30,27,.9);--dim:#4A4741;--dim2:#57534C;--lbg:#0C0B0A;color-scheme:dark}
+   V2 Basalte : brun-noir chaud de la pierre volcanique de Maurice, comme une salle de projection.
+   V3 Lagon : un autre modèle — vert lagon profond, titres en serif élégante (Cormorant Garamond),
+      touches de laiton ; inspiré des grandes maisons d'hôtellerie de luxe, très flatteur pour les images tropicales. */
+:root{--wall:#E7E5E0;--band:#F4F4F1;--glass:rgba(247,247,245,.97);--glass2:rgba(247,247,245,.9);--dim:#CBCBC6;--dim2:#BDBDB8;--lbg:var(--bg);--acc:var(--tx)}
+html[data-th=v2]{--bg:#1A1917;--surf:#24221F;--tx:#ECE8E0;--mute:#9A958C;--line:rgba(236,232,224,.13);--wall:#24221F;--band:#201E1B;--glass:rgba(26,25,23,.93);--glass2:rgba(32,30,27,.9);--dim:#4A4741;--dim2:#57534C;--lbg:#0C0B0A;color-scheme:dark}
+html[data-th=v3]{--bg:#0F2B27;--surf:#143630;--tx:#F1EBDF;--mute:#A3B5AD;--line:rgba(241,235,223,.15);--wall:#0B2420;--band:#123430;--glass:rgba(15,43,39,.94);--glass2:rgba(20,54,48,.92);--dim:#3E6159;--dim2:#4B6E66;--lbg:#061613;--acc:#D6B27A;color-scheme:dark}
 html[data-th] .hd{background:var(--glass)}
 html[data-th] .gal:not(.ex),html[data-th] .gal.ex{background:var(--wall)}
 html[data-th] .ph .meta::before{background:var(--band);border-bottom-color:var(--line)}
@@ -661,17 +660,35 @@ html[data-th] .mode a[aria-selected="true"]{color:var(--tx)}
 html[data-th] .pm button{color:var(--dim2)}
 html[data-th] .pm button[aria-selected="true"]{color:var(--tx)}
 html[data-th] .ex-lab{color:var(--mute)}
+html[data-th] .ex-lab b{color:var(--tx)}
 html[data-th] .lb{background:var(--lbg)}
-html[data-th=v2] .lb .top,html[data-th=v3] .lb .top{color:#ECE8E0}
+html[data-th] .lb .top{color:#ECE8E0}
 html[data-th] .pbar,html[data-th] .fnav,html[data-th] .vue-f button,html[data-th] .vue-f .zm,html[data-th] .amb-p{background:var(--glass2);border-color:var(--line);color:var(--tx)}
 html[data-th] .vue-f button[aria-selected="true"]{background:var(--tx);color:var(--bg)}
-html[data-th] .ex-wall::before{opacity:.25}
-html[data-th=v3] .ex-wall::before{display:none}
-html[data-th=v3] .ex-fr{box-shadow:0 0 0 1px rgba(255,255,255,.07),0 2px 3px rgba(0,0,0,.5),6px 20px 34px -12px rgba(0,0,0,.65)}
-html[data-th=v3] .ex-fl{box-shadow:0 0 0 1px rgba(255,255,255,.06),0 18px 30px -12px rgba(0,0,0,.7)}
-html[data-th=v3] .st-hint{background:rgba(236,232,224,.94);color:#141414}
-html[data-th=v3] .ft{border-top-color:var(--line)}
-html[data-th=v3] img{color-scheme:normal}
+html[data-th] .ex-wall::before{display:none}
+html[data-th] .ex-fr{box-shadow:0 0 0 1px rgba(255,255,255,.07),0 2px 3px rgba(0,0,0,.5),6px 20px 34px -12px rgba(0,0,0,.65)}
+html[data-th] .ex-fl{box-shadow:0 0 0 1px rgba(255,255,255,.06),0 18px 30px -12px rgba(0,0,0,.7)}
+html[data-th] .st-hint{background:rgba(236,232,224,.94);color:#141414}
+html[data-th] .ft{border-top-color:var(--line)}
+/* --- V3 Lagon : le modèle à part --- */
+html[data-th=v3] .st-hint{background:var(--acc);color:#10231F}
+html[data-th=v3] .mode,html[data-th=v3] .ph h1,html[data-th=v3] .st-t,html[data-th=v3] .pnav b,html[data-th=v3] .s-end .nx b,html[data-th=v3] .ixo h3,html[data-th=v3] .xb-h,html[data-th=v3] .ix-h,html[data-th=v3] .cn-h,html[data-th=v3] .menu .big,html[data-th=v3] .ft a.big,html[data-th=v3] .pm,html[data-th=v3] .auth p,html[data-th=v3] .ix-tx b{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;letter-spacing:-.005em}
+html[data-th=v3] .mode{font-size:clamp(50px,7vw,126px);line-height:.95}
+html[data-th=v3] .ph h1{font-size:clamp(42px,5.4vw,96px);line-height:1.02}
+html[data-th=v3] .st-t{font-size:clamp(34px,4.8vw,82px)}
+html[data-th=v3] .mode a[aria-selected="true"],html[data-th=v3] .pm button[aria-selected="true"]{font-style:italic}
+html[data-th=v3] .ix-tx b{font-size:clamp(19px,1.5vw,25px)}
+html[data-th=v3] .hd nav a.on,html[data-th=v3] .hd nav a[aria-current],html[data-th=v3] .u.on{border-color:var(--acc)}
+html[data-th=v3] .u::after{background:var(--acc)}
+html[data-th=v3] a:hover{color:var(--acc)}
+html[data-th=v3] .th button[aria-pressed="true"]{color:var(--acc)}
+html[data-th=v3] .zm input::-webkit-slider-thumb{background:var(--acc)}
+html[data-th=v3] .zm input::-moz-range-thumb{background:var(--acc)}
+html[data-th=v3] .zm input::-webkit-slider-runnable-track{background:rgba(241,235,223,.5)}
+html[data-th=v3] .ix-tx b i,html[data-th=v3] .ixo .ix-tx b i{color:var(--acc);font-style:italic}
+html[data-th=v3] .vue-f button[aria-selected="true"],html[data-th=v3] .mb-c{background:var(--acc);color:#10231F}
+html[data-th=v3] .ex-lab b{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.25em;font-weight:500;font-style:italic}
+html[data-th=v3] .ex-fr{box-shadow:0 0 0 1px rgba(214,178,122,.28),0 2px 3px rgba(0,0,0,.5),6px 20px 34px -12px rgba(0,0,0,.6)}
 html.thx,html.thx body,html.thx .hd,html.thx .gal,html.thx .ph .meta::before,html.thx .ixo,html.thx .fnav{transition:background-color .45s ease,color .45s ease}
 /* le choix d'ambiance, juste après le nom */
 .whw{grid-column:1/4;display:flex;align-items:baseline;gap:clamp(18px,1.8vw,30px);min-width:0}
@@ -684,3 +701,9 @@ html.thx,html.thx body,html.thx .hd,html.thx .gal,html.thx .ph .meta::before,htm
 @media (hover:none),(pointer:coarse){.th button{padding:12px 2px;margin:-12px 0}}
 html[data-th] .ex-lab b{color:var(--tx)}
 .th button[aria-pressed="true"]{border-bottom-color:transparent;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px}
+/* en-tête : le nom ne se coupe jamais, le choix V1 V2 V3 reste visible sur tablette et téléphone */
+.whw .who{white-space:nowrap}
+.th{flex:none}
+@media (max-width:1180px){.hd .loc{display:none}.whw{grid-column:1/5}.hd nav{grid-column:5/13}}
+@media (hover:none),(pointer:coarse){.hd nav{align-items:baseline}.hd nav .ixb{padding:0;margin:0}}
+@media (max-width:767px){.whw{grid-column:1}.hd .menu-b{grid-column:2}}
