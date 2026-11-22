@@ -51,7 +51,7 @@ window.SITE = {
   // Les sections, comme sur le Google Site (l'immobilier en dernier).
   // Ordre de l'index (accueil et index général) : les plus beaux projets d'abord.
   // Un projet absent de cette liste se place après, dans l'ordre des sections.
-  ordre: ["les-paletuviers", "drone", "voyage", "konekte", "abc", "samaya", "paysage", "portrait", "cafe-st-felix", "villa-horizon",
+  ordre: ["les-paletuviers", "paysage", "drone", "portrait", "cafe-st-felix", "voyage", "konekte", "abc", "samaya", "villa-horizon",
     "mr-bao", "melbees", "ocean-villa", "peizan", "bluemoon-villa", "vert-nature", "sealife", "kfc", "ferney", "kenya-telkom",
     "villa-anahita", "le-dalblair", "kenya-film", "villa-la-plage", "sasha-academy", "ciel-textile"],
   sections: [
