@@ -582,7 +582,7 @@ html{touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-t
 /* haut de page : un fin bandeau très pâle sur la ligne « Retour à l'accueil », le titre respire sur le blanc */
 .ph{position:relative;isolation:isolate;margin-bottom:clamp(8px,1vw,16px)}
 .ph .meta{position:relative}
-.ph .meta::before{content:"";position:absolute;left:calc(-1 * var(--m));right:calc(-1 * var(--m));top:-13px;bottom:-12px;z-index:-1;background:#EFEDE9;border-bottom:1px solid rgba(20,20,20,.05)}
+
 .ph h1{margin-top:clamp(22px,2.6vw,44px)}
 .ph .pnav{margin-top:clamp(20px,2.2vw,34px)}
 .ph .vue{margin-bottom:clamp(10px,1.2vw,18px)}
