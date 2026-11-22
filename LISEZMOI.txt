@@ -1,0 +1,32 @@
+SITE DE SAMUEL DROUIN
+=====================
+
+L'APP « SITE SAMUEL » (dans ton dossier Applications)
+  Accueil          : l'état du site, les actions rapides.
+  Nouveau projet   : glisse un dossier de photos, un titre, une section,
+                     « Ajouter au site ». Les photos sont redimensionnées
+                     et signées automatiquement.
+                     Ou « Envoyer à Claude » pour un tri soigné.
+  Projets ajoutés  : ordre, mise en avant sur l'accueil, retrait.
+  Vidéos           : colle un lien YouTube ou Vimeo (4K), titre, section.
+  Publier          : un clic, le site est en ligne en 1 à 2 minutes.
+  Réglages         : la liaison avec GitHub (une seule fois).
+
+RECONSTRUIRE L'APP (si besoin)
+  Dans le Terminal :  bash ~/Documents/samuel-drouin-site/outils/creer-app.sh
+
+AVEC CLAUDE
+  Mets le projet dans « samuel-drouin-nouveaux-projets » (ou utilise
+  « Envoyer à Claude » dans l'app), puis écris à Claude :
+  « nouveau projet <nom> ». Claude choisit les photos, l'ordre et la
+  couverture, puis l'intègre au site.
+
+OÙ EST QUOI
+  assets/data.js    : sections, projets, vitrine de l'accueil
+  assets/ajouts.js  : projets et vidéos ajoutés par l'app (ne pas modifier)
+  videos.js         : vidéos (Films, Interview, Drone, Contenu, Fake Ads)
+  photos/           : photos du site (versions web uniquement)
+
+À SAVOIR
+  Les vidéos YouTube ne se lisent pas quand on ouvre le site depuis le Mac
+  (fichier local) : c'est normal, elles marchent sur le site en ligne.
