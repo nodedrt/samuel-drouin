@@ -704,8 +704,9 @@ html[data-th] .ex-lab b{color:var(--tx)}
 .zm-m,.zm-p{cursor:pointer;padding:6px 4px;margin:-6px -4px;transition:color .25s}
 .zm-m:hover,.zm-p:hover{color:var(--tx)}
 @media (hover:none),(pointer:coarse){.zm-m,.zm-p{padding:12px 10px;margin:-12px -10px}}
-/* V2 Basalte : en Exposition, cadre blanc laqué et marie-louise blanc cassé (deux blancs différents pour rester réaliste) */
-html[data-th=v2] .ex-fr{border-image-source:url(tex/frame-white.png);box-shadow:0 1px 1px rgba(0,0,0,.45),3px 6px 10px -3px rgba(0,0,0,.5),8px 24px 40px -14px rgba(0,0,0,.7)}
-html[data-th=v2] .ex-fr::after{background:linear-gradient(122deg,rgba(255,255,255,.10) 0%,rgba(255,255,255,.03) 22%,rgba(255,255,255,0) 36%)}
-html[data-th=v2] .ex-mat{background-image:linear-gradient(rgba(196,178,148,.24),rgba(196,178,148,.24)),url(tex/paper.jpg);box-shadow:inset 0 7px 9px -7px rgba(60,45,25,.38),inset 5px 0 7px -6px rgba(60,45,25,.2),inset -3px 0 5px -4px rgba(60,45,25,.08)}
-html[data-th=v2] .ex-im{border-color:#D3CBBB #E6E0D3 #F7F3EB #DCD5C7}
+/* V2 Basalte : en Exposition, cadre fin en chêne naturel, marie-louise ivoire,
+   et un spot de galerie qui éclaire chaque œuvre sur le mur sombre */
+html[data-th=v2] .ex-fr{border-width:max(6px,calc(var(--fw) * .6));border-image-source:url(tex/frame-oak.png);box-shadow:0 1px 1px rgba(0,0,0,.5),3px 8px 12px -4px rgba(0,0,0,.55),8px 26px 44px -16px rgba(0,0,0,.75)}
+html[data-th=v2] .ex-fr::after{background:linear-gradient(122deg,rgba(255,255,255,.08) 0%,rgba(255,255,255,.02) 22%,rgba(255,255,255,0) 36%)}
+html[data-th=v2] .ex-mat{background-image:linear-gradient(rgba(214,196,160,.14),rgba(214,196,160,.14)),url(tex/paper.jpg)}
+html[data-th=v2] .ex-wall::before{display:block;opacity:1;width:min(1000px,92%);background:radial-gradient(ellipse 46% 52% at 50% 42%,rgba(255,236,200,.085),rgba(255,236,200,.03) 55%,rgba(255,236,200,0) 75%)}
