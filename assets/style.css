@@ -462,3 +462,13 @@ main.fade{animation:vt-in .6s var(--out) both}
 /* pendant le réglage de taille : aucune animation, tout reste affiché */
 .gal.live .fig .mask,.gal.live .fig img,.gal.live .ex-p .mask{transition:none!important;opacity:1!important;transform:none!important}
 .zm input{touch-action:none}
+/* fiabilité au toucher : pas de délai ni de zoom au double tap, pas de flash gris */
+html{touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+/* téléphones et tablettes : galerie d'exposition allégée (défilement fluide) */
+@media (hover:none),(max-width:1024px){
+  .gal.ex{background:#E7E5E0}
+  .ex-wall::before{display:none}
+  .ex-fr{box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 2px 4px rgba(0,0,0,.14),0 16px 28px -14px rgba(0,0,0,.32)}
+  .ex-fl{box-shadow:0 2px 4px rgba(0,0,0,.14),0 16px 28px -14px rgba(0,0,0,.3)}
+  .ex-fr::after{display:none}
+}

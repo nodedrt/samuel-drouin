@@ -440,8 +440,10 @@
       mirror(); sync();
     }
     me.sync = sync;
-    root.onmouseenter = function () { me.hold = true; sync(); };
-    root.onmouseleave = function () { me.hold = false; sync(); cursor.hide(); };
+    root.onpointerenter = function (e) { if (e.pointerType !== "mouse") return; me.hold = true; sync(); };
+    root.onpointerleave = function (e) { if (e.pointerType !== "mouse") return; me.hold = false; sync(); cursor.hide(); };
+    /* au toucher, aucun ralenti ne doit rester collé */
+    root.addEventListener("touchstart", function () { if (me.hold) { me.hold = false; sync(); } cursor.hide(); }, { passive: true });
 
     /* glisser, cliquer à gauche / à droite, étiquette qui suit la souris */
     var drag = null;
@@ -509,6 +511,7 @@
       var box = frame.lastElementChild && frame.lastElementChild.querySelector(".st-i"); if (!box || !it.em) return;
       root.classList.add("playing"); cursor.hide(); sync();
       box.insertAdjacentHTML("beforeend", player(it.em, it.titre));
+      var v0 = box.querySelector("video"); if (v0) { var pr0 = v0.play(); if (pr0 && pr0.catch) pr0.catch(function () {}); }
     }
 
     function layer(it, grp) {
@@ -659,7 +662,7 @@
     }
     return {
       show: function (txt, px, py) {
-        if (touch) return;
+
         el.style.transform = "translate3d(" + (px + 18) + "px," + (py + 20) + "px,0)";
         setText(txt);
         if (!on) { on = true; el.classList.add("on"); document.documentElement.classList.add("hint-on"); }
@@ -808,7 +811,7 @@
     var pr = all[(k - 1 + all.length) % all.length];
     if (slug === "etalonnage") { nx = all[0]; pr = all[all.length - 1]; }
     var sn = s ? L(s) : t("grade");
-    var backBtn = ret ? '<a class="back xs" href="' + esc(ret.h) + '" data-back><span aria-hidden="true">←</span> ' + t("backHome") + "</a>" : "";
+    var backBtn = '<a class="back xs" href="' + esc(ret ? ret.h : "#/") + '" data-back><span aria-hidden="true">←</span> ' + t("backHome") + "</a>";
     main.innerHTML = '<section class="ph grid"><div class="meta xs"><span class="mt-l">' + backBtn + '<a class="u" href="' + (slug === "etalonnage" ? "#/" : "#/photographie") + '">' + esc(sn) + "</a></span><span>" + (k >= 0 ? pad(k + 1) + " / " + pad(all.length) + ", " : "") + list.length + " " + t("images") + '</span></div><h1><span class="roll"></span></h1>' +
       (slug === "etalonnage" ? '<p class="lead rl">' + esc(lang === "fr" ? "Images étalonnées avec Node DRT, mon plugin d’étalonnage pour DaVinci Resolve." : "Frames graded with Node DRT, my grading plugin for DaVinci Resolve.") + "</p>" : "") +
       (pvids.length ? '<div class="pm" role="tablist"><button type="button" role="tab" data-m="photos">' + t("photo") + "<sup>" + list.length + '</sup></button><button type="button" role="tab" data-m="videos">' + t("video") + "<sup>" + pvids.length + "</sup></button></div>" : "") +
@@ -821,8 +824,8 @@
     roll(main.querySelector(".ph h1 .roll"), L(p.titre), 1);
     var bb = main.querySelector("[data-back]");
     if (bb) bb.addEventListener("click", function (e) {
-      if (!ret) return; e.preventDefault();
-      if (location.hash === ret.h) render(); else location.hash = ret.h;
+      e.preventDefault(); var h = ret ? ret.h : "#/";
+      if (location.hash === h) render(); else location.hash = h;
     });
     curPrevNext = [href(pr), href(nx)];
     var el = document.getElementById("jg");
@@ -1013,6 +1016,7 @@
     vmFrom = from;
     vm.innerHTML = '<div class="top xs"><span>' + esc(title) + '</span><button type="button" class="vx">' + t("close") + '</button></div><div class="fr' + (/\.(mp4|webm|m4v)(\?|$)/i.test(em) ? " file" : "") + '">' + player(em, title) + "</div>";
     vm.hidden = false; document.body.style.overflow = "hidden"; lock(true);
+    var v1 = vm.querySelector("video"); if (v1) { var pr1 = v1.play(); if (pr1 && pr1.catch) pr1.catch(function () {}); }
     requestAnimationFrame(function () { vm.classList.add("on"); });
     vm.querySelector(".vx").addEventListener("click", closeVideo); vm.querySelector(".vx").focus();
   }
