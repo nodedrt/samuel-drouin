@@ -361,14 +361,62 @@
       "</section>" +
       '<section class="ix grid" id="index"></section>' +
       '<section class="after grid"><p class="row"><span>' + t("services") + "</span><span>" + t("servicesLine") + '</span></p><p class="row"><span>' + t("clients") + "</span><span>" + t("clientsLine") + "</span></p></section>";
-    startStage(false); indexList(false);
+    heroSync(); startStage(false); indexList(false);
+  }
+  /* ---- ouverture de la page Vidéo : plein écran, les plans s'enchaînent en fondus lents ----
+     l'image s'ouvre comme une paupière, chaque plan avance d'un léger travelling, sans son */
+  var heroOff = null;
+  function heroSync() {
+    var ex = main.querySelector(".hero");
+    if (mode !== "video") { if (heroOff) { heroOff(); heroOff = null; } if (ex) ex.remove(); return; }
+    var st0 = main.querySelector(".st"); if (ex || !st0) return;
+    var N = 9, XF = 1.8, big = window.innerWidth * (window.devicePixelRatio || 1) > 2200;
+    var src = function (i) { return "videos/hero/" + pad(i + 1) + (big ? "-1440" : "") + ".mp4"; };
+    var h = document.createElement("section"); h.className = "hero";
+    h.setAttribute("aria-label", lang === "fr" ? "Extraits de films" : "Film excerpts");
+    var segs = ""; for (var s = 0; s < N; s++) segs += "<i><b></b></i>";
+    h.innerHTML = '<div class="hr-v"><video muted playsinline preload="auto" poster="videos/hero/poster.jpg" aria-hidden="true"></video><video muted playsinline preload="auto" aria-hidden="true"></video></div>' +
+      '<p class="hr-l">' + (lang === "fr" ? "Images en mouvement" : "Moving pictures") + "</p>" +
+      '<div class="hr-p" aria-hidden="true">' + segs + "</div>" +
+      '<button type="button" class="hr-d" aria-label="' + (lang === "fr" ? "Voir les films" : "See the films") + '"><span>' + (lang === "fr" ? "Les films" : "The films") + "</span><i></i></button>";
+    st0.parentNode.insertBefore(h, st0);
+    var vs = h.querySelectorAll("video"), segEl = h.querySelectorAll(".hr-p i"), cur = 0, k = 0, dead = false, vis = true, crossing = false;
+    function load(v, i) { v.src = src(i); v.load(); }
+    function play(v) { if (!vis || document.hidden) return; var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); }
+    function seg() { segEl.forEach(function (e, j) { e.classList.toggle("on", j === k); e.classList.toggle("past", j < k); }); }
+    function zoom(v) { v.classList.remove("z"); void v.offsetWidth; v.classList.add("z"); }
+    load(vs[0], 0); load(vs[1], 1);
+    vs[0].classList.add("on"); zoom(vs[0]); seg();
+    vs[0].addEventListener("playing", function () { h.classList.add("open"); }, { once: true });
+    setTimeout(function () { h.classList.add("open"); }, 2500);
+    function next() {
+      if (dead || crossing) return; crossing = true;
+      var a = vs[cur], b = vs[1 - cur]; k = (k + 1) % N;
+      try { b.currentTime = 0; } catch (e) {}
+      play(b); zoom(b); b.classList.add("on"); a.classList.remove("on"); seg(); cur = 1 - cur;
+      setTimeout(function () { crossing = false; if (dead) return; a.pause(); a.classList.remove("z"); load(a, (k + 1) % N); }, XF * 1000 + 150);
+    }
+    vs.forEach(function (v) {
+      v.addEventListener("timeupdate", function () { if (v === vs[cur] && v.duration && v.currentTime > v.duration - XF) next(); });
+      v.addEventListener("ended", function () { if (v === vs[cur]) next(); });
+    });
+    play(vs[0]);
+    h.querySelector(".hr-d").addEventListener("click", function () { var y = st0.getBoundingClientRect().top + window.scrollY - 49; window.scrollTo({ top: y, behavior: reduce ? "auto" : "smooth" }); });
+    var io = "IntersectionObserver" in window ? new IntersectionObserver(function (en) {
+      vis = en[0].intersectionRatio > 0.15;
+      if (vis) play(vs[cur]); else vs.forEach(function (v) { v.pause(); });
+    }, { threshold: [0, 0.15, 0.5] }) : null;
+    if (io) io.observe(h);
+    var onVis = function () { if (document.hidden) vs.forEach(function (v) { v.pause(); }); else play(vs[cur]); };
+    document.addEventListener("visibilitychange", onVis);
+    heroOff = function () { dead = true; if (io) io.disconnect(); document.removeEventListener("visibilitychange", onVis); vs.forEach(function (v) { v.pause(); v.removeAttribute("src"); v.load(); }); };
   }
   /* changer de mode : seuls la vitrine et l'index changent */
   function setMode(m) {
     if (m === mode) return;
     mode = m; saveMode();
     main.querySelectorAll("[data-mode]").forEach(function (x) { x.setAttribute("aria-selected", x.dataset.mode === mode); });
-    startStage(true); indexList(true);
+    heroSync(); startStage(true); indexList(true);
   }
 
   /* ---- vitrine ---- */
@@ -1484,7 +1532,7 @@
       if (R.sub) scrollIx(R.sub); else if (window.scrollY > 0 && r !== "") window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
       navOn(); setTitle(R); return;
     }
-    stopStage(); resizers = []; curPrevNext = null; if (cineOff) { cineOff(); cineOff = null; }
+    stopStage(); resizers = []; curPrevNext = null; if (cineOff) { cineOff(); cineOff = null; } if (heroOff) { heroOff(); heroOff = null; }
     var from = page;
     if (from === "home" && (r === "photographie" || r === "etalonnage" || r === "film")) { ret = { h: lastHome || "#/", i: stI, y: homeY, m: mode }; saveRet(); }
     if (hm && from !== "home" && ret && ret.i != null && ret.m === hm) resumeI = ret.i;
