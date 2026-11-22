@@ -622,3 +622,11 @@ html{touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-t
 .lb ~ .st-hint,.st-hint{z-index:200}
 .lb{cursor:pointer!important}
 @media (hover:none){.lb{cursor:auto}}
+/* pages vidéo : le lecteur prend toute la hauteur de l'écran et la vidéo le plus de place possible */
+.cine{height:calc(100vh - 49px);height:calc(100svh - 49px);max-height:none}
+.cine.emb .cn-frame{width:min(calc(100% - 2 * clamp(12px,1.6vw,28px)),calc((100svh - 49px - 2 * clamp(12px,2vh,24px)) * 16 / 9))}
+.cine.emb .cn-stage{padding:clamp(12px,2vh,24px) 0}
+@media (max-width:899px){
+  .cine{height:auto}
+  .cine.emb .cn-frame{width:min(100%,calc((100svh - 49px) * 16 / 9))}
+}
