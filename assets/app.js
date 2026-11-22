@@ -216,7 +216,7 @@
     document.documentElement.lang = lang;
     var th = document.documentElement.getAttribute("data-th") || "v1", TH = { v1: lang === "fr" ? "Clair" : "Light", v2: lang === "fr" ? "Basalte" : "Basalt", v3: lang === "fr" ? "Sable" : "Sand" };
     hd.innerHTML = '<span class="whw intro-hd"><a class="who" href="#/">' + t("who") + '</a><span class="th" role="group" aria-label="' + (lang === "fr" ? "Ambiance du site" : "Site mood") + '">' +
-      ["v1", "v2", "v3"].map(function (k) { return '<button type="button" data-th="' + k + '" title="' + TH[k] + '" aria-pressed="' + (k === th) + '">' + k.toUpperCase() + "</button>"; }).join("") + '</span></span><span class="loc intro-hd">' + esc(t("role")) + "</span>" +
+      ["v1", "v2"].map(function (k) { return '<button type="button" data-th="' + k + '" title="' + TH[k] + '" aria-pressed="' + (k === th) + '">' + k.toUpperCase() + "</button>"; }).join("") + '</span></span><span class="loc intro-hd">' + esc(t("role")) + "</span>" +
       '<nav class="intro-hd" aria-label="Navigation"><button type="button" class="u ixb" data-ixo>Index,</button> <a class="u" data-nav="photographie" href="#/photographie">' + t("photo") + ',</a> <a class="u" data-nav="video" href="#/video">' + t("video") + ',</a> ' +
       '<a class="u" data-nav="etalonnage" href="#/etalonnage">' + t("grade") + ',</a> <a class="u" data-nav="info" href="#/info">' + t("info") + ',</a> <a class="u" href="#contact" data-contact>' + t("contact") + "</a>" +
       '<span class="lang"><button class="' + (lang === "fr" ? "" : "off") + '" data-lang="fr">FR</button> / <button class="' + (lang === "en" ? "" : "off") + '" data-lang="en">EN</button></span></nav>' +
@@ -1020,7 +1020,7 @@
       vio.observe(vTop);
     }
     setVue(vue, false); resizers.push(drawG);
-    var zr = 0, zt = 0;
+    var zr = 0, zt = 0, zLast = zoom;
     /* zoom en temps réel : on recalcule la mise en page en gardant les mêmes images (pas de rechargement, pas de clignotement),
        et la photo au centre de l'écran reste au centre */
     function liveZoom() {
@@ -1067,7 +1067,10 @@
       inp.addEventListener("input", function () {
         zoom = +inp.value; try { sessionStorage.setItem("sd-zoom", zoom); } catch (e) {}
         main.querySelectorAll(".zm input").forEach(function (o) { if (o !== inp) o.value = zoom; });
-        zoomFade();
+        /* on glisse le curseur : les photos suivent en temps réel, comme avant ;
+           un saut (clic sur −, +, Réinitialiser ou sur la barre) : fondu doux */
+        var jump = Math.abs(zoom - zLast) > 0.12; zLast = zoom;
+        if (jump && !zfHidden) zoomFade(); else if (zfHidden) zoomFade(); else if (!zr) zr = requestAnimationFrame(liveZoom);
       });
       inp.addEventListener("dblclick", function () { inp.value = 1; inp.dispatchEvent(new Event("input")); });
     });
