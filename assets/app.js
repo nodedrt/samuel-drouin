@@ -7,7 +7,7 @@
   var VSEC = window.VIDEO_SECTIONS || [], VIDEOS = (window.VIDEOS || []).concat(window.AJOUTS_VIDEOS || []);
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var touch = window.matchMedia("(hover: none)").matches;
-  var MAIL = "samueldrouin10@gmail.com", TEL = "+230 5473 18 36", WA = "23054731836";
+  var MAIL = "samueldrouinwork@gmail.com", TEL = "+230 5473 18 36", WA = "23054731836";
 
   /* ---------- projets ajoutés par l'app ---------- */
   (window.AJOUTS || []).forEach(function (a) {
@@ -32,7 +32,7 @@
       services: "Services", servicesLine: "Architecture et hôtellerie, entreprises et marques, portrait, voyage, films, drone, étalonnage.",
       clients: "Ils m’ont fait confiance", clientsLine: "Ciel Textile, Gamma Construction, Sealife, Sasha Academy, Telkom Kenya, KFC, Eclosia.",
       similar: "Un projet similaire ?", email: "E-mail", next: "Projet suivant", back: "Retour", ask: "Un projet ?", copy: "Copier", copied: "Copié",
-      rights: "Photographies protégées, toute reproduction interdite.", prev: "Préc.", nextShort: "Suiv.", prevImg: "Image préc.", nextImg: "Image suiv.", play: "Lire",
+      rights: "Photographies protégées, toute reproduction interdite.", backHome: "Retour à l’accueil", vGrid: "Grille", vExpo: "Exposition", prev: "Préc.", nextShort: "Suiv.", prevImg: "Image préc.", nextImg: "Image suiv.", play: "Lire",
       bio: "Samuel Drouin est photographe et vidéaste, basé à l’île Maurice. Il photographie et filme les entreprises, les marques, les lieux et les personnes qui les font vivre, du drone au plateau de tournage. Coloriste, il développe Node DRT, un plugin d’étalonnage pour DaVinci Resolve, et Lumina, un DCTL.",
       tools: "Outils", svc: ["Photographie d’entreprise et de marque", "Portrait", "Architecture et hôtellerie", "Films publicitaires et institutionnels", "Prises de vue par drone", "Contenus pour les réseaux", "Étalonnage"],
       videos: "vidéos", prevP: "Projet précédent", wa: "Bonjour Samuel, j’ai un projet : ", notfound: "Page introuvable", home: "Retour à l’accueil", isNew: "Nouveau"
@@ -43,7 +43,7 @@
       services: "Services", servicesLine: "Architecture & hospitality, corporate & brands, portrait, travel, film, drone, colour grading.",
       clients: "Clients", clientsLine: "Ciel Textile, Gamma Construction, Sealife, Sasha Academy, Telkom Kenya, KFC, Eclosia.",
       similar: "A similar project?", email: "Email", next: "Next project", back: "Back", ask: "A project in mind?", copy: "Copy", copied: "Copied",
-      rights: "Protected photographs, all reproduction prohibited.", prev: "Prev.", nextShort: "Next", prevImg: "Previous image", nextImg: "Next image", play: "Play",
+      rights: "Protected photographs, all reproduction prohibited.", backHome: "Back to home", vGrid: "Grid", vExpo: "Exhibition", prev: "Prev.", nextShort: "Next", prevImg: "Previous image", nextImg: "Next image", play: "Play",
       bio: "Samuel Drouin is a photographer and filmmaker based in Mauritius. He photographs and films companies, brands, places and the people behind them, from drone to film set. A colourist, he develops Node DRT, a grading plugin for DaVinci Resolve, and Lumina, a DCTL.",
       tools: "Tools", svc: ["Corporate & brand photography", "Portrait", "Architecture & hospitality", "Commercial & corporate film", "Drone photography & film", "Social media content", "Colour grading"],
       videos: "videos", prevP: "Previous project", wa: "Hi Samuel, I have a project: ", notfound: "Page not found", home: "Back to home", isNew: "New"
@@ -82,6 +82,66 @@
     o = o || {};
     return '<img draggable="false" alt="' + esc(o.alt || "") + '" width="' + p.w + '" height="' + p.h + '"' + (o.eager ? ' fetchpriority="high"' : ' loading="lazy" decoding="async"') +
       ' src="' + esc(src(p, !o.full)) + '" srcset="' + esc(src(p, true)) + " 960w, " + esc(src(p)) + ' 1600w" sizes="' + (o.sizes || "50vw") + '">';
+  }
+
+  /* ---------- mode exposition ----------
+     cadre : tirages encadrés (cadre noir fin, large passe-partout blanc) accrochés sur un mur clair, avec de temps en temps une image pleine largeur
+     edito : mise en page de magazine, grandes images et petites images en décalé, numérotées */
+  var vue = "grille";
+  try { vue = sessionStorage.getItem("sd-vue") === "expo" ? "expo" : "grille"; } catch (e) {}
+  function expo(el, items, kind) {
+    var W = el.clientWidth, vw = window.innerWidth, vh = window.innerHeight, mob = vw < 768, out = [];
+    function num(it) { return '<span class="ex-n">' + pad(it.i + 1) + "</span>"; }
+    function print(it, h, cls) {
+      var ar = it.p.w / it.p.h, w = h * ar;
+      return '<button type="button" class="ex-p fig' + (cls ? " " + cls : "") + '" data-i="' + it.i + '"><div class="mask"><div class="ex-fr"><div class="ex-mat">' +
+        '<div class="ex-im" style="width:' + w.toFixed(0) + "px;height:" + h.toFixed(0) + 'px">' + img(it.p, { alt: it.alt, sizes: Math.ceil(100 * w / vw) + "vw", eager: it.i < 2 }) + "</div></div></div></div>" + num(it) + "</button>";
+    }
+    if (kind === "cadre") {
+      var mat = mob ? 14 : Math.max(26, Math.min(64, W * 0.04)), fr = mob ? 4 : 7, extra = 2 * (mat + fr), solo = 0, i = 0;
+      while (i < items.length) {
+        var a = items[i], ar = a.p.w / a.p.h, b = items[i + 1], br = b ? b.p.w / b.p.h : 0;
+        if (ar < 0.95 && b && br < 0.95) {
+          var Wp = (mob ? W : W * 0.78) - 2 * extra - (mob ? 12 : 56), h = Math.min(vh * (mob ? 0.42 : 0.66), Wp / (ar + br));
+          out.push('<div class="ex-row c">' + print(a, h) + print(b, h) + "</div>"); i += 2; continue;
+        }
+        var pos = mob ? "c" : ["c", "l", "full", "r"][solo % 4]; solo++;
+        if (pos === "full" && ar < 1.3) pos = "c";
+        if (pos === "full") {
+          out.push('<div class="ex-row full"><button type="button" class="ex-full fig" data-i="' + a.i + '"><div class="mask">' + img(a.p, { alt: a.alt, sizes: "100vw" }) + "</div>" + num(a) + "</button></div>");
+        } else {
+          var maxW = (mob ? W : W * (pos === "c" ? 0.7 : 0.58)) - extra, hh = Math.min(vh * (mob ? 0.6 : 0.74), maxW / ar);
+          out.push('<div class="ex-row ' + pos + '">' + print(a, hh) + "</div>");
+        }
+        i++;
+      }
+    } else {
+      /* magazine : grille de 12 colonnes */
+      var k = 0, pat = 0, V = function (it) { return it.p.w / it.p.h < 0.95; };
+      function cell(it, col, cls) {
+        return '<button type="button" class="ex-e fig' + (cls ? " " + cls : "") + '" data-i="' + it.i + '" style="grid-column:' + col + '"><div class="mask">' + img(it.p, { alt: it.alt, sizes: mob ? "100vw" : "60vw", eager: it.i < 1 }) + "</div>" + num(it) + "</button>";
+      }
+      var first = items[0];
+      if (first && !V(first)) { out.push('<div class="ex-row full"><button type="button" class="ex-full fig" data-i="0"><div class="mask">' + img(first.p, { alt: first.alt, sizes: "100vw", eager: true }) + "</div>" + num(first) + "</button></div>"); k = 1; }
+      while (k < items.length) {
+        var x = items[k], y = items[k + 1], g = "";
+        if (!y) { g = cell(x, V(x) ? "4 / 10" : "3 / 11"); k++; }
+        else if (V(x) && V(y)) { g = cell(x, "2 / 7") + cell(y, "8 / 12", "lo"); k += 2; }
+        else if (V(x) || V(y)) {
+          var vv = V(x) ? x : y, ll = V(x) ? y : x;
+          g = pat % 2 ? cell(ll, "1 / 9") + cell(vv, "10 / 13", "lo") : cell(vv, "1 / 5", "hi") + cell(ll, "6 / 13");
+          k += 2; pat++;
+        } else {
+          var t3 = pat % 3; pat++;
+          if (t3 === 0) { g = cell(x, "1 / 9") + cell(y, "10 / 13", "lo"); k += 2; }
+          else if (t3 === 1) { g = cell(x, "3 / 11"); k++; }
+          else { g = cell(x, "1 / 6", "hi") + cell(y, "7 / 13"); k += 2; }
+        }
+        out.push('<div class="ex-row ed">' + g + "</div>");
+      }
+    }
+    el.innerHTML = out.join("");
+    observe();
   }
 
   /* rangée(s) justifiée(s) : les images gardent leur format et partagent la même hauteur */
@@ -138,10 +198,10 @@
       '<span class="lang"><button class="' + (lang === "fr" ? "" : "off") + '" data-lang="fr">FR</button> / <button class="' + (lang === "en" ? "" : "off") + '" data-lang="en">EN</button></span></nav>' +
       '<button class="menu-b intro-hd" aria-expanded="false" aria-controls="menu">' + t("menu") + "</button>";
     menu.innerHTML = '<button type="button" class="big" data-ixo>Index</button><a class="big" href="#/photographie">' + t("photo") + '</a><a class="big" href="#/video">' + t("video") + '</a><a class="big" href="#/etalonnage">' + t("grade") + '</a><a class="big" href="#/info">' + t("info") + '</a><a class="big" href="#contact" data-contact>' + t("contact") + "</a>" +
-      '<div class="sm"><button data-lang="fr">FR</button><button data-lang="en">EN</button><a href="' + waLink() + '" target="_blank" rel="noopener">WhatsApp</a><a href="mailto:' + MAIL + '">' + t("email") + "</a></div>";
-    ft.innerHTML = '<p class="q">' + t("ask") + '</p><a class="big u" href="' + waLink() + '" target="_blank" rel="noopener">WhatsApp →</a><a class="big u" href="mailto:' + MAIL + '">' + t("email") + " →</a>" +
+      '<div class="sm"><button data-lang="fr">FR</button><button data-lang="en">EN</button><a href="mailto:' + MAIL + '">' + t("email") + "</a></div>";
+    ft.innerHTML = '<p class="q">' + t("ask") + '</p><a class="big u" href="mailto:' + MAIL + '">' + t("email") + " →</a>" +
       '<div class="bot"><span>' + MAIL + ' &nbsp; <button type="button" id="cp">' + t("copy") + "</button></span><span>" + TEL + "</span><span>© " + new Date().getFullYear() + " Samuel Drouin. " + t("rights") + "</span></div>";
-    bar.innerHTML = '<a href="' + waLink() + '" target="_blank" rel="noopener">WhatsApp</a><a href="mailto:' + MAIL + '">' + t("email") + "</a>";
+    bar.innerHTML = '<a href="mailto:' + MAIL + '">' + t("email") + "</a><span>" + MAIL + "</span>";
     hd.querySelector(".menu-b").addEventListener("click", function () { toggleMenu(); });
     document.getElementById("cp").addEventListener("click", function () {
       var b = this;
@@ -349,7 +409,7 @@
         var cur = frame.lastElementChild;
         if (cur && Math.abs(drag.dx) > 4) { cur.style.transform = "translateX(" + (drag.dx * 0.4) + "px)"; root.classList.add("dragging"); }
       }
-      if (e.pointerType === "mouse") cursor.show(label(drag ? drag.dx : 0, e.clientX), e.clientX, e.clientY, lightUnder(e));
+      if (e.pointerType === "mouse") cursor.show(label(drag ? drag.dx : 0, e.clientX), e.clientX, e.clientY);
     };
     function endDrag(cancel, x) {
       if (!drag) return;
@@ -455,7 +515,13 @@
       var it = me.items[me.i]; if (!it || me.dead || root.classList.contains("playing")) return;
       var d = layer(it, me.grp); frame.innerHTML = ""; frame.appendChild(d);
     });
-    show(0, 1);
+    var r0 = 0;
+    if (resumeI != null && resumeI < items.length) {
+      r0 = resumeI; var it0 = items[r0];
+      if (it0 && !it0.video && rot[it0.key]) { rot[it0.key]--; saveRot(); }
+    }
+    resumeI = null;
+    show(r0, 1);
     /* précharger toute la vitrine pour des changements instantanés */
     setTimeout(function () {
       if (me.dead) return;
@@ -488,17 +554,20 @@
     } catch (e) {}
     return im._lum;
   }
-  /* vrai = fond clair sous le texte (donc texte noir) */
-  function lightUnder(e) {
-    var box = e.target.closest && e.target.closest(".st-i"); if (!box) return true;
-    var im = box.querySelector("img"), m = im && lumMap(im); if (!m) return false;
-    var r = box.getBoundingClientRect(), sum = 0, n = 0;
-    for (var dx = 0; dx <= 150; dx += 15) for (var dy = -12; dy <= 12; dy += 12) {
-      var u = Math.floor((e.clientX + dx - r.left) / r.width * 24), v = Math.floor((e.clientY + dy - r.top) / r.height * 24);
-      if (u < 0 || v < 0 || u > 23 || v > 23) continue;
-      sum += m[v * 24 + u]; n++;
+  /* vrai = fond clair sous le texte (donc texte noir) : on mesure une zone invisible au milieu de ce qui est écrit */
+  function lightAt(r) {
+    var sum = 0, n = 0, pad = 6;
+    for (var a = 0; a < 7; a++) for (var b = 0; b < 3; b++) {
+      var x = r.left - pad + (r.width + pad * 2) * (a + 0.5) / 7, y = r.top - pad + (r.height + pad * 2) * (b + 0.5) / 3, l = 0.97;
+      var el = document.elementFromPoint(x, y), box = el && el.closest && el.closest(".st-i");
+      if (box) {
+        var im = box.querySelector("img"), m = im && lumMap(im), q = box.getBoundingClientRect();
+        if (m) { var u = Math.floor((x - q.left) / q.width * 24), v = Math.floor((y - q.top) / q.height * 24); l = m[Math.max(0, Math.min(23, v)) * 24 + Math.max(0, Math.min(23, u))]; }
+        else l = 0.3;
+      }
+      sum += l; n++;
     }
-    return n ? sum / n > 0.62 : false;
+    return sum / n > 0.62;
   }
   var cursor = (function () {
     /* curseur discret : un point et une légende fine, collés à la souris ; blancs sur l'image, noirs sur le fond */
@@ -513,11 +582,11 @@
       o.onfinish = function () { tx.textContent = cur; o.cancel(); tx.animate([{ transform: "translateY(100%)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 340, easing: OUT }); };
     }
     return {
-      show: function (txt, px, py, light) {
+      show: function (txt, px, py) {
         if (touch) return;
         el.style.transform = "translate3d(" + px + "px," + py + "px,0)";
-        el.classList.toggle("dark", !!light);
         setText(txt);
+        el.classList.toggle("dark", lightAt(tx.parentNode.getBoundingClientRect()));
         if (!on) { on = true; el.classList.add("on"); document.documentElement.classList.add("hint-on"); }
       },
       hide: function () { if (!on) return; on = false; el.classList.remove("on"); document.documentElement.classList.remove("hint-on"); },
@@ -609,13 +678,21 @@
     var pr = all[(k - 1 + all.length) % all.length];
     if (slug === "etalonnage") { nx = all[0]; pr = all[all.length - 1]; }
     var sn = s ? L(s) : t("grade");
-    main.innerHTML = '<section class="ph grid"><div class="meta xs"><a class="u" href="' + (slug === "etalonnage" ? "#/" : "#/photographie") + '">' + esc(sn) + "</a><span>" + (k >= 0 ? pad(k + 1) + " / " + pad(all.length) + ", " : "") + list.length + " " + t("images") + '</span></div><h1><span class="roll"></span></h1>' +
-      (slug === "etalonnage" ? '<p class="lead rl">' + esc(lang === "fr" ? "Images étalonnées avec Lumina, mon DCTL pour DaVinci Resolve. Je développe aussi Node DRT, un plugin d’étalonnage pour Resolve." : "Frames graded with Lumina, my DCTL for DaVinci Resolve. I also develop Node DRT, a grading plugin for Resolve.") + "</p>" : "") + pnav(pr, nx, false) + "</section>" +
+    var backBtn = ret ? '<a class="back xs" href="' + esc(ret.h) + '" data-back><span aria-hidden="true">←</span> ' + t("backHome") + "</a>" : "";
+    main.innerHTML = '<section class="ph grid">' + backBtn + '<div class="meta xs"><a class="u" href="' + (slug === "etalonnage" ? "#/" : "#/photographie") + '">' + esc(sn) + "</a><span>" + (k >= 0 ? pad(k + 1) + " / " + pad(all.length) + ", " : "") + list.length + " " + t("images") + '</span></div><h1><span class="roll"></span></h1>' +
+      (slug === "etalonnage" ? '<p class="lead rl">' + esc(lang === "fr" ? "Images étalonnées avec Lumina, mon DCTL pour DaVinci Resolve. Je développe aussi Node DRT, un plugin d’étalonnage pour Resolve." : "Frames graded with Lumina, my DCTL for DaVinci Resolve. I also develop Node DRT, a grading plugin for Resolve.") + "</p>" : "") +
+      '<div class="vue xs" role="tablist"><button type="button" role="tab" data-v="grille">' + t("vGrid") + '</button><button type="button" role="tab" data-v="expo">' + t("vExpo") + "</button></div>" +
+      pnav(pr, nx, false) + "</section>" +
       '<section class="gal"><div class="jw" id="jg"></div></section>' +
-      '<section class="s-end grid"><p class="q"><span>' + t("similar") + '</span><a class="u" href="' + waLink() + '" target="_blank" rel="noopener">WhatsApp,</a><a class="u" href="mailto:' + MAIL + '">' + t("email") + "</a>" +
+      '<section class="s-end grid"><p class="q"><span>' + t("similar") + '</span><a class="u" href="mailto:' + MAIL + '">' + t("email") + "</a>" +
       (slug === "etalonnage" ? '<a class="u" href="https://nodedrt.github.io/NodeDRT/" target="_blank" rel="noopener">Node DRT →</a>' : "") + "</p>" +
       pnav(pr, nx, true) + "</section>";
     roll(main.querySelector(".ph h1 .roll"), L(p.titre), 1);
+    var bb = main.querySelector("[data-back]");
+    if (bb) bb.addEventListener("click", function (e) {
+      if (!ret) return; e.preventDefault();
+      if (location.hash === ret.h) render(); else location.hash = ret.h;
+    });
     curPrevNext = [href(pr), href(nx)];
     var el = document.getElementById("jg");
     var opt = { target: function (vw) { return vw < 600 ? 180 : vw < 1100 ? 280 : Math.min(500, vw * 0.3); } }, pos = {};
@@ -626,7 +703,23 @@
       list.forEach(function (q, i) { if (!vu[i]) opt.rows.push([i]); });
     }
     if (p.coupure) { opt.breaks = {}; p.coupure.forEach(function (n) { if (pos[n] != null) opt.breaks[pos[n]] = 1; }); }
-    mountJ(el, list.map(function (q, i) { return { p: q, i: i, alt: L(p.titre) + ", " + (i + 1) }; }), opt);
+    var items = list.map(function (q, i) { return { p: q, i: i, alt: L(p.titre) + ", " + (i + 1) }; });
+    var kind = (slug === "etalonnage" || (s && ["voyage", "paysage", "portrait", "vert-nature", "drone"].indexOf(s.id) >= 0)) ? "cadre" : "edito";
+    var gal = el.parentNode;
+    function drawG() {
+      gal.classList.toggle("ex", vue === "expo"); gal.classList.toggle("ex-cadre", vue === "expo" && kind === "cadre"); gal.classList.toggle("ex-edito", vue === "expo" && kind === "edito");
+      if (vue === "expo") expo(el, items, kind); else justify(el, items, opt);
+    }
+    function setVue(v, anim) {
+      vue = v; try { sessionStorage.setItem("sd-vue", v); } catch (e) {}
+      main.querySelectorAll(".vue [data-v]").forEach(function (b) { b.setAttribute("aria-selected", b.dataset.v === v); });
+      if (anim && !reduce && el.animate) {
+        var o = el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, easing: "ease-in", fill: "forwards" });
+        o.onfinish = function () { drawG(); o.cancel(); el.animate([{ opacity: 0, transform: "translateY(16px)" }, { opacity: 1, transform: "none" }], { duration: 700, easing: OUT }); };
+      } else drawG();
+    }
+    main.querySelectorAll(".vue [data-v]").forEach(function (b) { b.addEventListener("click", function () { if (vue !== b.dataset.v) setVue(b.dataset.v, true); }); });
+    setVue(vue, false); resizers.push(drawG);
     el.addEventListener("click", function (e) { var b = e.target.closest("[data-i]"); if (b) openLB(list, +b.dataset.i, b, L(p.titre)); });
   }
 
@@ -646,7 +739,7 @@
       '<section class="bio grid"><p class="rl">' + esc(t("bio")) + "</p></section>" +
       '<section class="cols grid"><div><h3>' + t("services") + "</h3><ul>" + t("svc").map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></div>" +
       "<div><h3>" + t("tools") + '</h3><ul><li><a class="u" href="https://nodedrt.github.io/NodeDRT/" target="_blank" rel="noopener">Node DRT, DaVinci Resolve plugin</a></li><li><a class="u" href="#/etalonnage">Lumina, DCTL</a></li></ul></div>' +
-      "<div><h3>" + t("contact") + '</h3><ul><li><a class="u" href="' + waLink() + '" target="_blank" rel="noopener">WhatsApp</a></li><li><a class="u" href="mailto:' + MAIL + '">' + MAIL + "</a></li><li>" + TEL + "</li></ul></div></section>" +
+      "<div><h3>" + t("contact") + '</h3><ul><li><a class="u" href="mailto:' + MAIL + '">' + MAIL + "</a></li><li>" + TEL + "</li></ul></div></section>" +
       '<section class="after grid"><p class="row"><span>' + t("clients") + "</span><span>" + t("clientsLine") + "</span></p></section>";
   }
   function notFound() { main.innerHTML = '<section class="ph grid"><h1>' + t("notfound") + '</h1></section><section class="after grid"><a class="all u" href="#/">' + t("home") + " →</a></section>"; }
@@ -770,8 +863,12 @@
     var ttl = page === "projet" && proj(R.sub) ? pTitle(R.sub) : page === "home" ? (mode === "video" ? t("video") : t("photo")) : page === "etalonnage" ? t("grade") : page === "info" ? t("info") : t("role");
     document.title = "Samuel Drouin — " + ttl;
   }
+  /* retour à l'accueil : on garde la page, l'image de la vitrine et la position */
+  var ret = null, resumeI = null;
+  try { ret = JSON.parse(sessionStorage.getItem("sd-ret") || "null"); } catch (e) {}
+  function saveRet() { try { sessionStorage.setItem("sd-ret", JSON.stringify(ret)); } catch (e) {} }
   function render(keepScroll) {
-    var R = parse(), r = R.r;
+    var R = parse(), r = R.r, stI = st && st.i >= 0 ? st.i : null;
     var hm = r === "" ? mode : (r === "photographie" && !R.sub) ? "photo" : r === "video" ? "video" : null;
     toggleMenu(false); closeIxo(); pv.classList.remove("on"); cursor.hide();
     /* même page : on ne change que le contenu */
@@ -782,6 +879,9 @@
     }
     stopStage(); resizers = []; curPrevNext = null;
     var from = page;
+    if (from === "home" && (r === "photographie" || r === "etalonnage")) { ret = { h: lastHome || "#/", i: stI, y: homeY, m: mode }; saveRet(); }
+    if (hm && from !== "home" && ret && ret.i != null && ret.m === hm) resumeI = ret.i;
+    if (hm) { ret = null; saveRet(); }
     var draw = function () {
       if (hm) { if (hm !== mode) { mode = hm; saveMode(); } page = "home"; home(); }
       else if (r === "photographie") { page = "projet"; projet(R.sub); }
@@ -790,6 +890,7 @@
       else { page = "404"; notFound(); }
       navOn(); setTitle(R);
       var back = hm && from === "projet" && scrollMem[location.hash || "#/"];
+      if (hm && back == null && from === "projet") back = homeY;
       if (back) window.scrollTo(0, back); else if (!keepScroll) window.scrollTo(0, 0);
       observe();
       if (!first && !keepScroll) main.focus({ preventScroll: true });
@@ -799,11 +900,13 @@
     else { draw(); if (!first && !reduce) { main.classList.remove("fade"); void main.offsetWidth; main.classList.add("fade"); } }
     first = false;
   }
-  var scrollMem = {}, lastHash = location.hash;
+  var scrollMem = {}, lastHash = location.hash, lastHome = "#/", homeY = 0;
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";
   window.addEventListener("hashchange", function () {
     if (location.hash && !/^#\//.test(location.hash)) return;
-    scrollMem[lastHash || "#/"] = window.scrollY; lastHash = location.hash;
+    scrollMem[lastHash || "#/"] = window.scrollY;
+    if (page === "home") { lastHome = lastHash || "#/"; homeY = window.scrollY; }
+    lastHash = location.hash;
     render();
   });
   var rt, lastW = window.innerWidth, lastH = window.innerHeight;

@@ -17,6 +17,7 @@ window.SITE = {
     { projet: "ferney", img: ["coulisses/14"] },
     { projet: "villa-la-plage", img: ["immobilier/villa-la-plage/01"] },
     { projet: "portrait", img: ["portrait/20", "portrait/18"] },
+    { projet: "konekte", img: ["konekte/01", "konekte/03"] },
     { projet: "paysage", img: ["paysage/03"] },
     { projet: "sealife", img: ["corporate/sealife/10"] },
     { projet: "kenya-telkom", img: ["corporate/kenya-telkom/02", "corporate/kenya-telkom/03"] },
@@ -53,6 +54,7 @@ window.SITE = {
     { id: "sealife", fr: "Sealife", en: "Sealife", projets: ["sealife"] },
     { id: "gamma", fr: "Gamma Construction", en: "Gamma Construction", projets: ["gamma-construction", "exposition-port-louis"] },
     { id: "sasha-academy", fr: "Sasha Academy", en: "Sasha Academy", projets: ["sasha-academy"] },
+    { id: "konekte", fr: "Konekte", en: "Konekte", projets: ["konekte"] },
     { id: "associations", fr: "Associations", en: "Associations", projets: ["eclosia", "ciel-group", "ome-fam-uni"] },
     { id: "immobilier", fr: "Immobilier", en: "Real estate",
       projets: ["villa-la-plage", "ocean-villa", "villa-anahita", "le-dalblair", "yesterday-rodrigues", "villa-horizon", "bluemoon-villa", "details"] }
@@ -61,6 +63,7 @@ window.SITE = {
   projets: {
     "paysage": { titre: { fr: "Paysage", en: "Landscape" }, dossier: "paysage", couverture: "03", lignes: [["03", "02"], ["05", "10"], ["04", "08", "06"], ["07", "11"]] },
     "vert-nature": { titre: { fr: "Vert nature", en: "Green nature" }, dossier: "vert-nature", couverture: "08" },
+    "konekte": { titre: "Konekte", dossier: "konekte", couverture: "01", nouveau: true },
     "drone": { titre: { fr: "Drone", en: "Drone" }, dossier: "drone", couverture: "01", lignes: [["04", "01"], ["13", "09"], ["08", "03"], ["02", "12"], ["10", "05"], ["06", "07"], ["16", "11", "19"], ["15", "17", "18"]] },
     "ciel-textile": { titre: "Ciel Textile", dossier: "corporate/ciel-textile", couverture: "16" },
     "gamma-construction": { titre: { fr: "Gamma Construction, chantier", en: "Gamma Construction, site" }, dossier: "corporate/gamma-construction", couverture: "09" },
