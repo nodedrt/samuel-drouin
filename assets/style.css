@@ -616,3 +616,5 @@ html{touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-t
 .ph .meta::before{content:"";position:absolute;left:calc(-1 * var(--m));right:calc(-1 * var(--m));top:-13px;bottom:-12px;z-index:-1;background:#F4F4F1;border-bottom:1px solid rgba(20,20,20,.025)}
 .zm input:focus,.zm input:focus-visible{outline:none}
 .zm input:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 4px rgba(20,20,20,.12)}
+.ph .meta .sec{cursor:default;pointer-events:none;background:none;text-decoration:none}
+.ph .meta .sec::after,.ph .meta .sec::before{display:none}
