@@ -35,7 +35,7 @@
       rights: "Photographies protégées, toute reproduction interdite.", backHome: "Retour à l’accueil", soundOn: "Activer le son", soundOff: "Couper le son", size: "Taille des images", goHome: "Accueil", ixList: "Liste", ixImages: "Images", vGrid: "Grille", vExpo: "Exposition", prev: "Préc.", nextShort: "Suiv.", prevImg: "Image préc.", nextImg: "Image suiv.", play: "Lire",
       bio: "Samuel Drouin est photographe et vidéaste, basé à l’île Maurice. Il photographie et filme les entreprises, les marques, les lieux et les personnes qui les font vivre, du drone au plateau de tournage. Coloriste, il développe Node DRT, un plugin d’étalonnage pour DaVinci Resolve.",
       tools: "Outils", svc: ["Photographie d’entreprise et de marque", "Portrait", "Architecture et hôtellerie", "Films publicitaires et institutionnels", "Prises de vue par drone", "Contenus pour les réseaux", "Étalonnage"],
-      videos: "vidéos", prevP: "Projet précédent", wa: "Bonjour Samuel, j’ai un projet : ", notfound: "Page introuvable", home: "Retour à l’accueil", isNew: "Nouveau", seeFilms: "Voir les films", films: "films", watch: "Regarder le film", resume: "Reprendre", replay: "Revoir le film", full: "Plein écran", chapters: "chapitres", others: "Autres vidéos", prevCh: "Chapitre précédent", nextCh: "Chapitre suivant"
+      videos: "vidéos", prevP: "Projet précédent", wa: "Bonjour Samuel, j’ai un projet : ", notfound: "Page introuvable", home: "Retour à l’accueil", isNew: "Nouveau", seeFilms: "Voir les films", films: "films", watch: "Regarder le film", resume: "Reprendre", replay: "Revoir le film", watchAll: "Tout regarder", replayAll: "Tout revoir", full: "Plein écran", chapters: "chapitres", others: "Autres vidéos", prevCh: "Chapitre précédent", nextCh: "Chapitre suivant"
     },
     en: {
       who: "Samuel Drouin", role: "Photographer & filmmaker, Mauritius", photo: "Photography", video: "Video", grade: "Colour grading", info: "Info", contact: "Contact", menu: "Menu", close: "Close",
@@ -46,7 +46,7 @@
       rights: "Protected photographs, all reproduction prohibited.", backHome: "Back to home", soundOn: "Sound on", soundOff: "Sound off", size: "Image size", goHome: "Home", ixList: "List", ixImages: "Images", vGrid: "Grid", vExpo: "Exhibition", prev: "Prev.", nextShort: "Next", prevImg: "Previous image", nextImg: "Next image", play: "Play",
       bio: "Samuel Drouin is a photographer and filmmaker based in Mauritius. He photographs and films companies, brands, places and the people behind them, from drone to film set. A colourist, he develops Node DRT, a grading plugin for DaVinci Resolve.",
       tools: "Tools", svc: ["Corporate & brand photography", "Portrait", "Architecture & hospitality", "Commercial & corporate film", "Drone photography & film", "Social media content", "Colour grading"],
-      videos: "videos", prevP: "Previous project", wa: "Hi Samuel, I have a project: ", notfound: "Page not found", home: "Back to home", isNew: "New", seeFilms: "See the films", films: "films", watch: "Watch the film", resume: "Resume", replay: "Watch again", full: "Full screen", chapters: "chapters", others: "Other videos", prevCh: "Previous chapter", nextCh: "Next chapter"
+      videos: "videos", prevP: "Previous project", wa: "Hi Samuel, I have a project: ", notfound: "Page not found", home: "Back to home", isNew: "New", seeFilms: "See the films", films: "films", watch: "Watch the film", resume: "Resume", replay: "Watch again", watchAll: "Watch all", replayAll: "Watch all again", full: "Full screen", chapters: "chapters", others: "Other videos", prevCh: "Previous chapter", nextCh: "Next chapter"
     }
   };
   var AUTH = "C’est dans la brume et dans la conquête de moi-même que je laisse parler mon intuition. La photographie est devenue ma quête. Cette quête n’a pas, pour moi, de destination dans le temps. Cet instant est en soi ma destination.";
@@ -725,7 +725,7 @@
             if (it.pj) {
               var q = parseVideo(it.vs[0].lien);
               return '<a class="ix-c v fig pj" href="' + href(it.pj) + '" data-pmv="' + esc(it.pj) + '"><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="" src="' + esc(q.th2 || q.th) + '"><span class="play">' + t("seeFilms") + "</span></div>" +
-                '<div class="ix-tx"><b>' + esc(pTitle(it.pj)) + '</b><span class="ix-n">' + it.vs.length + " " + t("films") + "</span></div></a>";
+                '<div class="ix-tx"><b>' + esc(pTitle(it.pj)) + '</b><span class="ix-n">' + it.vs.length + " " + (it.vs.some(function (x) { return x.chap || /^films$/.test(x.section); }) ? t("films") : t("videos")) + "</span></div></a>";
             }
             var v = it.v, p = parseVideo(v.lien);
             return '<a class="ix-c v fig" href="#/video/' + s.id + '" data-em="' + esc(p.em) + '" data-t="' + esc(L(v.titre)) + '"><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="" src="' + esc(p.th2 || p.th) + '"><span class="play">' + t("play") + "</span></div>" +
@@ -798,7 +798,7 @@
       var vs = VIDEOS.filter(function (v) { return v.section === s.id && parseVideo(v.lien || ""); }); if (!vs.length) return "";
       vt += vs.length;
       return cat(L(s), vs.length, vItems(vs).map(function (it) {
-        if (it.pj) { var q0 = parseVideo(it.vs[0].lien); return card({ v: 1, pmv: it.pj, href: href(it.pj), img: q0.th2 || q0.th, t: pTitle(it.pj), n: it.vs.length + " " + t("films") }); }
+        if (it.pj) { var q0 = parseVideo(it.vs[0].lien); return card({ v: 1, pmv: it.pj, href: href(it.pj), img: q0.th2 || q0.th, t: pTitle(it.pj), n: it.vs.length + " " + (it.vs.some(function (x) { return x.chap || x.section === "films"; }) ? t("films") : t("videos")) }); }
         var q = parseVideo(it.v.lien); return card({ v: 1, href: "#/video/" + s.id, em: q.em, img: q.th2 || q.th, t: L(it.v.titre), n: "" });
       }));
     }).join("");
@@ -886,21 +886,24 @@
     /* page vidéo dédiée : un lecteur de cinéma + la liste des chapitres, lecture enchaînée */
     var CH = VPAGES.indexOf(slug) >= 0 ? pvids.filter(function (v) { var q = parseVideo(v.lien); return q && q.file && v.format === "v"; }) : [];
     if (CH.length < 2) CH = []; else amb = null;
+    var isFilm = true;
+    function chName(v) { return v.chap ? L(v.chap) : cap(L(v.titre).replace(L(p.titre) + ", ", "")); }
     function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
     function fmt(s) { s = Math.max(0, Math.round(s || 0)); return Math.floor(s / 60) + ":" + ("0" + s % 60).slice(-2); }
     function posterOf(v) { return v.lien.replace(/\.mp4$/, ".jpg"); }
     function absU(u) { return new URL(u, location.href).href; }
     function cineHTML() {
       var tot = CH.reduce(function (a, v) { return a + (v.duree || 0); }, 0), p0 = posterOf(CH[0]);
+      isFilm = CH.some(function (v) { return v.chap; });
       return '<div class="cine" data-st="preview" tabindex="-1">' +
         '<div class="cn-stage"><div class="cn-bg" style="background-image:url(\'' + esc(absU(p0)) + '\')"></div>' +
         '<div class="cn-frame"><video muted autoplay loop playsinline preload="auto" disablepictureinpicture poster="' + esc(p0) + '" src="' + esc(CH[0].lien) + '"></video>' +
-        '<button type="button" class="cn-go"><span class="cn-pi"></span><span class="cn-gl">' + t("watch") + '</span><small>' + fmt(tot) + "</small></button>" +
+        '<button type="button" class="cn-go"><span class="cn-pi"></span><span class="cn-gl">' + (isFilm ? t("watch") : t("watchAll")) + '</span><small>' + fmt(tot) + "</small></button>" +
         '<div class="cn-ui"><div class="cn-bar" role="slider" aria-label="' + t("video") + '"><i></i></div><div class="cn-row"><button type="button" class="cn-pp" aria-label="Pause"></button><span class="cn-t">0:00</span><span class="cn-sp"></span>' +
         '<button type="button" class="cn-pv" aria-label="' + t("prevCh") + '">&#8592;</button><button type="button" class="cn-nx" aria-label="' + t("nextCh") + '">&#8594;</button><button type="button" class="cn-snd">' + t("soundOff") + '</button><button type="button" class="cn-fs">' + t("full") + "</button></div></div>" +
         "</div></div>" +
-        '<aside class="cn-side"><p class="cn-h">' + esc(L(p.titre)) + "<small>" + CH.length + " " + t("chapters") + ", " + fmt(tot) + '</small></p><ol class="cn-list">' + CH.map(function (v, i) {
-          return '<li><button type="button" data-c="' + i + '"' + (i === 0 ? ' aria-current="true"' : "") + '><span class="cn-th"><img alt="" loading="lazy" draggable="false" src="' + esc(posterOf(v)) + '"></span><span class="cn-tx"><b>' + esc(L(v.chap || v.titre)) + "</b><small>" + fmt(v.duree) + '</small></span><i class="cn-pr"><u></u></i></button></li>';
+        '<aside class="cn-side"><p class="cn-h">' + esc(L(p.titre)) + "<small>" + CH.length + " " + (isFilm ? t("chapters") : t("videos")) + ", " + fmt(tot) + '</small></p><ol class="cn-list">' + CH.map(function (v, i) {
+          return '<li><button type="button" data-c="' + i + '"' + (i === 0 ? ' aria-current="true"' : "") + '><span class="cn-th"><img alt="" loading="lazy" draggable="false" src="' + esc(posterOf(v)) + '"></span><span class="cn-tx"><b>' + esc(chName(v)) + "</b><small>" + fmt(v.duree) + '</small></span><i class="cn-pr"><u></u></i></button></li>';
         }).join("") + "</ol></aside></div>";
     }
     function cineStart() {
@@ -910,7 +913,7 @@
         ol = box.querySelector(".cn-list"), items = box.querySelectorAll(".cn-list button");
       var cur = 0, live = false, idleT = 0, seeking = false;
       v.muted = true; v.defaultMuted = true;
-      function st(s) { box.dataset.st = s; gl.textContent = s === "pause" ? t("resume") : s === "end" ? t("replay") : t("watch"); }
+      function st(s) { box.dataset.st = s; gl.textContent = s === "pause" ? t("resume") : s === "end" ? (isFilm ? t("replay") : t("replayAll")) : (isFilm ? t("watch") : t("watchAll")); }
       function tryPlay() { var pr = v.play(); if (pr && pr.catch) pr.catch(function () { if (live) st("pause"); }); }
       function mark() {
         items.forEach(function (b, i) { if (i === cur) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current"); b.classList.toggle("done", live && i < cur); });

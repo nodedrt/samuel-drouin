@@ -27,9 +27,9 @@ window.VIDEOS = [
   { section: "films", projet: "samaya", vedette: 4, titre: { fr: "Samaya, manucure", en: "Samaya, manicure" }, lien: "https://drive.google.com/file/d/1rS2dBFF36lKrow1QVfWk04ntoTWQmaD6/view" },
   { section: "films", projet: "samaya", titre: { fr: "Samaya, massage", en: "Samaya, massage" }, lien: "https://drive.google.com/file/d/109_ZBRzkiquWfBxgOpKGFUSLyI5U25HV/view" },
   { section: "films", projet: "peizan", vedette: 6, titre: { fr: "Peizan, Roselle", en: "Peizan, Roselle" }, lien: "https://drive.google.com/file/d/1loJhiusHv2_FjFQM6nOMPXeX_-UpLzRW/view" },
-  { section: "contenu", projet: "mr-bao", vedette: 4.5, titre: { fr: "Mr Bao, Crispy Chicken Bao", en: "Mr Bao, Crispy Chicken Bao" }, lien: "videos/mr-bao/crispy-chicken-bao.mp4" },
-  { section: "contenu", projet: "mr-bao", titre: { fr: "Mr Bao, Dumplings", en: "Mr Bao, Dumplings" }, lien: "videos/mr-bao/dumplings.mp4" },
-  { section: "contenu", projet: "mr-bao", titre: { fr: "Mr Bao, Teriyaki Chicken Fried Rice", en: "Mr Bao, Teriyaki Chicken Fried Rice" }, lien: "videos/mr-bao/teriyaki-fried-rice.mp4" },
+  { section: "contenu", projet: "mr-bao", vedette: 4.5, titre: { fr: "Mr Bao, Crispy Chicken Bao", en: "Mr Bao, Crispy Chicken Bao" }, format: "v", duree: 23.1, lien: "videos/mr-bao/crispy-chicken-bao.mp4" },
+  { section: "contenu", projet: "mr-bao", titre: { fr: "Mr Bao, Dumplings", en: "Mr Bao, Dumplings" }, format: "v", duree: 26.9, lien: "videos/mr-bao/dumplings.mp4" },
+  { section: "contenu", projet: "mr-bao", titre: { fr: "Mr Bao, Teriyaki Chicken Fried Rice", en: "Mr Bao, Teriyaki Chicken Fried Rice" }, format: "v", duree: 18.9, lien: "videos/mr-bao/teriyaki-fried-rice.mp4" },
   { section: "contenu", vedette: 7, titre: { fr: "Caprizzio Pizza", en: "Caprizzio Pizza" }, lien: "https://youtu.be/8RMG_1su8XA" },
   { section: "contenu", titre: { fr: "Caprizzio Pizza, dégustation", en: "Caprizzio Pizza, tasting" }, lien: "https://youtu.be/iIlgPFjt8LU" },
   { section: "concepts", vedette: 2, titre: { fr: "Gucci Flora", en: "Gucci Flora" }, lien: "https://youtu.be/j_BfIGbbTws" },
@@ -44,4 +44,4 @@ window.VIDEOS = [
 ];
 
 /* projets dont les vidéos s’ouvrent sur une page dédiée (le projet, onglet Vidéo) */
-window.VIDEO_PAGES = ["les-paletuviers"];
+window.VIDEO_PAGES = ["les-paletuviers", "mr-bao", "samaya"];
