@@ -232,7 +232,8 @@
     menu.innerHTML = '<button type="button" class="big" data-ixo>Index</button><a class="big" href="#/photographie">' + t("photo") + '</a><a class="big" href="#/video">' + t("video") + '</a><a class="big" href="#/etalonnage">' + t("grade") + '</a><a class="big" href="#/info">' + t("info") + '</a><a class="big" href="#contact" data-contact>' + t("contact") + "</a>" +
       '<div class="sm"><button data-lang="fr">FR</button><button data-lang="en">EN</button><a href="mailto:' + MAIL + '">' + t("email") + "</a></div>";
     ft.innerHTML = '<p class="q">' + t("ask") + '</p><a class="big u" href="mailto:' + MAIL + '">' + t("email") + " →</a>" +
-      '<div class="bot"><span>' + MAIL + ' &nbsp; <button type="button" id="cp">' + t("copy") + "</button></span><span>" + TEL + "</span><span>© " + new Date().getFullYear() + " Samuel Drouin. " + t("rights") + "</span></div>";
+      '<div class="bot"><span>' + MAIL + ' &nbsp; <button type="button" id="cp">' + t("copy") + "</button></span><span>" + TEL + "</span><span>© " + new Date().getFullYear() + " Samuel Drouin. " + t("rights") + "</span></div>" +
+      '<p class="ft-seo">' + (lang === "fr" ? "Samuel Drouin, photographe et vidéaste à l’île Maurice : photographie immobilière, villas et hôtels, architecture, entreprises, portraits, drone, films de marque et étalonnage. Port-Louis, Grand Baie, Tamarin, Flic en Flac, Belle Mare et partout sur l’île." : "Samuel Drouin, photographer and filmmaker in Mauritius: real estate, villas and hotels, architecture, corporate, portraits, drone, brand films and colour grading. Port Louis, Grand Baie, Tamarin, Flic en Flac, Belle Mare and across the island.") + "</p>";
     bar.innerHTML = '<a href="mailto:' + MAIL + '">' + t("email") + "</a><span>" + MAIL + "</span>";
     hd.querySelector(".menu-b").addEventListener("click", function () { toggleMenu(); });
     document.getElementById("cp").addEventListener("click", function () {
@@ -1013,7 +1014,7 @@
       opt.egal = !!p.egal;
     }
     if (p.coupure) { opt.breaks = {}; p.coupure.forEach(function (n) { if (pos[n] != null) opt.breaks[pos[n]] = 1; }); }
-    var items = list.map(function (q, i) { return { p: q, i: i, alt: L(p.titre) + ", " + (i + 1) }; });
+    var items = list.map(function (q, i) { return { p: q, i: i, alt: L(p.titre) + ", " + (lang === "fr" ? "photo " + (i + 1) + ", Samuel Drouin, photographe île Maurice" : "photo " + (i + 1) + ", Samuel Drouin, Mauritius photographer") }; });
     var kind = (slug === "etalonnage" || (s && ["voyage", "paysage", "portrait", "vert-nature", "drone"].indexOf(s.id) >= 0)) ? "cadre" : "edito";
     var gal = el.parentNode;
     var pmode = "photos";
@@ -1522,7 +1523,7 @@
   }
   function setTitle(R) {
     var ttl = page === "projet" && proj(R.sub) ? pTitle(R.sub) : page === "film" && (window.VIDEO_PROJETS || {})[R.sub] ? L(window.VIDEO_PROJETS[R.sub]) : page === "film" && vsec(R.sub) ? L(vsec(R.sub)) : page === "home" ? (mode === "video" ? t("video") : t("photo")) : page === "etalonnage" ? t("grade") : page === "info" ? t("info") : t("role");
-    document.title = "Samuel Drouin — " + ttl;
+    document.title = page === "home" ? (lang === "fr" ? "Samuel Drouin | Photographe et vidéaste à l’île Maurice" : "Samuel Drouin | Photographer and filmmaker in Mauritius") : ttl + " | Samuel Drouin, " + (lang === "fr" ? "photographe île Maurice" : "Mauritius photographer");
   }
   /* retour à l'accueil : on garde la page, l'image de la vitrine et la position */
   var ret = null, resumeI = null;
