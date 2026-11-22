@@ -1009,7 +1009,7 @@
       if (zfIn) { zfIn.cancel(); zfIn = null; }
       if (!zfHidden) {
         zfHidden = true;
-        zfOut = el.animate([{ opacity: getComputedStyle(el).opacity }, { opacity: 0 }], { duration: 260, easing: "cubic-bezier(.4,0,1,1)", fill: "forwards" });
+        zfOut = el.animate([{ opacity: getComputedStyle(el).opacity }, { opacity: 0 }], { duration: 520, easing: "cubic-bezier(.45,0,.55,1)", fill: "forwards" });
       }
       if (!zfR) zfR = requestAnimationFrame(function () { zfR = 0; if (zfOut && zfOut.playState === "finished") liveZoom(); });
       clearTimeout(zfT);
@@ -1017,12 +1017,13 @@
         var show = function () {
           liveZoom();
           if (zfOut) { zfOut.cancel(); zfOut = null; }
-          zfIn = el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 650, easing: "cubic-bezier(0,0,.2,1)" });
+          var soft = window.matchMedia && matchMedia("(hover: hover)").matches;
+          zfIn = el.animate(soft ? [{ opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0)" }] : [{ opacity: 0 }, { opacity: 1 }], { duration: 1100, easing: "cubic-bezier(.25,.1,.25,1)" });
           zfIn.onfinish = function () { zfIn = null; };
           zfHidden = false;
         };
         if (zfOut && zfOut.playState !== "finished") zfOut.onfinish = show; else show();
-      }, 240);
+      }, 380);
     }
     main.querySelectorAll(".zm input").forEach(function (inp) {
       inp.addEventListener("input", function () {
