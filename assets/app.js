@@ -33,7 +33,7 @@
       clients: "Ils m’ont fait confiance", clientsLine: "Ciel Textile, Gamma Construction, Sealife, Sasha Academy, Telkom Kenya, KFC, Eclosia.",
       similar: "Un projet similaire ?", email: "E-mail", next: "Projet suivant", back: "Retour", ask: "Un projet ?", copy: "Copier", copied: "Copié", copyMail: "Copier l’adresse", seePhotos: "Voir les photos", writeMe: "Écrire à Samuel", openMail: "Ouvrir ma messagerie", close2: "Fermer",
       rights: "Photographies protégées, toute reproduction interdite.", backHome: "Retour à l’accueil", soundOn: "Activer le son", soundOff: "Couper le son", size: "Taille des images", goHome: "Accueil", ixList: "Liste", ixImages: "Images", vGrid: "Grille", vExpo: "Exposition", prev: "Préc.", nextShort: "Suiv.", prevImg: "Image préc.", nextImg: "Image suiv.", play: "Lire",
-      bio: "Samuel Drouin est photographe et vidéaste, basé à l’île Maurice. Il photographie et filme les entreprises, les marques, les lieux et les personnes qui les font vivre, du drone au plateau de tournage. Coloriste, il développe Node DRT, un plugin d’étalonnage pour DaVinci Resolve.",
+      bio: "Samuel Drouin est photographe et vidéaste, installé à l’île Maurice. Il cherche la lumière juste plutôt que la lumière parfaite : un matin sur la mangrove, un geste de la main, une équipe au travail, une maison qui s’éveille. De la vue aérienne au gros plan, il raconte les marques, les lieux et les gens avec une attention particulière aux matières, aux détails et à la couleur. Coloriste, il étalonne lui-même chacun de ses films et a créé Node DRT, un plugin d’étalonnage pour DaVinci Resolve.",
       tools: "Outils", svc: ["Photographie d’entreprise et de marque", "Portrait", "Architecture et hôtellerie", "Films publicitaires et institutionnels", "Prises de vue par drone", "Contenus pour les réseaux", "Étalonnage"],
       videos: "vidéos", prevP: "Projet précédent", wa: "Bonjour Samuel, j’ai un projet : ", notfound: "Page introuvable", home: "Retour à l’accueil", isNew: "Nouveau", reset: "Réinitialiser", seeFilms: "Voir les films", films: "films", watch: "Regarder le film", resume: "Reprendre", replay: "Revoir le film", watchAll: "Tout regarder", replayAll: "Tout revoir", full: "Plein écran", chapters: "chapitres", others: "Autres vidéos", prevCh: "Chapitre précédent", nextCh: "Chapitre suivant"
     },
@@ -44,7 +44,7 @@
       clients: "Clients", clientsLine: "Ciel Textile, Gamma Construction, Sealife, Sasha Academy, Telkom Kenya, KFC, Eclosia.",
       similar: "A similar project?", email: "Email", next: "Next project", back: "Back", ask: "A project in mind?", copy: "Copy", copied: "Copied", copyMail: "Copy the address", seePhotos: "See the photos", writeMe: "Write to Samuel", openMail: "Open my mail app", close2: "Close",
       rights: "Protected photographs, all reproduction prohibited.", backHome: "Back to home", soundOn: "Sound on", soundOff: "Sound off", size: "Image size", goHome: "Home", ixList: "List", ixImages: "Images", vGrid: "Grid", vExpo: "Exhibition", prev: "Prev.", nextShort: "Next", prevImg: "Previous image", nextImg: "Next image", play: "Play",
-      bio: "Samuel Drouin is a photographer and filmmaker based in Mauritius. He photographs and films companies, brands, places and the people behind them, from drone to film set. A colourist, he develops Node DRT, a grading plugin for DaVinci Resolve.",
+      bio: "Samuel Drouin is a photographer and filmmaker based in Mauritius. He looks for the right light rather than the perfect one: a morning over the mangrove, a hand at work, a team on set, a house waking up. From aerial views to close-ups, he tells the story of brands, places and people with a close eye for texture, detail and colour. A colourist, he grades every one of his films himself and created Node DRT, a grading plugin for DaVinci Resolve.",
       tools: "Tools", svc: ["Corporate & brand photography", "Portrait", "Architecture & hospitality", "Commercial & corporate film", "Drone photography & film", "Social media content", "Colour grading"],
       videos: "videos", prevP: "Previous project", wa: "Hi Samuel, I have a project: ", notfound: "Page not found", home: "Back to home", isNew: "New", reset: "Reset", seeFilms: "See the films", films: "films", watch: "Watch the film", resume: "Resume", replay: "Watch again", watchAll: "Watch all", replayAll: "Watch all again", full: "Full screen", chapters: "chapters", others: "Other videos", prevCh: "Previous chapter", nextCh: "Next chapter"
     }
@@ -506,21 +506,44 @@
     frame.onkeydown = function (e) { if (e.key === "Enter") open(); };
     root.querySelector(".st-t").onclick = function (e) { var it = me.items[me.i]; if (!it || it.video) { e.preventDefault(); open(); } };
 
-    function open() {
+    /* vidéo de la vitrine : elle se lance toute seule (avec le son si le navigateur l'autorise), puis la vitrine reprend */
+    function open(auto) {
       var it = me.items[me.i]; if (!it) return;
-      if (!it.video) { location.hash = it.href; return; }
+      if (!it.video) { if (!auto) location.hash = it.href; return; }
+      if (root.classList.contains("playing")) { var vv = frame.querySelector("video"); if (vv && vv.muted && !auto) { vv.muted = false; } return; }
       var box = frame.lastElementChild && frame.lastElementChild.querySelector(".st-i"); if (!box || !it.em) return;
+      if (auto && /drive\.google/.test(it.em)) return; /* Google Drive ne permet pas la lecture automatique */
+      var act = navigator.userActivation ? navigator.userActivation.hasBeenActive : !auto, em = it.em, file = /\.(mp4|webm|m4v)(\?|$)/i.test(em);
+      if (!file && /youtube/.test(em)) em += "&enablejsapi=1" + (act ? "" : "&mute=1");
+      else if (!file && /vimeo/.test(em) && !act) em += "&muted=1";
       root.classList.add("playing"); cursor.hide(); sync();
-      box.insertAdjacentHTML("beforeend", player(it.em, it.titre));
-      var v0 = box.querySelector("video"); if (v0) {
-        var pr0 = v0.play(); if (pr0 && pr0.catch) pr0.catch(function () {});
-        /* vidéo terminée : on revient à l'image de départ et la vitrine reprend */
-        v0.addEventListener("ended", function () {
-          var back = function () { if (v0.isConnected) v0.remove(); root.classList.remove("playing"); sync(); };
-          if (!reduce && v0.animate) v0.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, easing: "ease-out", fill: "forwards" }).onfinish = back;
-          else back();
-        });
+      box.insertAdjacentHTML("beforeend", player(em, it.titre));
+      var tokP = me.tok;
+      function back() {
+        if (tokP !== me.tok || me.dead) return;
+        var f = box.querySelector("video, iframe"), fin = function () { if (f && f.isConnected) f.remove(); root.classList.remove("playing"); sync(); };
+        if (f && !reduce && f.animate) f.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, easing: "ease-out", fill: "forwards" }).onfinish = fin; else fin();
       }
+      var v0 = box.querySelector("video");
+      if (v0) {
+        v0.muted = !act;
+        var pr0 = v0.play();
+        if (pr0 && pr0.catch) pr0.catch(function () { if (!v0.muted) { v0.muted = true; var p2 = v0.play(); if (p2 && p2.catch) p2.catch(function () {}); } });
+        v0.addEventListener("ended", back);
+      }
+      var f0 = box.querySelector("iframe");
+      if (f0 && /youtube/.test(em)) {
+        f0.addEventListener("load", function () { try { f0.contentWindow.postMessage('{"event":"listening","id":1,"channel":"widget"}', "*"); } catch (x) {} });
+        window.__ytEnd = back;
+      }
+    }
+    if (!window.__ytL) {
+      window.__ytL = 1;
+      window.addEventListener("message", function (e) {
+        if (!/youtube/.test(e.origin || "")) return;
+        var d; try { d = typeof e.data === "string" ? JSON.parse(e.data) : e.data; } catch (x) { return; }
+        if (d && d.info && d.info.playerState === 0 && window.__ytEnd) { var f = window.__ytEnd; window.__ytEnd = null; f(); }
+      });
     }
 
     function layer(it, grp) {
@@ -575,6 +598,7 @@
         d.style.visibility = "";
         if (!same) { roll(cap.querySelector(".st-n .roll"), pad(k + 1) + " / " + pad(n), dir); roll(tt.querySelector(".roll"), it.titre, dir); }
         cap.querySelector(".st-m").textContent = it.meta;
+        if (it.video) setTimeout(function () { if (tok === me.tok && !me.dead && me.i === k && !root.classList.contains("away")) open(true); }, 650);
         var olds = [].filter.call(frame.children, function (o) { return o !== d; });
         if (reduce || !d.animate) { olds.forEach(function (o) { o.remove(); }); return; }
         if (firstShow) {
