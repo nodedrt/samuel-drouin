@@ -1060,12 +1060,15 @@
       var loadE = function (i, auto) {
         cur = (i + CH.length) % CH.length;
         var q = parseVideo(CH[cur].lien), src = q.em;
-        if (!auto) src = src.replace("autoplay=1", "autoplay=0");
+        /* lecture immédiate : avec le son si la personne a déjà cliqué sur le site, sinon sans le son (seule façon autorisée) */
+        var act = navigator.userActivation ? navigator.userActivation.hasBeenActive : !!auto;
+        if (!act && /youtube/.test(src)) src += "&mute=1";
+        if (!act && /vimeo/.test(src)) src += "&muted=1";
         fr.innerHTML = '<iframe src="' + esc(src) + '" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen title="' + esc(nm(CH[cur])) + '"></iframe>';
         setBg(CH[cur]); mark();
       };
       items.forEach(function (b) { b.addEventListener("click", function () { loadE(+b.dataset.c, true); }); });
-      loadE(0, true);
+      loadE(0, false);
       return;
     }
 
