@@ -35,7 +35,7 @@
       rights: "Photographies protégées, toute reproduction interdite.", backHome: "Retour à l’accueil", soundOn: "Activer le son", soundOff: "Couper le son", size: "Taille des images", goHome: "Accueil", ixList: "Liste", ixImages: "Images", vGrid: "Grille", vExpo: "Exposition", prev: "Préc.", nextShort: "Suiv.", prevImg: "Image préc.", nextImg: "Image suiv.", play: "Lire",
       bio: "Samuel Drouin est photographe et vidéaste, basé à l’île Maurice. Il photographie et filme les entreprises, les marques, les lieux et les personnes qui les font vivre, du drone au plateau de tournage. Coloriste, il développe Node DRT, un plugin d’étalonnage pour DaVinci Resolve.",
       tools: "Outils", svc: ["Photographie d’entreprise et de marque", "Portrait", "Architecture et hôtellerie", "Films publicitaires et institutionnels", "Prises de vue par drone", "Contenus pour les réseaux", "Étalonnage"],
-      videos: "vidéos", prevP: "Projet précédent", wa: "Bonjour Samuel, j’ai un projet : ", notfound: "Page introuvable", home: "Retour à l’accueil", isNew: "Nouveau", seeFilms: "Voir les films", films: "films"
+      videos: "vidéos", prevP: "Projet précédent", wa: "Bonjour Samuel, j’ai un projet : ", notfound: "Page introuvable", home: "Retour à l’accueil", isNew: "Nouveau", seeFilms: "Voir les films", films: "films", watch: "Regarder le film", resume: "Reprendre", replay: "Revoir le film", full: "Plein écran", chapters: "chapitres", others: "Autres vidéos", prevCh: "Chapitre précédent", nextCh: "Chapitre suivant"
     },
     en: {
       who: "Samuel Drouin", role: "Photographer & filmmaker, Mauritius", photo: "Photography", video: "Video", grade: "Colour grading", info: "Info", contact: "Contact", menu: "Menu", close: "Close",
@@ -46,7 +46,7 @@
       rights: "Protected photographs, all reproduction prohibited.", backHome: "Back to home", soundOn: "Sound on", soundOff: "Sound off", size: "Image size", goHome: "Home", ixList: "List", ixImages: "Images", vGrid: "Grid", vExpo: "Exhibition", prev: "Prev.", nextShort: "Next", prevImg: "Previous image", nextImg: "Next image", play: "Play",
       bio: "Samuel Drouin is a photographer and filmmaker based in Mauritius. He photographs and films companies, brands, places and the people behind them, from drone to film set. A colourist, he develops Node DRT, a grading plugin for DaVinci Resolve.",
       tools: "Tools", svc: ["Corporate & brand photography", "Portrait", "Architecture & hospitality", "Commercial & corporate film", "Drone photography & film", "Social media content", "Colour grading"],
-      videos: "videos", prevP: "Previous project", wa: "Hi Samuel, I have a project: ", notfound: "Page not found", home: "Back to home", isNew: "New", seeFilms: "See the films", films: "films"
+      videos: "videos", prevP: "Previous project", wa: "Hi Samuel, I have a project: ", notfound: "Page not found", home: "Back to home", isNew: "New", seeFilms: "See the films", films: "films", watch: "Watch the film", resume: "Resume", replay: "Watch again", full: "Full screen", chapters: "chapters", others: "Other videos", prevCh: "Previous chapter", nextCh: "Next chapter"
     }
   };
   var AUTH = "C’est dans la brume et dans la conquête de moi-même que je laisse parler mon intuition. La photographie est devenue ma quête. Cette quête n’a pas, pour moi, de destination dans le temps. Cet instant est en soi ma destination.";
@@ -883,8 +883,108 @@
         ambIO.observe(v);
       } else go();
     }
+    /* page vidéo dédiée : un lecteur de cinéma + la liste des chapitres, lecture enchaînée */
+    var CH = VPAGES.indexOf(slug) >= 0 ? pvids.filter(function (v) { var q = parseVideo(v.lien); return q && q.file && v.format === "v"; }) : [];
+    if (CH.length < 2) CH = []; else amb = null;
+    function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+    function fmt(s) { s = Math.max(0, Math.round(s || 0)); return Math.floor(s / 60) + ":" + ("0" + s % 60).slice(-2); }
+    function posterOf(v) { return v.lien.replace(/\.mp4$/, ".jpg"); }
+    function absU(u) { return new URL(u, location.href).href; }
+    function cineHTML() {
+      var tot = CH.reduce(function (a, v) { return a + (v.duree || 0); }, 0), p0 = posterOf(CH[0]);
+      return '<div class="cine" data-st="preview" tabindex="-1">' +
+        '<div class="cn-stage"><div class="cn-bg" style="background-image:url(\'' + esc(absU(p0)) + '\')"></div>' +
+        '<div class="cn-frame"><video muted autoplay loop playsinline preload="auto" disablepictureinpicture poster="' + esc(p0) + '" src="' + esc(CH[0].lien) + '"></video>' +
+        '<button type="button" class="cn-go"><span class="cn-pi"></span><span class="cn-gl">' + t("watch") + '</span><small>' + fmt(tot) + "</small></button>" +
+        '<div class="cn-ui"><div class="cn-bar" role="slider" aria-label="' + t("video") + '"><i></i></div><div class="cn-row"><button type="button" class="cn-pp" aria-label="Pause"></button><span class="cn-t">0:00</span><span class="cn-sp"></span>' +
+        '<button type="button" class="cn-pv" aria-label="' + t("prevCh") + '">&#8592;</button><button type="button" class="cn-nx" aria-label="' + t("nextCh") + '">&#8594;</button><button type="button" class="cn-snd">' + t("soundOff") + '</button><button type="button" class="cn-fs">' + t("full") + "</button></div></div>" +
+        "</div></div>" +
+        '<aside class="cn-side"><p class="cn-h">' + esc(L(p.titre)) + "<small>" + CH.length + " " + t("chapters") + ", " + fmt(tot) + '</small></p><ol class="cn-list">' + CH.map(function (v, i) {
+          return '<li><button type="button" data-c="' + i + '"' + (i === 0 ? ' aria-current="true"' : "") + '><span class="cn-th"><img alt="" loading="lazy" draggable="false" src="' + esc(posterOf(v)) + '"></span><span class="cn-tx"><b>' + esc(L(v.chap || v.titre)) + "</b><small>" + fmt(v.duree) + '</small></span><i class="cn-pr"><u></u></i></button></li>';
+        }).join("") + "</ol></aside></div>";
+    }
+    function cineStart() {
+      var box = el.querySelector(".cine"); if (!box) return;
+      var v = box.querySelector("video"), fr = box.querySelector(".cn-frame"), bg = box.querySelector(".cn-bg"), go = box.querySelector(".cn-go"), gl = box.querySelector(".cn-gl"),
+        bar = box.querySelector(".cn-bar"), bi = bar.querySelector("i"), tt = box.querySelector(".cn-t"), snd = box.querySelector(".cn-snd"),
+        ol = box.querySelector(".cn-list"), items = box.querySelectorAll(".cn-list button");
+      var cur = 0, live = false, idleT = 0, seeking = false;
+      v.muted = true; v.defaultMuted = true;
+      function st(s) { box.dataset.st = s; gl.textContent = s === "pause" ? t("resume") : s === "end" ? t("replay") : t("watch"); }
+      function tryPlay() { var pr = v.play(); if (pr && pr.catch) pr.catch(function () { if (live) st("pause"); }); }
+      function mark() {
+        items.forEach(function (b, i) { if (i === cur) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current"); b.classList.toggle("done", live && i < cur); });
+        var li = items[cur].parentNode;
+        if (ol.scrollWidth > ol.clientWidth + 4) ol.scrollTo({ left: li.offsetLeft - 14, behavior: reduce ? "auto" : "smooth" });
+      }
+      function upd() {
+        var d = v.duration || CH[cur].duree || 1, f = Math.min(1, v.currentTime / d);
+        bi.style.transform = "scaleX(" + f + ")";
+        tt.textContent = fmt(v.currentTime) + " / " + fmt(d);
+        items.forEach(function (b, i) { b.querySelector("u").style.transform = "scaleX(" + (i < cur && live ? 1 : i === cur ? f : 0) + ")"; });
+      }
+      function load(i) {
+        cur = (i + CH.length) % CH.length;
+        var c = CH[cur], po = posterOf(c);
+        v.loop = !live; v.poster = po; v.src = c.lien; v.load();
+        bg.style.backgroundImage = "url('" + absU(po) + "')";
+        if (!reduce && fr.animate) v.animate([{ opacity: 0.1 }, { opacity: 1 }], { duration: 600, easing: OUT });
+        tryPlay(); mark(); upd();
+      }
+      function begin(i) {
+        live = true; v.muted = false; snd.textContent = t("soundOff"); st("play");
+        if (i === cur && v.loop) { v.loop = false; v.currentTime = 0; tryPlay(); mark(); } else load(i);
+        wake();
+      }
+      function toggle() { if (!live) { begin(cur); return; } if (box.dataset.st === "end") { begin(0); return; } if (v.paused) { st("play"); tryPlay(); } else v.pause(); }
+      function wake() { box.classList.remove("idle"); clearTimeout(idleT); idleT = setTimeout(function () { if (!v.paused) box.classList.add("idle"); }, 2200); }
+      go.addEventListener("click", function (e) { e.stopPropagation(); if (box.dataset.st === "end") begin(0); else if (box.dataset.st === "pause") toggle(); else begin(cur); });
+      fr.addEventListener("click", function (e) { if (e.target.closest(".cn-ui")) return; toggle(); });
+      box.querySelector(".cn-pp").addEventListener("click", toggle);
+      box.querySelector(".cn-pv").addEventListener("click", function () { if (v.currentTime > 3) { v.currentTime = 0; tryPlay(); } else begin(cur - 1); });
+      box.querySelector(".cn-nx").addEventListener("click", function () { begin(cur + 1); });
+      snd.addEventListener("click", function () { v.muted = !v.muted; snd.textContent = v.muted ? t("soundOn") : t("soundOff"); });
+      box.querySelector(".cn-fs").addEventListener("click", function () {
+        if (document.fullscreenElement) { document.exitFullscreen(); return; }
+        if (fr.requestFullscreen) fr.requestFullscreen(); else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen();
+      });
+      items.forEach(function (b) { b.addEventListener("click", function () { begin(+b.dataset.c); }); });
+      v.addEventListener("timeupdate", upd);
+      v.addEventListener("loadedmetadata", upd);
+      v.addEventListener("play", function () { box.classList.remove("pz"); if (live && box.dataset.st !== "play") st("play"); });
+      v.addEventListener("pause", function () { box.classList.add("pz"); box.classList.remove("idle"); if (live && box.dataset.st === "play" && !v.ended && !seeking) st("pause"); });
+      v.addEventListener("ended", function () { if (!live) return; if (cur < CH.length - 1) load(cur + 1); else { st("end"); box.classList.remove("idle"); } });
+      box.addEventListener("pointermove", function (e) { if (e.pointerType === "mouse") wake(); });
+      box.addEventListener("touchstart", wake, { passive: true });
+      box.addEventListener("keydown", function (e) {
+        if (e.key === " " || e.key === "k") { e.preventDefault(); toggle(); }
+        else if (e.key === "ArrowRight") begin(cur + 1); else if (e.key === "ArrowLeft") begin(cur - 1);
+      });
+      function seek(e) { var r = bar.getBoundingClientRect(), f = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)); if (v.duration) v.currentTime = f * v.duration; upd(); }
+      bar.addEventListener("pointerdown", function (e) { seeking = true; try { bar.setPointerCapture(e.pointerId); } catch (x) {} seek(e); });
+      bar.addEventListener("pointermove", function (e) { if (seeking) seek(e); });
+      bar.addEventListener("pointerup", function () { seeking = false; });
+      bar.addEventListener("pointercancel", function () { seeking = false; });
+      var wasOn = true;
+      if ("IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (es) {
+          if (!v.isConnected) { io.disconnect(); return; }
+          if (es[0].isIntersecting) { if (!live || wasOn) tryPlay(); }
+          else { wasOn = !v.paused; if (!v.paused) { seeking = true; v.pause(); seeking = false; } }
+        }, { threshold: 0.2 });
+        io.observe(fr);
+      } else tryPlay();
+    }
     function drawVids() {
       gal.classList.remove("ex", "ex-cadre", "ex-edito");
+      if (CH.length) {
+        var oth = pvids.filter(function (v) { return CH.indexOf(v) < 0; });
+        el.innerHTML = cineHTML() + (oth.length ? '<h3 class="pv-h">' + t("others") + '</h3><div class="pvg">' + oth.map(function (v) {
+          var k = pvids.indexOf(v), q = parseVideo(v.lien);
+          return '<button type="button" class="pv-t fig" data-vk="' + k + '"><div class="mask"><img loading="lazy" alt="" draggable="false" src="' + esc(q.th) + '"><span class="play">' + t("play") + "</span></div><span class=\"pv-n\">" + esc(cap(L(v.titre).replace(L(p.titre) + ", ", ""))) + "</span></button>";
+        }).join("") + "</div>" : "");
+        observe(); cineStart(); return;
+      }
       var rest = pvids.filter(function (v) { return !v.ambiance; });
       el.innerHTML = (amb ? ambHTML() : "") + (rest.length ? '<div class="pvg">' + rest.map(function (v) {
         var k = pvids.indexOf(v);
@@ -963,8 +1063,10 @@
       } else drawG();
     }
     main.querySelectorAll(".pm [data-m]").forEach(function (b) { b.addEventListener("click", function () { if (pmode !== b.dataset.m) setPm(b.dataset.m, true); }); });
-    var pm0 = "photos"; try { pm0 = sessionStorage.getItem("sd-pm1-" + slug) || sessionStorage.getItem("sd-pm-" + slug) || "photos"; sessionStorage.removeItem("sd-pm1-" + slug); } catch (e) {}
+    var pm0 = "photos", jumpV = false; try { jumpV = !!sessionStorage.getItem("sd-pm1-" + slug); pm0 = sessionStorage.getItem("sd-pm1-" + slug) || sessionStorage.getItem("sd-pm-" + slug) || "photos"; sessionStorage.removeItem("sd-pm1-" + slug); } catch (e) {}
     if (pvids.length) setPm(pm0 === "videos" ? "videos" : "photos", false);
+    /* arrivée depuis la page Vidéo sur téléphone : on descend jusqu'au lecteur */
+    if (jumpV && window.innerWidth < 900) setTimeout(function () { var c = el.querySelector(".cine"); if (c && c.isConnected) c.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }); }, 450);
   }
 
   /* ---------- vidéo ---------- */

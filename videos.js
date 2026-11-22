@@ -19,10 +19,10 @@ window.VIDEO_SECTIONS = [
 
 window.VIDEOS = [
   { section: "bande-demo", une: true, vedette: 1, titre: { fr: "Bande-démo", en: "Showreel" }, lien: "https://drive.google.com/file/d/16PQFUlTkXY5R09ySKLWW5eV92SCB1E9F/view" },
-  { section: "films", projet: "les-paletuviers", ambiance: true, format: "v", vedette: 1.5, titre: { fr: "Les Palétuviers", en: "Les Palétuviers" }, lien: "videos/les-paletuviers/film-1.mp4" },
-  { section: "films", projet: "les-paletuviers", format: "v", titre: { fr: "Les Palétuviers, II. La mangrove", en: "Les Palétuviers, II. The mangrove" }, lien: "videos/les-paletuviers/film-2.mp4" },
-  { section: "films", projet: "les-paletuviers", format: "v", titre: { fr: "Les Palétuviers, III. La forêt", en: "Les Palétuviers, III. The forest" }, lien: "videos/les-paletuviers/film-3.mp4" },
-  { section: "films", projet: "les-paletuviers", format: "v", titre: { fr: "Les Palétuviers, IV. Le lagon", en: "Les Palétuviers, IV. The lagoon" }, lien: "videos/les-paletuviers/film-4.mp4" },
+  { section: "films", projet: "les-paletuviers", ambiance: true, format: "v", vedette: 1.5, titre: { fr: "Les Palétuviers", en: "Les Palétuviers" }, chap: { fr: "I. Le lac", en: "I. The lake" }, duree: 30.3, lien: "videos/les-paletuviers/film-1.mp4" },
+  { section: "films", projet: "les-paletuviers", format: "v", titre: { fr: "Les Palétuviers, II. La mangrove", en: "Les Palétuviers, II. The mangrove" }, chap: { fr: "II. La mangrove", en: "II. The mangrove" }, duree: 21.4, lien: "videos/les-paletuviers/film-2.mp4" },
+  { section: "films", projet: "les-paletuviers", format: "v", titre: { fr: "Les Palétuviers, III. La forêt", en: "Les Palétuviers, III. The forest" }, chap: { fr: "III. La forêt", en: "III. The forest" }, duree: 42.6, lien: "videos/les-paletuviers/film-3.mp4" },
+  { section: "films", projet: "les-paletuviers", format: "v", titre: { fr: "Les Palétuviers, IV. Le lagon", en: "Les Palétuviers, IV. The lagoon" }, chap: { fr: "IV. Le lagon", en: "IV. The lagoon" }, duree: 47.0, lien: "videos/les-paletuviers/film-4.mp4" },
   { section: "films", projet: "les-paletuviers", titre: { fr: "Les Palétuviers, la terrasse", en: "Les Palétuviers, the terrace" }, lien: "https://drive.google.com/file/d/1tZTpK6touwCF-iw0TzSK_J2zJP9J3fep/view" },
   { section: "films", projet: "samaya", vedette: 4, titre: { fr: "Samaya, manucure", en: "Samaya, manicure" }, lien: "https://drive.google.com/file/d/1rS2dBFF36lKrow1QVfWk04ntoTWQmaD6/view" },
   { section: "films", projet: "samaya", titre: { fr: "Samaya, massage", en: "Samaya, massage" }, lien: "https://drive.google.com/file/d/109_ZBRzkiquWfBxgOpKGFUSLyI5U25HV/view" },
