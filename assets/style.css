@@ -706,9 +706,9 @@ html[data-th] .ex-lab b{color:var(--tx)}
 @media (hover:none),(pointer:coarse){.zm-m,.zm-p{padding:12px 10px;margin:-12px -10px}}
 /* V2 Basalte : en Exposition, cadre fin en chêne naturel, marie-louise ivoire,
    et un spot de galerie qui éclaire chaque œuvre sur le mur sombre */
-html[data-th=v2] .ex-fr{border-width:max(6px,calc(var(--fw) * .6));border-image-source:url(tex/frame-oak.png);box-shadow:0 1px 1px rgba(0,0,0,.5),3px 8px 12px -4px rgba(0,0,0,.55),8px 26px 44px -16px rgba(0,0,0,.75)}
+html[data-th=v2] .ex-fr{border-width:max(7px,calc(var(--fw) * .75));border-image-source:url(tex/frame-walnut.png);box-shadow:0 1px 1px rgba(0,0,0,.5),3px 8px 12px -4px rgba(0,0,0,.55),8px 26px 44px -16px rgba(0,0,0,.75)}
 html[data-th=v2] .ex-fr::after{background:linear-gradient(122deg,rgba(255,255,255,.08) 0%,rgba(255,255,255,.02) 22%,rgba(255,255,255,0) 36%)}
-html[data-th=v2] .ex-mat{background-image:linear-gradient(rgba(214,196,160,.14),rgba(214,196,160,.14)),url(tex/paper.jpg)}
+html[data-th=v2] .ex-mat{background-image:linear-gradient(rgba(214,196,160,.16),rgba(214,196,160,.16)),url(tex/paper.jpg)}
 html[data-th=v2] .ex-wall::before{display:block;opacity:1;width:min(1000px,92%);background:radial-gradient(ellipse 46% 52% at 50% 42%,rgba(255,236,200,.085),rgba(255,236,200,.03) 55%,rgba(255,236,200,0) 75%)}
 .vcov{position:absolute;inset:0;z-index:4;cursor:pointer;background:transparent}
 .vcov[hidden]{display:none}
