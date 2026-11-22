@@ -35,7 +35,7 @@
       rights: "Photographies protégées, toute reproduction interdite.", backHome: "Retour à l’accueil", soundOn: "Activer le son", soundOff: "Couper le son", size: "Taille des images", goHome: "Accueil", ixList: "Liste", ixImages: "Images", vGrid: "Grille", vExpo: "Exposition", prev: "Préc.", nextShort: "Suiv.", prevImg: "Image préc.", nextImg: "Image suiv.", play: "Lire",
       bio: "Samuel Drouin est photographe et vidéaste, basé à l’île Maurice. Il photographie et filme les entreprises, les marques, les lieux et les personnes qui les font vivre, du drone au plateau de tournage. Coloriste, il développe Node DRT, un plugin d’étalonnage pour DaVinci Resolve.",
       tools: "Outils", svc: ["Photographie d’entreprise et de marque", "Portrait", "Architecture et hôtellerie", "Films publicitaires et institutionnels", "Prises de vue par drone", "Contenus pour les réseaux", "Étalonnage"],
-      videos: "vidéos", prevP: "Projet précédent", wa: "Bonjour Samuel, j’ai un projet : ", notfound: "Page introuvable", home: "Retour à l’accueil", isNew: "Nouveau"
+      videos: "vidéos", prevP: "Projet précédent", wa: "Bonjour Samuel, j’ai un projet : ", notfound: "Page introuvable", home: "Retour à l’accueil", isNew: "Nouveau", seeFilms: "Voir les films", films: "films"
     },
     en: {
       who: "Samuel Drouin", role: "Photographer & filmmaker, Mauritius", photo: "Photography", video: "Video", grade: "Colour grading", info: "Info", contact: "Contact", menu: "Menu", close: "Close",
@@ -46,7 +46,7 @@
       rights: "Protected photographs, all reproduction prohibited.", backHome: "Back to home", soundOn: "Sound on", soundOff: "Sound off", size: "Image size", goHome: "Home", ixList: "List", ixImages: "Images", vGrid: "Grid", vExpo: "Exhibition", prev: "Prev.", nextShort: "Next", prevImg: "Previous image", nextImg: "Next image", play: "Play",
       bio: "Samuel Drouin is a photographer and filmmaker based in Mauritius. He photographs and films companies, brands, places and the people behind them, from drone to film set. A colourist, he develops Node DRT, a grading plugin for DaVinci Resolve.",
       tools: "Tools", svc: ["Corporate & brand photography", "Portrait", "Architecture & hospitality", "Commercial & corporate film", "Drone photography & film", "Social media content", "Colour grading"],
-      videos: "videos", prevP: "Previous project", wa: "Hi Samuel, I have a project: ", notfound: "Page not found", home: "Back to home", isNew: "New"
+      videos: "videos", prevP: "Previous project", wa: "Hi Samuel, I have a project: ", notfound: "Page not found", home: "Back to home", isNew: "New", seeFilms: "See the films", films: "films"
     }
   };
   var AUTH = "C’est dans la brume et dans la conquête de moi-même que je laisse parler mon intuition. La photographie est devenue ma quête. Cette quête n’a pas, pour moi, de destination dans le temps. Cet instant est en soi ma destination.";
@@ -721,8 +721,13 @@
         var vs = VIDEOS.filter(function (v) { return v.section === s.id && parseVideo(v.lien || ""); }); if (!vs.length) return;
         n += vs.length;
         groups.push('<div class="vg" id="ix-' + s.id + '"><h3 class="vg-h"><span>' + esc(L(s)) + "</span><i>" + vs.length + "</i></h3>" + (s.note ? '<p class="vg-n">' + esc(L(s.note)) + "</p>" : "") + '<div class="ix-grid">' +
-          vs.map(function (v) {
-            var p = parseVideo(v.lien);
+          vItems(vs).map(function (it) {
+            if (it.pj) {
+              var q = parseVideo(it.vs[0].lien);
+              return '<a class="ix-c v fig pj" href="' + href(it.pj) + '" data-pmv="' + esc(it.pj) + '"><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="" src="' + esc(q.th2 || q.th) + '"><span class="play">' + t("seeFilms") + "</span></div>" +
+                '<div class="ix-tx"><b>' + esc(pTitle(it.pj)) + '</b><span class="ix-n">' + it.vs.length + " " + t("films") + "</span></div></a>";
+            }
+            var v = it.v, p = parseVideo(v.lien);
             return '<a class="ix-c v fig" href="#/video/' + s.id + '" data-em="' + esc(p.em) + '" data-t="' + esc(L(v.titre)) + '"><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="" src="' + esc(p.th2 || p.th) + '"><span class="play">' + t("play") + "</span></div>" +
               '<div class="ix-tx"><b>' + esc(L(v.titre)) + "</b></div></a>";
           }).join("") + "</div></div>");
@@ -731,6 +736,7 @@
     el.innerHTML = '<h2 class="ix-h">Index<small>' + n + " " + (mode === "photo" ? t("projects") : t("videos")) + "</small></h2>" + (mode === "photo" ? '<div class="ix-grid">' + cards.join("") + "</div>" : groups.join(""));
     el.querySelectorAll(".ix-c[data-pm]").forEach(function (a) { a.addEventListener("click", function () { try { sessionStorage.setItem("sd-pm-" + a.getAttribute("href").split("/").pop(), "photos"); } catch (e) {} }); });
     el.querySelectorAll(".ix-c[data-em]").forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); openVideo(a.dataset.em, a.dataset.t, a); }); });
+    el.querySelectorAll(".ix-c[data-pmv]").forEach(function (a) { a.addEventListener("click", pjVids); });
     if (anim && !reduce && el.animate) el.querySelectorAll(".ix-h, .ix-c").forEach(function (r, i) {
       r.animate([{ opacity: 0, transform: "translateY(18px)" }, { opacity: 1, transform: "none" }], { duration: 800, delay: 100 + Math.min(i, 24) * 30, easing: OUT, fill: "backwards" });
     });
@@ -749,11 +755,23 @@
   }, { passive: true });
 
   function pvAttr(slug) { var c = cover(slug); return ' data-pv="' + esc(src(c, true)) + '" data-ar="' + (c.w / c.h).toFixed(3) + '"'; }
+  /* projets dont les vidéos ont une page dédiée : une seule carte qui ouvre le projet sur ses vidéos */
+  var VPAGES = window.VIDEO_PAGES || [];
+  function vItems(vs) {
+    var seen = {}, out = [];
+    vs.forEach(function (v) {
+      var pj = v.projet;
+      if (pj && VPAGES.indexOf(pj) >= 0 && proj(pj)) { if (seen[pj]) { seen[pj].vs.push(v); return; } seen[pj] = { pj: pj, vs: [v] }; out.push(seen[pj]); }
+      else out.push({ v: v });
+    });
+    return out;
+  }
+  function pjVids(e) { var a = e.currentTarget; try { sessionStorage.setItem("sd-pm1-" + a.dataset.pmv, "videos"); } catch (x) {} }
   function vThumb(secId) { var v = VIDEOS.filter(function (x) { return x.section === secId && parseVideo(x.lien || ""); })[0], q = v && parseVideo(v.lien); return q ? ' data-pv="' + esc(q.th2 || q.th) + '" data-ar="' + (q.file ? "0.5625" : "1.778") + '"' : ""; }
   /* index complet, dans le style de l'index de l'accueil : des cartes rangées par catégorie */
   function mapCards() {
     function card(o) {
-      return '<a class="ix-c' + (o.v ? " v" : "") + '" href="' + o.href + '"' + (o.em ? ' data-em="' + esc(o.em) + '" data-t="' + esc(o.t) + '"' : "") + '><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="" src="' + esc(o.img) + '">' + (o.v ? '<span class="play">' + t("play") + "</span>" : "") + "</div>" +
+      return '<a class="ix-c' + (o.v ? " v" : "") + '" href="' + o.href + '"' + (o.pmv ? ' data-pmv="' + esc(o.pmv) + '"' : "") + (o.em ? ' data-em="' + esc(o.em) + '" data-t="' + esc(o.t) + '"' : "") + '><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="" src="' + esc(o.img) + '">' + (o.v ? '<span class="play">' + (o.pmv ? t("seeFilms") : t("play")) + "</span>" : "") + "</div>" +
         '<div class="ix-tx"><b>' + esc(o.t) + (o.nw ? " <i>" + t("isNew") + "</i>" : "") + '</b><span class="ix-n">' + o.n + "</span></div></a>";
     }
     function cat(name, n, cards) { return '<div class="xc"><h4 class="xc-h"><span>' + esc(name) + "</span><i>" + n + '</i></h4><div class="xc-g">' + cards.join("") + "</div></div>"; }
@@ -779,7 +797,10 @@
     var vt = 0, vd = VSEC.map(function (s) {
       var vs = VIDEOS.filter(function (v) { return v.section === s.id && parseVideo(v.lien || ""); }); if (!vs.length) return "";
       vt += vs.length;
-      return cat(L(s), vs.length, vs.map(function (v) { var q = parseVideo(v.lien); return card({ v: 1, href: "#/video/" + s.id, em: q.em, img: q.th2 || q.th, t: L(v.titre), n: "" }); }));
+      return cat(L(s), vs.length, vItems(vs).map(function (it) {
+        if (it.pj) { var q0 = parseVideo(it.vs[0].lien); return card({ v: 1, pmv: it.pj, href: href(it.pj), img: q0.th2 || q0.th, t: pTitle(it.pj), n: it.vs.length + " " + t("films") }); }
+        var q = parseVideo(it.v.lien); return card({ v: 1, href: "#/video/" + s.id, em: q.em, img: q.th2 || q.th, t: L(it.v.titre), n: "" });
+      }));
     }).join("");
     out += '<section class="xb"><h3 class="xb-h"><a href="#/video">' + t("video") + "</a><sup>" + vt + "</sup></h3>" + vd + "</section>";
     if (images("etalonnage").length) out += '<section class="xb"><h3 class="xb-h"><a href="#/etalonnage">' + t("grade") + "</a></h3>" + cat("DaVinci Resolve", 1, [card({ href: "#/etalonnage", img: src(cover("etalonnage"), true), t: "Node DRT", n: images("etalonnage").length })]) + "</section>";
@@ -942,7 +963,7 @@
       } else drawG();
     }
     main.querySelectorAll(".pm [data-m]").forEach(function (b) { b.addEventListener("click", function () { if (pmode !== b.dataset.m) setPm(b.dataset.m, true); }); });
-    var pm0 = "photos"; try { pm0 = sessionStorage.getItem("sd-pm-" + slug) || "photos"; } catch (e) {}
+    var pm0 = "photos"; try { pm0 = sessionStorage.getItem("sd-pm1-" + slug) || sessionStorage.getItem("sd-pm-" + slug) || "photos"; sessionStorage.removeItem("sd-pm1-" + slug); } catch (e) {}
     if (pvids.length) setPm(pm0 === "videos" ? "videos" : "photos", false);
   }
 
@@ -1064,6 +1085,7 @@
     ixo.innerHTML = '<div class="top"><span>Index</span><button type="button" class="x">' + t("close") + "</button></div>" + mapCards();
     ixo.querySelectorAll(".ix-c").forEach(function (g, i) { g.style.setProperty("--i", Math.min(i, 20)); if (g.getAttribute("href") === location.hash) g.classList.add("cur"); });
     ixo.querySelectorAll(".ix-c[data-em]").forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); closeIxo(); openVideo(a.dataset.em, a.dataset.t, a); }); });
+    ixo.querySelectorAll(".ix-c[data-pmv]").forEach(function (a) { a.addEventListener("click", pjVids); });
     ixo.hidden = false; document.body.style.overflow = "hidden"; lock(true);
     requestAnimationFrame(function () { ixo.classList.add("on"); });
     ixo.querySelector(".x").focus();

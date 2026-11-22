@@ -42,3 +42,6 @@ window.VIDEOS = [
   { section: "interviews", vedette: 5, titre: { fr: "École de l’Ouest, II", en: "École de l’Ouest, II" }, lien: "https://youtu.be/ichzVg8sMu4" },
   { section: "interviews", titre: { fr: "École de l’Ouest, III", en: "École de l’Ouest, III" }, lien: "https://youtu.be/_S2wi6h9vMA" }
 ];
+
+/* projets dont les vidéos s’ouvrent sur une page dédiée (le projet, onglet Vidéo) */
+window.VIDEO_PAGES = ["les-paletuviers"];
