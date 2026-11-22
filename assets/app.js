@@ -724,8 +724,8 @@
           vItems(vs).map(function (it) {
             if (it.pj) {
               var q = parseVideo(it.vs[0].lien);
-              return '<a class="ix-c v fig pj" href="' + href(it.pj) + '" data-pmv="' + esc(it.pj) + '"><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="" src="' + esc(q.th2 || q.th) + '"><span class="play">' + t("seeFilms") + "</span></div>" +
-                '<div class="ix-tx"><b>' + esc(pTitle(it.pj)) + '</b><span class="ix-n">' + it.vs.length + " " + (it.vs.some(function (x) { return x.chap || /^films$/.test(x.section); }) ? t("films") : t("videos")) + "</span></div></a>";
+              return '<a class="ix-c v fig pj" href="' + vpHref(it.pj) + '" data-pmv="' + esc(it.pj) + '"><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="" src="' + esc(q.th2 || q.th) + '"><span class="play">' + t("seeFilms") + "</span></div>" +
+                '<div class="ix-tx"><b>' + esc(vpTitle(it.pj)) + '</b><span class="ix-n">' + it.vs.length + " " + (it.vs.some(function (x) { return x.chap || /^films$/.test(x.section); }) ? t("films") : t("videos")) + "</span></div></a>";
             }
             var v = it.v, p = parseVideo(v.lien);
             return '<a class="ix-c v fig" href="#/video/' + s.id + '" data-em="' + esc(p.em) + '" data-t="' + esc(L(v.titre)) + '"><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="" src="' + esc(p.th2 || p.th) + '"><span class="play">' + t("play") + "</span></div>" +
@@ -756,12 +756,14 @@
 
   function pvAttr(slug) { var c = cover(slug); return ' data-pv="' + esc(src(c, true)) + '" data-ar="' + (c.w / c.h).toFixed(3) + '"'; }
   /* projets dont les vidéos ont une page dédiée : une seule carte qui ouvre le projet sur ses vidéos */
-  var VPAGES = window.VIDEO_PAGES || [];
+  var VPAGES = window.VIDEO_PAGES || [], VPROJ = window.VIDEO_PROJETS || {};
+  function vpHref(pj) { return proj(pj) ? href(pj) : "#/film/" + pj; }
+  function vpTitle(pj) { return proj(pj) ? pTitle(pj) : L(VPROJ[pj]); }
   function vItems(vs) {
     var seen = {}, out = [];
     vs.forEach(function (v) {
       var pj = v.projet;
-      if (pj && VPAGES.indexOf(pj) >= 0 && proj(pj)) { if (seen[pj]) { seen[pj].vs.push(v); return; } seen[pj] = { pj: pj, vs: [v] }; out.push(seen[pj]); }
+      if (pj && VPAGES.indexOf(pj) >= 0 && (proj(pj) || VPROJ[pj])) { if (seen[pj]) { seen[pj].vs.push(v); return; } seen[pj] = { pj: pj, vs: [v] }; out.push(seen[pj]); }
       else out.push({ v: v });
     });
     return out;
@@ -798,7 +800,7 @@
       var vs = VIDEOS.filter(function (v) { return v.section === s.id && parseVideo(v.lien || ""); }); if (!vs.length) return "";
       vt += vs.length;
       return cat(L(s), vs.length, vItems(vs).map(function (it) {
-        if (it.pj) { var q0 = parseVideo(it.vs[0].lien); return card({ v: 1, pmv: it.pj, href: href(it.pj), img: q0.th2 || q0.th, t: pTitle(it.pj), n: it.vs.length + " " + (it.vs.some(function (x) { return x.chap || x.section === "films"; }) ? t("films") : t("videos")) }); }
+        if (it.pj) { var q0 = parseVideo(it.vs[0].lien); return card({ v: 1, pmv: it.pj, href: vpHref(it.pj), img: q0.th2 || q0.th, t: vpTitle(it.pj), n: it.vs.length + " " + (it.vs.some(function (x) { return x.chap || x.section === "films"; }) ? t("films") : t("videos")) }); }
         var q = parseVideo(it.v.lien); return card({ v: 1, href: "#/video/" + s.id, em: q.em, img: q.th2 || q.th, t: L(it.v.titre), n: "" });
       }));
     }).join("");
@@ -883,110 +885,19 @@
         ambIO.observe(v);
       } else go();
     }
-    /* page vidéo dédiée : un lecteur de cinéma + la liste des chapitres, lecture enchaînée */
-    var CH = VPAGES.indexOf(slug) >= 0 ? pvids.filter(function (v) { var q = parseVideo(v.lien); return q && q.file && v.format === "v"; }) : [];
+    /* page vidéo dédiée : le lecteur de cinéma (voir cineMount) */
+    var CH = VPAGES.indexOf(slug) >= 0 ? cineList(pvids) : [];
     if (CH.length < 2) CH = []; else amb = null;
-    var isFilm = true;
-    function chName(v) { return v.chap ? L(v.chap) : cap(L(v.titre).replace(L(p.titre) + ", ", "")); }
     function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
-    function fmt(s) { s = Math.max(0, Math.round(s || 0)); return Math.floor(s / 60) + ":" + ("0" + s % 60).slice(-2); }
-    function posterOf(v) { return v.lien.replace(/\.mp4$/, ".jpg"); }
-    function absU(u) { return new URL(u, location.href).href; }
-    function cineHTML() {
-      var tot = CH.reduce(function (a, v) { return a + (v.duree || 0); }, 0), p0 = posterOf(CH[0]);
-      isFilm = CH.some(function (v) { return v.chap; });
-      return '<div class="cine" data-st="preview" tabindex="-1">' +
-        '<div class="cn-stage"><div class="cn-bg" style="background-image:url(\'' + esc(absU(p0)) + '\')"></div>' +
-        '<div class="cn-frame"><video muted autoplay loop playsinline preload="auto" disablepictureinpicture poster="' + esc(p0) + '" src="' + esc(CH[0].lien) + '"></video>' +
-        '<button type="button" class="cn-go"><span class="cn-pi"></span><span class="cn-gl">' + (isFilm ? t("watch") : t("watchAll")) + '</span><small>' + fmt(tot) + "</small></button>" +
-        '<div class="cn-ui"><div class="cn-bar" role="slider" aria-label="' + t("video") + '"><i></i></div><div class="cn-row"><button type="button" class="cn-pp" aria-label="Pause"></button><span class="cn-t">0:00</span><span class="cn-sp"></span>' +
-        '<button type="button" class="cn-pv" aria-label="' + t("prevCh") + '">&#8592;</button><button type="button" class="cn-nx" aria-label="' + t("nextCh") + '">&#8594;</button><button type="button" class="cn-snd">' + t("soundOff") + '</button><button type="button" class="cn-fs">' + t("full") + "</button></div></div>" +
-        "</div></div>" +
-        '<aside class="cn-side"><p class="cn-h">' + esc(L(p.titre)) + "<small>" + CH.length + " " + (isFilm ? t("chapters") : t("videos")) + ", " + fmt(tot) + '</small></p><ol class="cn-list">' + CH.map(function (v, i) {
-          return '<li><button type="button" data-c="' + i + '"' + (i === 0 ? ' aria-current="true"' : "") + '><span class="cn-th"><img alt="" loading="lazy" draggable="false" src="' + esc(posterOf(v)) + '"></span><span class="cn-tx"><b>' + esc(chName(v)) + "</b><small>" + fmt(v.duree) + '</small></span><i class="cn-pr"><u></u></i></button></li>';
-        }).join("") + "</ol></aside></div>";
-    }
-    function cineStart() {
-      var box = el.querySelector(".cine"); if (!box) return;
-      var v = box.querySelector("video"), fr = box.querySelector(".cn-frame"), bg = box.querySelector(".cn-bg"), go = box.querySelector(".cn-go"), gl = box.querySelector(".cn-gl"),
-        bar = box.querySelector(".cn-bar"), bi = bar.querySelector("i"), tt = box.querySelector(".cn-t"), snd = box.querySelector(".cn-snd"),
-        ol = box.querySelector(".cn-list"), items = box.querySelectorAll(".cn-list button");
-      var cur = 0, live = false, idleT = 0, seeking = false;
-      v.muted = true; v.defaultMuted = true;
-      function st(s) { box.dataset.st = s; gl.textContent = s === "pause" ? t("resume") : s === "end" ? (isFilm ? t("replay") : t("replayAll")) : (isFilm ? t("watch") : t("watchAll")); }
-      function tryPlay() { var pr = v.play(); if (pr && pr.catch) pr.catch(function () { if (live) st("pause"); }); }
-      function mark() {
-        items.forEach(function (b, i) { if (i === cur) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current"); b.classList.toggle("done", live && i < cur); });
-        var li = items[cur].parentNode;
-        if (ol.scrollWidth > ol.clientWidth + 4) ol.scrollTo({ left: li.offsetLeft - 14, behavior: reduce ? "auto" : "smooth" });
-      }
-      function upd() {
-        var d = v.duration || CH[cur].duree || 1, f = Math.min(1, v.currentTime / d);
-        bi.style.transform = "scaleX(" + f + ")";
-        tt.textContent = fmt(v.currentTime) + " / " + fmt(d);
-        items.forEach(function (b, i) { b.querySelector("u").style.transform = "scaleX(" + (i < cur && live ? 1 : i === cur ? f : 0) + ")"; });
-      }
-      function load(i) {
-        cur = (i + CH.length) % CH.length;
-        var c = CH[cur], po = posterOf(c);
-        v.loop = !live; v.poster = po; v.src = c.lien; v.load();
-        bg.style.backgroundImage = "url('" + absU(po) + "')";
-        if (!reduce && fr.animate) v.animate([{ opacity: 0.1 }, { opacity: 1 }], { duration: 600, easing: OUT });
-        tryPlay(); mark(); upd();
-      }
-      function begin(i) {
-        live = true; v.muted = false; snd.textContent = t("soundOff"); st("play");
-        if (i === cur && v.loop) { v.loop = false; v.currentTime = 0; tryPlay(); mark(); } else load(i);
-        wake();
-      }
-      function toggle() { if (!live) { begin(cur); return; } if (box.dataset.st === "end") { begin(0); return; } if (v.paused) { st("play"); tryPlay(); } else v.pause(); }
-      function wake() { box.classList.remove("idle"); clearTimeout(idleT); idleT = setTimeout(function () { if (!v.paused) box.classList.add("idle"); }, 2200); }
-      go.addEventListener("click", function (e) { e.stopPropagation(); if (box.dataset.st === "end") begin(0); else if (box.dataset.st === "pause") toggle(); else begin(cur); });
-      fr.addEventListener("click", function (e) { if (e.target.closest(".cn-ui")) return; toggle(); });
-      box.querySelector(".cn-pp").addEventListener("click", toggle);
-      box.querySelector(".cn-pv").addEventListener("click", function () { if (v.currentTime > 3) { v.currentTime = 0; tryPlay(); } else begin(cur - 1); });
-      box.querySelector(".cn-nx").addEventListener("click", function () { begin(cur + 1); });
-      snd.addEventListener("click", function () { v.muted = !v.muted; snd.textContent = v.muted ? t("soundOn") : t("soundOff"); });
-      box.querySelector(".cn-fs").addEventListener("click", function () {
-        if (document.fullscreenElement) { document.exitFullscreen(); return; }
-        if (fr.requestFullscreen) fr.requestFullscreen(); else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen();
-      });
-      items.forEach(function (b) { b.addEventListener("click", function () { begin(+b.dataset.c); }); });
-      v.addEventListener("timeupdate", upd);
-      v.addEventListener("loadedmetadata", upd);
-      v.addEventListener("play", function () { box.classList.remove("pz"); if (live && box.dataset.st !== "play") st("play"); });
-      v.addEventListener("pause", function () { box.classList.add("pz"); box.classList.remove("idle"); if (live && box.dataset.st === "play" && !v.ended && !seeking) st("pause"); });
-      v.addEventListener("ended", function () { if (!live) return; if (cur < CH.length - 1) load(cur + 1); else { st("end"); box.classList.remove("idle"); } });
-      box.addEventListener("pointermove", function (e) { if (e.pointerType === "mouse") wake(); });
-      box.addEventListener("touchstart", wake, { passive: true });
-      box.addEventListener("keydown", function (e) {
-        if (e.key === " " || e.key === "k") { e.preventDefault(); toggle(); }
-        else if (e.key === "ArrowRight") begin(cur + 1); else if (e.key === "ArrowLeft") begin(cur - 1);
-      });
-      function seek(e) { var r = bar.getBoundingClientRect(), f = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)); if (v.duration) v.currentTime = f * v.duration; upd(); }
-      bar.addEventListener("pointerdown", function (e) { seeking = true; try { bar.setPointerCapture(e.pointerId); } catch (x) {} seek(e); });
-      bar.addEventListener("pointermove", function (e) { if (seeking) seek(e); });
-      bar.addEventListener("pointerup", function () { seeking = false; });
-      bar.addEventListener("pointercancel", function () { seeking = false; });
-      var wasOn = true;
-      if ("IntersectionObserver" in window) {
-        var io = new IntersectionObserver(function (es) {
-          if (!v.isConnected) { io.disconnect(); return; }
-          if (es[0].isIntersecting) { if (!live || wasOn) tryPlay(); }
-          else { wasOn = !v.paused; if (!v.paused) { seeking = true; v.pause(); seeking = false; } }
-        }, { threshold: 0.2 });
-        io.observe(fr);
-      } else tryPlay();
-    }
     function drawVids() {
       gal.classList.remove("ex", "ex-cadre", "ex-edito");
       if (CH.length) {
         var oth = pvids.filter(function (v) { return CH.indexOf(v) < 0; });
-        el.innerHTML = cineHTML() + (oth.length ? '<h3 class="pv-h">' + t("others") + '</h3><div class="pvg">' + oth.map(function (v) {
+        cineMount(el, CH, L(p.titre), oth.length ? '<h3 class="pv-h">' + t("others") + '</h3><div class="pvg">' + oth.map(function (v) {
           var k = pvids.indexOf(v), q = parseVideo(v.lien);
           return '<button type="button" class="pv-t fig" data-vk="' + k + '"><div class="mask"><img loading="lazy" alt="" draggable="false" src="' + esc(q.th) + '"><span class="play">' + t("play") + "</span></div><span class=\"pv-n\">" + esc(cap(L(v.titre).replace(L(p.titre) + ", ", ""))) + "</span></button>";
         }).join("") + "</div>" : "");
-        observe(); cineStart(); return;
+        observe(); return;
       }
       var rest = pvids.filter(function (v) { return !v.ambiance; });
       el.innerHTML = (amb ? ambHTML() : "") + (rest.length ? '<div class="pvg">' + rest.map(function (v) {
@@ -1085,6 +996,164 @@
     if ((m = u.match(/vimeo\.com\/(?:video\/)?(\d+)/))) return { th: "https://vumbnail.com/" + m[1] + ".jpg", em: "https://player.vimeo.com/video/" + m[1] + "?autoplay=1&dnt=1&quality=auto" };
     if ((m = u.match(/drive\.google\.com\/(?:file\/d\/|open\?id=)([\w-]+)/))) return { th: "https://drive.google.com/thumbnail?id=" + m[1] + "&sz=w1600", em: "https://drive.google.com/file/d/" + m[1] + "/preview" };
     return null;
+  }
+
+  /* ---------- lecteur de cinéma ----------
+     fichiers verticaux : un film en chapitres, son actif de base, lecture enchaînée
+     liens YouTube / Drive : la vidéo s'ouvre dans le grand cadre, la liste à côté */
+  function cFmt(s) { s = Math.max(0, Math.round(s || 0)); return Math.floor(s / 60) + ":" + ("0" + s % 60).slice(-2); }
+  function cCap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  function cAbs(u) { return new URL(u, location.href).href; }
+  function cineList(list) {
+    var f = list.filter(function (v) { var q = parseVideo(v.lien); return q && q.file && v.format === "v"; });
+    return f.length > 1 ? f : list.filter(function (v) { return parseVideo(v.lien || ""); });
+  }
+  var cineOff = null;
+  function cineMount(host, CH, title, after) {
+    if (cineOff) { cineOff(); cineOff = null; }
+    var emb = !CH.every(function (v) { var q = parseVideo(v.lien); return q.file; });
+    var isFilm = CH.some(function (v) { return v.chap; }), tot = CH.reduce(function (a, v) { return a + (v.duree || 0); }, 0);
+    function nm(v) { if (v.chap) return L(v.chap); var s = L(v.titre), r = s.replace(title + ", ", ""); if (r === s) return s; return /^[IVX]+$/.test(r) ? (lang === "fr" ? "Partie " : "Part ") + r : cCap(r); }
+    function th(v) { var q = parseVideo(v.lien); return q.file ? q.th : (q.th2 || q.th); }
+    var p0 = th(CH[0]), cnt = CH.length + " " + (isFilm ? t("chapters") : t("videos")) + (tot && !emb ? ", " + cFmt(tot) : "");
+    host.innerHTML = '<div class="cine' + (emb ? " emb" : "") + '" data-st="play" tabindex="-1">' +
+      '<div class="cn-stage"><div class="cn-bg" style="background-image:url(\'' + esc(cAbs(p0)) + '\')"></div>' +
+      '<div class="cn-frame">' + (emb ? "" : '<video playsinline preload="auto" disablepictureinpicture poster="' + esc(p0) + '"></video>' +
+        '<button type="button" class="cn-go"><span class="cn-pi"></span><span class="cn-gl"></span><small></small></button>' +
+        '<div class="cn-ui"><div class="cn-bar" role="slider" aria-label="' + t("video") + '"><i></i></div><div class="cn-row"><button type="button" class="cn-pp" aria-label="Pause"></button><span class="cn-t">0:00</span><span class="cn-sp"></span>' +
+        '<button type="button" class="cn-pv" aria-label="' + t("prevCh") + '">&#8592;</button><button type="button" class="cn-nx" aria-label="' + t("nextCh") + '">&#8594;</button><button type="button" class="cn-snd"></button><button type="button" class="cn-fs">' + t("full") + "</button></div></div>") +
+      "</div></div>" +
+      '<aside class="cn-side"><p class="cn-h">' + esc(title) + "<small>" + cnt + '</small></p><ol class="cn-list">' + CH.map(function (v, i) {
+        return '<li><button type="button" data-c="' + i + '"' + (i === 0 ? ' aria-current="true"' : "") + '><span class="cn-th"><img alt="" loading="lazy" draggable="false" src="' + esc(th(v)) + '"></span><span class="cn-tx"><b>' + esc(nm(v)) + "</b>" + (v.duree ? "<small>" + cFmt(v.duree) + "</small>" : "") + '</span><i class="cn-pr"><u></u></i></button></li>';
+      }).join("") + "</ol></aside></div>" + (after || "");
+    var box = host.querySelector(".cine"), fr = box.querySelector(".cn-frame"), bg = box.querySelector(".cn-bg"),
+      ol = box.querySelector(".cn-list"), items = box.querySelectorAll(".cn-list button"), cur = 0;
+    function mark() {
+      items.forEach(function (b, i) { if (i === cur) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current"); });
+      var li = items[cur].parentNode;
+      if (ol.scrollWidth > ol.clientWidth + 4) ol.scrollTo({ left: li.offsetLeft - 14, behavior: reduce ? "auto" : "smooth" });
+    }
+    function setBg(v) { bg.style.backgroundImage = "url('" + cAbs(th(v)) + "')"; }
+
+    /* ---- vidéos intégrées (YouTube, Drive) ---- */
+    if (emb) {
+      var loadE = function (i, auto) {
+        cur = (i + CH.length) % CH.length;
+        var q = parseVideo(CH[cur].lien), src = q.em;
+        if (!auto) src = src.replace("autoplay=1", "autoplay=0");
+        fr.innerHTML = '<iframe src="' + esc(src) + '" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen title="' + esc(nm(CH[cur])) + '"></iframe>';
+        setBg(CH[cur]); mark();
+      };
+      items.forEach(function (b) { b.addEventListener("click", function () { loadE(+b.dataset.c, true); }); });
+      loadE(0, true);
+      return;
+    }
+
+    /* ---- film en fichiers : son actif de base ---- */
+    var v = box.querySelector("video"), go = box.querySelector(".cn-go"), gl = box.querySelector(".cn-gl"), gs = go.querySelector("small"),
+      bar = box.querySelector(".cn-bar"), bi = bar.querySelector("i"), tt = box.querySelector(".cn-t"), snd = box.querySelector(".cn-snd");
+    var idleT = 0, seeking = false, fadeT = 0, wasOn = true;
+    function sndLbl() { snd.textContent = v.muted ? t("soundOn") : t("soundOff"); box.classList.toggle("mut", v.muted && box.dataset.st === "play"); }
+    function st(s) {
+      box.dataset.st = s;
+      gl.textContent = s === "pause" ? t("resume") : s === "end" ? (isFilm ? t("replay") : t("replayAll")) : t("soundOn");
+      gs.textContent = s === "end" ? cFmt(tot) : "";
+      sndLbl();
+    }
+    function fadeIn() {
+      clearInterval(fadeT); if (v.muted) return;
+      var k = 0; v.volume = 0.05;
+      fadeT = setInterval(function () { k++; v.volume = Math.min(1, 0.05 + k * 0.06); if (v.volume >= 1) clearInterval(fadeT); }, 60);
+    }
+    function tryPlay() {
+      var pr = v.play();
+      if (pr && pr.then) pr.then(function () { sndLbl(); }, function () {
+        /* le navigateur refuse le son sans clic : on lance sans le son, et le son revient au premier geste */
+        if (!v.muted) { v.muted = true; sndLbl(); var p2 = v.play(); if (p2 && p2.catch) p2.catch(function () { st("pause"); }); }
+        else st("pause");
+      });
+    }
+    function unmute() { if (!v.muted) return; v.muted = false; fadeIn(); sndLbl(); if (v.paused && box.dataset.st === "play") tryPlay(); }
+    function upd() {
+      var d = v.duration || CH[cur].duree || 1, f = Math.min(1, v.currentTime / d);
+      bi.style.transform = "scaleX(" + f + ")";
+      tt.textContent = cFmt(v.currentTime) + " / " + cFmt(d);
+      items.forEach(function (b, i) { b.querySelector("u").style.transform = "scaleX(" + (i < cur ? 1 : i === cur ? f : 0) + ")"; b.classList.toggle("done", i < cur); });
+    }
+    function load(i) {
+      cur = (i + CH.length) % CH.length;
+      var c = CH[cur];
+      v.poster = th(c); v.src = c.lien; v.load();
+      setBg(c);
+      if (!reduce && v.animate) v.animate([{ opacity: 0.1 }, { opacity: 1 }], { duration: 600, easing: OUT });
+      st("play"); fadeIn(); tryPlay(); mark(); upd();
+    }
+    function toggle() {
+      if (box.dataset.st === "end") { load(0); return; }
+      if (v.muted && box.classList.contains("mut")) { unmute(); return; }
+      if (v.paused) { st("play"); tryPlay(); } else v.pause();
+    }
+    function wake() { box.classList.remove("idle"); clearTimeout(idleT); idleT = setTimeout(function () { if (!v.paused) box.classList.add("idle"); }, 2400); }
+    go.addEventListener("click", function (e) { e.stopPropagation(); if (box.dataset.st === "play") unmute(); else toggle(); });
+    fr.addEventListener("click", function (e) { if (e.target.closest(".cn-ui") || e.target.closest(".cn-go")) return; toggle(); });
+    box.querySelector(".cn-pp").addEventListener("click", function () { if (v.paused || box.dataset.st !== "play") { st("play"); tryPlay(); } else v.pause(); });
+    box.querySelector(".cn-pv").addEventListener("click", function () { if (v.currentTime > 3) { v.currentTime = 0; tryPlay(); } else load(cur - 1); });
+    box.querySelector(".cn-nx").addEventListener("click", function () { load(cur + 1); });
+    snd.addEventListener("click", function () { if (v.muted) unmute(); else { v.muted = true; sndLbl(); } });
+    box.querySelector(".cn-fs").addEventListener("click", function () {
+      if (document.fullscreenElement) { document.exitFullscreen(); return; }
+      if (fr.requestFullscreen) fr.requestFullscreen(); else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen();
+    });
+    items.forEach(function (b) { b.addEventListener("click", function () { if (v.muted) { v.muted = false; } load(+b.dataset.c); }); });
+    v.addEventListener("timeupdate", upd);
+    v.addEventListener("loadedmetadata", upd);
+    v.addEventListener("play", function () { box.classList.remove("pz"); if (box.dataset.st !== "play") st("play"); wake(); });
+    v.addEventListener("pause", function () { box.classList.add("pz"); box.classList.remove("idle"); if (box.dataset.st === "play" && !v.ended && !seeking) st("pause"); });
+    v.addEventListener("ended", function () { if (cur < CH.length - 1) load(cur + 1); else { st("end"); box.classList.remove("idle"); } });
+    box.addEventListener("pointermove", function (e) { if (e.pointerType === "mouse") wake(); });
+    box.addEventListener("touchstart", wake, { passive: true });
+    box.addEventListener("keydown", function (e) {
+      if (e.key === " " || e.key === "k") { e.preventDefault(); toggle(); }
+      else if (e.key === "ArrowRight") load(cur + 1); else if (e.key === "ArrowLeft") load(cur - 1);
+      else if (e.key === "m") snd.click();
+    });
+    function seek(e) { var r = bar.getBoundingClientRect(), f = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)); if (v.duration) v.currentTime = f * v.duration; upd(); }
+    bar.addEventListener("pointerdown", function (e) { seeking = true; try { bar.setPointerCapture(e.pointerId); } catch (x) {} seek(e); });
+    bar.addEventListener("pointermove", function (e) { if (seeking) seek(e); });
+    bar.addEventListener("pointerup", function () { seeking = false; });
+    bar.addEventListener("pointercancel", function () { seeking = false; });
+    /* son coupé par le navigateur : il revient au premier geste sur la page */
+    function firstGesture(e) { if (!box.isConnected) { off(); return; } if (e.target.closest && e.target.closest(".cn-snd")) return; if (v.muted && box.classList.contains("mut")) unmute(); }
+    function off() { ["pointerdown", "keydown", "touchend"].forEach(function (n) { document.removeEventListener(n, firstGesture, true); }); if (io) io.disconnect(); clearInterval(fadeT); }
+    ["pointerdown", "keydown", "touchend"].forEach(function (n) { document.addEventListener(n, firstGesture, true); });
+    var io = null;
+    if ("IntersectionObserver" in window) {
+      io = new IntersectionObserver(function (es) {
+        if (!v.isConnected) { off(); return; }
+        if (es[0].isIntersecting) { if (wasOn && box.dataset.st === "play") tryPlay(); }
+        else { wasOn = !v.paused; if (!v.paused) { seeking = true; v.pause(); seeking = false; } }
+      }, { threshold: 0.2 });
+      io.observe(fr);
+    }
+    cineOff = off;
+    v.muted = false;
+    load(0);
+  }
+
+  /* ---------- page d'une série vidéo sans photos (#/film/<id>) ---------- */
+  function filmPage(slug) {
+    var vp = (window.VIDEO_PROJETS || {})[slug];
+    var vs = (window.VIDEOS || []).filter(function (v) { return v.projet === slug && parseVideo(v.lien || ""); });
+    if (!vp || !vs.length) return notFound();
+    var title = L(vp), sec = vsec(vs[0].section);
+    var backBtn = '<a class="back xs" href="' + esc(ret ? ret.h : "#/video") + '" data-back><span aria-hidden="true">←</span> ' + t("backHome") + "</a>";
+    main.innerHTML = '<section class="ph grid"><div class="meta xs"><span class="mt-l">' + backBtn + '<a class="u" href="#/video">' + esc(sec ? L(sec) : t("video")) + "</a></span><span>" + vs.length + " " + t("videos") + '</span></div><h1><span class="roll"></span></h1></section>' +
+      '<section class="gal"><div class="jw" id="jg"></div></section>' +
+      '<section class="s-end grid"><p class="q"><span>' + t("similar") + '</span><a class="u" href="mailto:' + MAIL + '">' + t("email") + "</a></p></section>";
+    roll(main.querySelector(".ph h1 .roll"), title, 1);
+    var bb = main.querySelector("[data-back]");
+    if (bb) bb.addEventListener("click", function (e) { e.preventDefault(); var h = ret ? ret.h : "#/video"; if (location.hash === h) render(); else location.hash = h; });
+    cineMount(document.getElementById("jg"), cineList(vs), title);
   }
 
   /* ---------- info ---------- */
@@ -1212,11 +1281,11 @@
   function navOn() {
     hd.querySelectorAll("[data-nav]").forEach(function (a) {
       var n = a.dataset.nav;
-      a.classList.toggle("on", page === "home" ? (n === "photographie" && mode === "photo") || (n === "video" && mode === "video") : page === "projet" ? n === "photographie" : n === page);
+      a.classList.toggle("on", page === "home" ? (n === "photographie" && mode === "photo") || (n === "video" && mode === "video") : page === "projet" ? n === "photographie" : page === "film" ? n === "video" : n === page);
     });
   }
   function setTitle(R) {
-    var ttl = page === "projet" && proj(R.sub) ? pTitle(R.sub) : page === "home" ? (mode === "video" ? t("video") : t("photo")) : page === "etalonnage" ? t("grade") : page === "info" ? t("info") : t("role");
+    var ttl = page === "projet" && proj(R.sub) ? pTitle(R.sub) : page === "film" && (window.VIDEO_PROJETS || {})[R.sub] ? L(window.VIDEO_PROJETS[R.sub]) : page === "home" ? (mode === "video" ? t("video") : t("photo")) : page === "etalonnage" ? t("grade") : page === "info" ? t("info") : t("role");
     document.title = "Samuel Drouin — " + ttl;
   }
   /* retour à l'accueil : on garde la page, l'image de la vitrine et la position */
@@ -1233,9 +1302,9 @@
       if (R.sub) scrollIx(R.sub); else if (window.scrollY > 0 && r !== "") window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
       navOn(); setTitle(R); return;
     }
-    stopStage(); resizers = []; curPrevNext = null;
+    stopStage(); resizers = []; curPrevNext = null; if (cineOff) { cineOff(); cineOff = null; }
     var from = page;
-    if (from === "home" && (r === "photographie" || r === "etalonnage")) { ret = { h: lastHome || "#/", i: stI, y: homeY, m: mode }; saveRet(); }
+    if (from === "home" && (r === "photographie" || r === "etalonnage" || r === "film")) { ret = { h: lastHome || "#/", i: stI, y: homeY, m: mode }; saveRet(); }
     if (hm && from !== "home" && ret && ret.i != null && ret.m === hm) resumeI = ret.i;
     if (hm) { ret = null; saveRet(); }
     var draw = function () {
@@ -1243,6 +1312,7 @@
       else if (r === "photographie") { page = "projet"; projet(R.sub); }
       else if (r === "etalonnage") { page = "etalonnage"; projet("etalonnage"); }
       else if (r === "info") { page = "info"; info(); }
+      else if (r === "film") { page = "film"; filmPage(R.sub); }
       else { page = "404"; notFound(); }
       navOn(); setTitle(R); setTimeout(fnSync, 50);
       var back = hm && from === "projet" && scrollMem[location.hash || "#/"];

@@ -30,18 +30,24 @@ window.VIDEOS = [
   { section: "contenu", projet: "mr-bao", vedette: 4.5, titre: { fr: "Mr Bao, Crispy Chicken Bao", en: "Mr Bao, Crispy Chicken Bao" }, format: "v", duree: 23.1, lien: "videos/mr-bao/crispy-chicken-bao.mp4" },
   { section: "contenu", projet: "mr-bao", titre: { fr: "Mr Bao, Dumplings", en: "Mr Bao, Dumplings" }, format: "v", duree: 26.9, lien: "videos/mr-bao/dumplings.mp4" },
   { section: "contenu", projet: "mr-bao", titre: { fr: "Mr Bao, Teriyaki Chicken Fried Rice", en: "Mr Bao, Teriyaki Chicken Fried Rice" }, format: "v", duree: 18.9, lien: "videos/mr-bao/teriyaki-fried-rice.mp4" },
-  { section: "contenu", vedette: 7, titre: { fr: "Caprizzio Pizza", en: "Caprizzio Pizza" }, lien: "https://youtu.be/8RMG_1su8XA" },
-  { section: "contenu", titre: { fr: "Caprizzio Pizza, dégustation", en: "Caprizzio Pizza, tasting" }, lien: "https://youtu.be/iIlgPFjt8LU" },
+  { section: "contenu", projet: "caprizzio", vedette: 7, titre: { fr: "Caprizzio Pizza", en: "Caprizzio Pizza" }, lien: "https://youtu.be/8RMG_1su8XA" },
+  { section: "contenu", projet: "caprizzio", titre: { fr: "Caprizzio Pizza, dégustation", en: "Caprizzio Pizza, tasting" }, lien: "https://youtu.be/iIlgPFjt8LU" },
   { section: "concepts", vedette: 2, titre: { fr: "Gucci Flora", en: "Gucci Flora" }, lien: "https://youtu.be/j_BfIGbbTws" },
   { section: "concepts", titre: { fr: "San Pellegrino", en: "San Pellegrino" }, lien: "https://youtu.be/4DG1AfIPeeo" },
   { section: "concepts", titre: { fr: "Brio, citron et menthe", en: "Brio, lemon and mint" }, lien: "https://youtu.be/FhllkeRPY00" },
   { section: "drone", vedette: 3.5, titre: { fr: "Chiroulet, Pyrénées", en: "Chiroulet, Pyrenees" }, lien: "videos/chiroulet.mp4" },
   { section: "drone", titre: { fr: "Le Chiroulet, France", en: "Le Chiroulet, France" }, lien: "https://youtu.be/jnvMcSBXid0" },
   { section: "drone", vedette: 3, titre: { fr: "Après-midi, Hautacam", en: "Afternoon, Hautacam" }, lien: "https://youtu.be/QzYLXv8_BjQ" },
-  { section: "interviews", titre: { fr: "École de l’Ouest, I", en: "École de l’Ouest, I" }, lien: "https://youtu.be/UPFtghfB5oE" },
-  { section: "interviews", vedette: 5, titre: { fr: "École de l’Ouest, II", en: "École de l’Ouest, II" }, lien: "https://youtu.be/ichzVg8sMu4" },
-  { section: "interviews", titre: { fr: "École de l’Ouest, III", en: "École de l’Ouest, III" }, lien: "https://youtu.be/_S2wi6h9vMA" }
+  { section: "interviews", projet: "ecole-de-l-ouest", titre: { fr: "École de l’Ouest, I", en: "École de l’Ouest, I" }, lien: "https://youtu.be/UPFtghfB5oE" },
+  { section: "interviews", projet: "ecole-de-l-ouest", vedette: 5, titre: { fr: "École de l’Ouest, II", en: "École de l’Ouest, II" }, lien: "https://youtu.be/ichzVg8sMu4" },
+  { section: "interviews", projet: "ecole-de-l-ouest", titre: { fr: "École de l’Ouest, III", en: "École de l’Ouest, III" }, lien: "https://youtu.be/_S2wi6h9vMA" }
 ];
 
 /* projets dont les vidéos s’ouvrent sur une page dédiée (le projet, onglet Vidéo) */
-window.VIDEO_PAGES = ["les-paletuviers", "mr-bao", "samaya"];
+window.VIDEO_PAGES = ["les-paletuviers", "mr-bao", "samaya", "caprizzio", "ecole-de-l-ouest"];
+
+/* séries vidéo sans projet photo : elles ont leur propre page (#/film/<id>) */
+window.VIDEO_PROJETS = {
+  "caprizzio": { fr: "Caprizzio Pizza", en: "Caprizzio Pizza" },
+  "ecole-de-l-ouest": { fr: "École de l’Ouest", en: "École de l’Ouest" }
+};
