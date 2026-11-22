@@ -320,7 +320,7 @@ main.fade{animation:vt-in .6s var(--out) both}
 /* mode exposition : murs de galerie */
 .gal.ex{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),linear-gradient(180deg,#E9E7E2,#E4E1DB);padding:clamp(10px,2vw,30px) 0;margin-bottom:var(--gap-y)}
 .gal.ex .jw{gap:0}
-.ex-wall{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(34px,5vh,64px) 0 clamp(26px,4vh,48px)}
+.ex-wall{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(48px,7vh,96px) 0 clamp(30px,4.5vh,56px)}
 .ex-wall::before{content:"";position:absolute;left:50%;top:0;width:min(1100px,96%);height:100%;transform:translateX(-50%);pointer-events:none;background:radial-gradient(ellipse 50% 46% at 50% 44%,rgba(255,252,245,.85),rgba(255,252,245,.35) 45%,rgba(255,252,245,0) 72%)}
 .ex-wall::after{content:"";position:absolute;left:50%;top:0;width:1px;height:clamp(24px,5vh,50px);background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.06));display:none}
 .ex-hang{position:relative;display:flex;align-items:center;justify-content:center;gap:clamp(36px,4.5vw,72px)}

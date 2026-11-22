@@ -136,33 +136,27 @@
         : '<div class="ex-fl" style="width:' + w.toFixed(0) + "px;height:" + h.toFixed(0) + 'px">' + inner + "</div>";
       return '<button type="button" class="ex-p fig" data-i="' + it.i + '"><div class="mask">' + body + "</div></button>";
     }
-    /* deux verticales côte à côte occupent la même place qu'une grande horizontale :
-       même hauteur de cadre partout, pour un accrochage régulier et cohérent */
-    var pairOK = vw >= 600, refH = Math.min(vh * (mob ? 0.5 : 0.62), (W * (mob ? 0.92 : 0.62)) / 1.5);
+    /* accrochage sur une grille : chaque mur (une horizontale, ou deux verticales côte à côte)
+       a exactement la même largeur extérieure, cadres compris, donc les bords gauche et droit s'alignent ;
+       cadres plus petits par défaut et plus d'air entre eux */
+    var pairOK = vw >= 600, e = kind === "cadre" ? 0.344 : 0;
+    var G = mob ? 28 : Math.round(Math.min(130, Math.max(72, vw * 0.075)));
+    var Wt = Math.min(W * 0.96, (mob ? W * 0.86 : W * 0.48) * zoom);
+    var hPair = (Wt - G) / (2 * (2 / 3) * (1 + e));
     items = items.slice();
     while (i < n) {
       var a = items[i], ar = a.p.w / a.p.h, b = items[i + 1], br = b ? b.p.w / b.p.h : 0, grp, h;
-      /* verticale seule suivie d'une horizontale puis d'une verticale : on rapproche les deux verticales */
       if (pairOK && ar < 0.95 && b && br >= 0.95) {
         for (var k = i + 2; k < Math.min(n, i + 4); k++) if (items[k].p.w / items[k].p.h < 0.95) { items.splice(i + 1, 0, items.splice(k, 1)[0]); b = items[i + 1]; br = b.p.w / b.p.h; break; }
       }
-      var maxH = vh * (mob ? 0.5 : 0.64);
-      if (pairOK && ar < 0.95 && b && br < 0.95) {
-        grp = [a, b];
-        h = Math.min(refH * 1.06, (W * 0.84 - 64) / (ar + br));
-      } else if (ar >= 0.95) {
-        grp = [a];
-        h = Math.min(refH, ((mob ? W * 0.92 : W * (ar > 1.6 ? 0.72 : 0.62))) / ar);
-      } else {
-        grp = [a];
-        h = Math.min(mob ? vh * 0.62 : refH * 1.06, (W * 0.92) / ar);
-      }
-      var sum = grp.reduce(function (s2, x) { return s2 + x.p.w / x.p.h; }, 0);
-      var kf = kind === "cadre" ? 1.35 : 1; /* cadre + marie-louise ≈ 35 % autour de la photo */
-      h = Math.min(h * zoom, (W * 0.96 - (grp.length - 1) * 64) / (sum * kf), vh * (mob ? 0.8 : 0.86) / kf);
+      grp = (pairOK && ar < 0.95 && b && br < 0.95) ? [a, b] : [a];
+      var den = grp.reduce(function (s2, x) { var r = x.p.w / x.p.h; return s2 + r + e * Math.min(r, 1); }, 0);
+      h = grp.length === 1 && ar < 0.95 && pairOK ? hPair : (Wt - G * (grp.length - 1)) / den;
+      var tall = Math.max.apply(null, grp.map(function (x) { return 1 + e * Math.min(x.p.w / x.p.h, 1); }));
+      h = Math.min(h, vh * (mob ? 0.74 : 0.8) / tall);
       i += grp.length;
       var num = grp.map(function (x) { return pad(x.i + 1); }).join(", ");
-      out.push('<div class="ex-wall"><div class="ex-hang">' + grp.map(function (x) { return print(x, h); }).join("") + "</div>" +
+      out.push('<div class="ex-wall"><div class="ex-hang" style="gap:' + G + 'px">' + grp.map(function (x) { return print(x, h); }).join("") + "</div>" +
         '<p class="ex-lab"><b>' + esc(title) + "</b><span>" + num + " / " + pad(n) + "</span></p></div>");
     }
     el.innerHTML = out.join("");
