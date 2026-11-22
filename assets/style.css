@@ -587,3 +587,7 @@ html{touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-t
 .ph .pnav{position:relative;margin-top:clamp(20px,2.2vw,34px)}
 .ph .pnav::before{content:"";position:absolute;left:calc(-1 * var(--m));right:calc(-1 * var(--m));top:calc(-1 * clamp(20px,2.2vw,34px) - 1px);bottom:-60px;background:var(--bg);z-index:-1}
 .ph .vue{margin-bottom:clamp(16px,1.8vw,24px)}
+/* typo : rien n'est coupé (jambages de y, g, p et virgules) */
+.roll{padding:0 .12em .18em 0!important;margin:0 -.12em -.18em 0!important}
+.pnav b,.ix-tx b{padding-bottom:.16em;margin-bottom:-.16em}
+.rw{font-kerning:normal;font-variant-ligatures:common-ligatures}

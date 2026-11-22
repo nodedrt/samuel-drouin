@@ -512,7 +512,15 @@
       var box = frame.lastElementChild && frame.lastElementChild.querySelector(".st-i"); if (!box || !it.em) return;
       root.classList.add("playing"); cursor.hide(); sync();
       box.insertAdjacentHTML("beforeend", player(it.em, it.titre));
-      var v0 = box.querySelector("video"); if (v0) { var pr0 = v0.play(); if (pr0 && pr0.catch) pr0.catch(function () {}); }
+      var v0 = box.querySelector("video"); if (v0) {
+        var pr0 = v0.play(); if (pr0 && pr0.catch) pr0.catch(function () {});
+        /* vidéo terminée : on revient à l'image de départ et la vitrine reprend */
+        v0.addEventListener("ended", function () {
+          var back = function () { if (v0.isConnected) v0.remove(); root.classList.remove("playing"); sync(); };
+          if (!reduce && v0.animate) v0.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, easing: "ease-out", fill: "forwards" }).onfinish = back;
+          else back();
+        });
+      }
     }
 
     function layer(it, grp) {
@@ -683,23 +691,28 @@
   }
 
   /* titre qui roule, lettre par lettre */
+  function rollSplit(s) { return String(s).split("").map(function (ch) { return "<span>" + (ch === " " ? "&nbsp;" : esc(ch)) + "</span>"; }).join(""); }
+  /* une fois l'animation finie, le titre redevient un texte normal : crénage et ligatures justes, plus de lettres qui se chevauchent */
+  function rollFlat(nw, text, ms) { setTimeout(function () { if (nw.isConnected && !nw.nextElementSibling && nw.querySelector("span")) nw.textContent = String(text).replace(/ /g, "\u00a0"); }, ms); }
   function roll(el, text, dir) {
     if (!el) return;
     var nw = document.createElement("span"); nw.className = "rw";
-    nw.innerHTML = String(text).split("").map(function (ch) { return "<span>" + (ch === " " ? "&nbsp;" : esc(ch)) + "</span>"; }).join("");
+    nw.innerHTML = rollSplit(text);
     var olds = el.querySelectorAll(".rw");
     if (olds.length && olds[olds.length - 1].textContent === nw.textContent) return;
     if (reduce || !nw.animate || !olds.length) {
-      el.innerHTML = ""; el.appendChild(nw);
+      el.innerHTML = ""; el.appendChild(nw); rollFlat(nw, text, reduce || !nw.animate ? 0 : 1400 + String(text).length * 22);
       if (!reduce && nw.animate) nw.querySelectorAll("span").forEach(function (c, i) { c.animate([{ transform: "translateY(110%)" }, { transform: "none" }], { duration: 1100, delay: 200 + i * 22, easing: OUT, fill: "backwards" }); });
       return;
     }
     for (var q = 0; q < olds.length - 1; q++) olds[q].remove();
     var old = olds[olds.length - 1], up = dir < 0 ? 1 : -1;
+    if (!old.querySelector("span")) old.innerHTML = rollSplit(old.textContent.replace(/\u00a0/g, " "));
     old.querySelectorAll("span").forEach(function (c, i) { c.animate([{ transform: "none" }, { transform: "translateY(" + (up * 110) + "%)" }], { duration: 520, delay: i * 10, easing: "cubic-bezier(.76,0,.24,1)", fill: "forwards" }); });
     setTimeout(function () { if (old.parentNode) old.remove(); }, 720);
     el.appendChild(nw);
     nw.querySelectorAll("span").forEach(function (c, i) { c.animate([{ transform: "translateY(" + (-up * 110) + "%)" }, { transform: "none" }], { duration: 1000, delay: 220 + i * 20, easing: OUT, fill: "backwards" }); });
+    rollFlat(nw, text, 1300 + String(text).length * 20);
   }
 
   /* ---- index : les sections et leurs projets ---- */
