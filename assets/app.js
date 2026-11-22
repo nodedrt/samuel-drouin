@@ -214,7 +214,9 @@
   var hd = document.getElementById("hd"), main = document.getElementById("main"), ft = document.getElementById("contact"), bar = document.getElementById("bar"), menu = document.getElementById("menu");
   function chrome() {
     document.documentElement.lang = lang;
-    hd.innerHTML = '<a class="who intro-hd" href="#/">' + t("who") + '</a><span class="loc intro-hd">' + esc(t("role")) + "</span>" +
+    var th = document.documentElement.getAttribute("data-th") || "v1", TH = { v1: lang === "fr" ? "Clair" : "Light", v2: lang === "fr" ? "Galerie" : "Gallery", v3: lang === "fr" ? "Basalte" : "Basalt" };
+    hd.innerHTML = '<span class="whw intro-hd"><a class="who" href="#/">' + t("who") + '</a><span class="th" role="group" aria-label="' + (lang === "fr" ? "Ambiance du site" : "Site mood") + '">' +
+      ["v1", "v2", "v3"].map(function (k) { return '<button type="button" data-th="' + k + '" title="' + TH[k] + '" aria-pressed="' + (k === th) + '">' + k.toUpperCase() + "</button>"; }).join("") + '</span></span><span class="loc intro-hd">' + esc(t("role")) + "</span>" +
       '<nav class="intro-hd" aria-label="Navigation"><button type="button" class="u ixb" data-ixo>Index,</button> <a class="u" data-nav="photographie" href="#/photographie">' + t("photo") + ',</a> <a class="u" data-nav="video" href="#/video">' + t("video") + ',</a> ' +
       '<a class="u" data-nav="etalonnage" href="#/etalonnage">' + t("grade") + ',</a> <a class="u" data-nav="info" href="#/info">' + t("info") + ',</a> <a class="u" href="#contact" data-contact>' + t("contact") + "</a>" +
       '<span class="lang"><button class="' + (lang === "fr" ? "" : "off") + '" data-lang="fr">FR</button> / <button class="' + (lang === "en" ? "" : "off") + '" data-lang="en">EN</button></span></nav>' +
@@ -268,6 +270,15 @@
   function lock(on, keepHd) { [main, ft, bar].forEach(function (x) { if (x) x.inert = on; }); if (!keepHd) hd.inert = on; }
   menu.addEventListener("click", function (e) { if (e.target.closest("a")) toggleMenu(false); });
   document.addEventListener("click", function (e) {
+    var tb = e.target.closest("button[data-th]");
+    if (tb) {
+      var k = tb.dataset.th, de = document.documentElement;
+      de.classList.add("thx"); if (k === "v1") de.removeAttribute("data-th"); else de.setAttribute("data-th", k);
+      try { localStorage.setItem("sd-th", k); } catch (x) {}
+      hd.querySelectorAll("button[data-th]").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.th === k); });
+      setTimeout(function () { de.classList.remove("thx"); }, 500);
+      return;
+    }
     var l = e.target.closest("[data-lang]");
     if (l) { lang = l.dataset.lang; try { localStorage.setItem("sd-lang", lang); } catch (x) {} chrome(); page = ""; render(true); return; }
     if (e.target.closest("[data-ixo]")) { e.preventDefault(); toggleMenu(false); openIxo(); return; }
