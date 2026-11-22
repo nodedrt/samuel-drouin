@@ -705,7 +705,7 @@
   var pv = document.getElementById("peek");
   function indexList(anim) {
     var el = main.querySelector(".ix"); if (!el) return;
-    var cards = [], n = 0;
+    var cards = [], groups = [], n = 0;
     if (mode === "photo") {
       SITE.sections.forEach(function (s) {
         s.projets.filter(function (slug) { return proj(slug) && images(slug).length; }).forEach(function (slug, j) {
@@ -715,24 +715,20 @@
         });
       });
     } else {
+      /* vidéos rangées par catégorie : un titre, puis une grille propre par groupe */
+      var groups = [];
       VSEC.forEach(function (s) {
-        VIDEOS.filter(function (v) { return v.section === s.id && parseVideo(v.lien || ""); }).forEach(function (v, j) {
-          n++; var p = parseVideo(v.lien);
-          cards.push('<a class="ix-c v fig"' + (j === 0 ? ' id="ix-' + s.id + '"' : "") + ' href="#/video/' + s.id + '" data-em="' + esc(p.em) + '" data-t="' + esc(L(v.titre)) + '"><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="" src="' + esc(p.th2 || p.th) + '"><span class="play">' + t("play") + "</span></div>" +
-            '<div class="ix-tx"><span class="ix-sec">' + esc(L(s)) + '</span><b>' + esc(L(v.titre)) + "</b></div></a>");
-        });
-        /* projets photo liés à cette section (section du même nom ou vidéos avec projet: "…") : une carte pour basculer vers leurs photos */
-        var lies = [];
-        if (proj(s.id)) lies.push(s.id);
-        VIDEOS.forEach(function (v) { if (v.section === s.id && v.projet && lies.indexOf(v.projet) < 0) lies.push(v.projet); });
-        lies.filter(function (sl) { return proj(sl) && images(sl).length; }).forEach(function (sl) {
-          var c = cover(sl);
-          cards.push('<a class="ix-c v ph fig" href="' + href(sl) + '" data-pm="photos"><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="" src="' + esc(src(c, true)) + '"><span class="play ph">' + t("seePhotos") + " →</span></div>" +
-            '<div class="ix-tx"><span class="ix-sec">' + esc(pTitle(sl)) + '</span><b>' + t("photo") + " <i>" + images(sl).length + "</i></b></div></a>");
-        });
+        var vs = VIDEOS.filter(function (v) { return v.section === s.id && parseVideo(v.lien || ""); }); if (!vs.length) return;
+        n += vs.length;
+        groups.push('<div class="vg" id="ix-' + s.id + '"><h3 class="vg-h"><span>' + esc(L(s)) + "</span><i>" + vs.length + "</i></h3>" + (s.note ? '<p class="vg-n">' + esc(L(s.note)) + "</p>" : "") + '<div class="ix-grid">' +
+          vs.map(function (v) {
+            var p = parseVideo(v.lien);
+            return '<a class="ix-c v fig" href="#/video/' + s.id + '" data-em="' + esc(p.em) + '" data-t="' + esc(L(v.titre)) + '"><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="" src="' + esc(p.th2 || p.th) + '"><span class="play">' + t("play") + "</span></div>" +
+              '<div class="ix-tx"><b>' + esc(L(v.titre)) + "</b></div></a>";
+          }).join("") + "</div></div>");
       });
     }
-    el.innerHTML = '<h2 class="ix-h">Index<small>' + n + " " + (mode === "photo" ? t("projects") : t("videos")) + '</small></h2><div class="ix-grid">' + cards.join("") + "</div>";
+    el.innerHTML = '<h2 class="ix-h">Index<small>' + n + " " + (mode === "photo" ? t("projects") : t("videos")) + "</small></h2>" + (mode === "photo" ? '<div class="ix-grid">' + cards.join("") + "</div>" : groups.join(""));
     el.querySelectorAll(".ix-c[data-pm]").forEach(function (a) { a.addEventListener("click", function () { try { sessionStorage.setItem("sd-pm-" + a.getAttribute("href").split("/").pop(), "photos"); } catch (e) {} }); });
     el.querySelectorAll(".ix-c[data-em]").forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); openVideo(a.dataset.em, a.dataset.t, a); }); });
     if (anim && !reduce && el.animate) el.querySelectorAll(".ix-h, .ix-c").forEach(function (r, i) {

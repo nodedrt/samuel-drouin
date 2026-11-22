@@ -477,3 +477,13 @@ html{touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-t
 .amb video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
 .amb.v{height:auto;aspect-ratio:9/16;max-height:88svh}
 .amb-p{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:12px 22px;background:rgba(247,247,245,.92);color:var(--tx);font-weight:500}
+/* index vidéo : groupes */
+.vg{grid-column:1/-1;border-top:1px solid var(--line);padding-top:14px;scroll-margin-top:90px}
+.vg+.vg{margin-top:clamp(34px,4vw,60px)}
+.vg-h{display:flex;justify-content:space-between;align-items:baseline;font-weight:400;font-size:var(--t-m);letter-spacing:-.02em;margin-bottom:6px}
+.vg-h i{font-style:normal;font-size:var(--t-s);color:var(--mute)}
+.vg-n{color:var(--mute);font-size:var(--t-s);margin-bottom:16px;max-width:60ch}
+.vg-h+.ix-grid{margin-top:12px}
+.vg .ix-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media (max-width:1100px){.vg .ix-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:767px){.vg .ix-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
