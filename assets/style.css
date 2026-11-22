@@ -567,3 +567,6 @@ html{touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-t
 .cine.emb .cn-list button{grid-template-columns:clamp(96px,7.6vw,124px) 1fr}
 .cine.emb .cn-pr{display:none}
 @media (max-width:899px){.cine.emb .cn-frame{width:100%}.cine.emb .cn-list button{grid-template-columns:1fr;width:168px}.cine.emb .cn-th{aspect-ratio:16/9}}
+/* mode Grille : le même fond taupe grisé que l'exposition */
+.gal:not(.ex){background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),linear-gradient(180deg,#E9E7E2,#E4E1DB);padding-top:clamp(14px,2vw,30px)}
+@media (hover:none),(max-width:1024px){.gal:not(.ex){background:#E7E5E0}}
