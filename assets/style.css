@@ -872,3 +872,4 @@ html[data-th=v2] .ex-wall::before{display:block;opacity:1;width:min(1000px,92%);
 .ixm-g{gap:12px 10px}
 @media (max-width:1100px){.ixms{display:block;columns:2}.ixm-col{display:contents}.ixm-b{break-inside:avoid}.ixm-col .ixm-b:last-child{padding-bottom:clamp(26px,2.6vw,40px)}}
 @media (max-width:600px){.ixms{display:flex;flex-direction:column;columns:auto}}
+.whw{align-items:center}.whw .home{margin:-6px 0 -6px -2px}
