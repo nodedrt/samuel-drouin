@@ -55,10 +55,9 @@ window.SITE = {
   // Un projet absent de cette liste se place après, dans l'ordre des sections.
   /* grandes familles de l'index de l'accueil (dans cet ordre) */
   /* index compact : trois colonnes (Immobilier en haut à droite) */
-  compact: [["regard", "terroir", "coulisses"], ["creations", "corporate", "enfance", "associations"], ["immobilier", "restauration", "bienetre"]],
+  compact: [["regard", "terroir", "coulisses"], ["corporate", "enfance", "associations"], ["immobilier", "restauration", "bienetre"]],
   familles: [
-    { id: "regard", fr: "Regard personnel", en: "Personal work", note: { fr: "Lumières, visages et voyages : ce que je photographie pour moi.", en: "Light, faces and travels: what I photograph for myself." }, projets: ["voyage", "paysage", "portrait", "vert-nature", "drone"] },
-    { id: "creations", fr: "Créations", en: "Creations", note: { fr: "Recherches personnelles : la matière, la lumière, l’invisible.", en: "Personal research: matter, light, the unseen." }, projets: ["origine"] },
+    { id: "regard", fr: "Regard personnel", en: "Personal work", note: { fr: "Lumières, visages et voyages : ce que je photographie pour moi.", en: "Light, faces and travels: what I photograph for myself." }, projets: ["voyage", "paysage", "portrait", "vert-nature", "drone", "origine"] },
     { id: "immobilier", fr: "Immobilier", en: "Real estate", note: { fr: "Villas, hôtels et lieux d’exception, révélés par la lumière.", en: "Villas, hotels and remarkable places, revealed by light." }, projets: ["les-paletuviers", "ocean-villa", "villa-anahita", "villa-horizon", "villa-la-plage", "le-dalblair", "bluemoon-villa", "yesterday-rodrigues", "details"] },
     { id: "corporate", fr: "Corporate", en: "Corporate", note: { fr: "Entreprises, équipes, savoir-faire et campagnes.", en: "Companies, teams, craft and campaigns." }, projets: ["gamma-construction", "exposition-port-louis", "ciel-textile", "the-hive", "kenya-telkom"] },
     { id: "terroir", fr: "Agriculture et environnement", en: "Farming and environment", note: { fr: "La terre, ceux qui la cultivent et ceux qui la protègent.", en: "The land, those who grow it and those who protect it." }, projets: ["cafe-st-felix", "peizan", "sealife"] },
