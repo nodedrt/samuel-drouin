@@ -118,7 +118,7 @@ window.SITE = {
     "sasha-academy": { titre: "Sasha Academy", dossier: "corporate/sasha-academy", couverture: "18" },
     "kenya-telkom": { titre: { fr: "Kenya Telkom", en: "Kenya Telkom" }, dossier: "corporate/kenya-telkom", couverture: "02" },
     "exposition-port-louis": { titre: { fr: "Exposition à Port-Louis", en: "Port Louis exhibition" }, dossier: "corporate/exposition-port-louis" },
-    "portrait": { titre: "Portrait", dossier: "portrait", coupure: ["02"], apercu: ["20", "18", "23", "19"] },
+    "portrait": { titre: "Portrait", dossier: "portrait", couverture: "15", apercu: ["20", "18", "23", "19"], egal: true, sauf: ["13", "41"], lignes: [["20", "18", "23"], ["15", "21", "32"], ["19", "17", "27"], ["22", "26", "30"], ["33", "34", "35", "36", "37"], ["38", "39", "40"], ["16", "29", "14"], ["25", "24", "28"], ["11", "12"], ["02", "06", "03", "05"], ["04", "01", "08"], ["10", "07", "09"]] },
     "voyage": { titre: { fr: "Voyage", en: "Travel" }, dossier: "voyage", apercu: ["32", "24", "25", "08"] },
     "kenya-film": { titre: { fr: "Kenya Telkom, film", en: "Kenya Telkom, film" }, dossier: "coulisses", partie: "Kenya Film Telkom", couverture: "26" },
     "ferney": { titre: { fr: "Ferney, film", en: "Ferney, film" }, dossier: "ferney", couverture: "09", egal: true, lignes: [["01", "02", "03"], ["04", "05", "06"], ["07", "08", "09", "10"], ["11", "12", "13", "14"], ["15", "16", "17", "18"], ["19", "20", "21"], ["22", "23"], ["24", "25", "26"], ["27", "28"], ["29", "30"], ["31"]] },
