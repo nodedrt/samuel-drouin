@@ -860,17 +860,24 @@
       FAM.forEach(function (f) { var ps = f.projets.filter(function (x) { return secOf[x]; }); ps.forEach(function (x) { used[x] = 1; }); if (ps.length) fams.push({ f: f, ps: ps }); });
       var rest = ent.filter(function (x) { return !used[x]; }).sort(function (a, b) { return rank(a) - rank(b); });
       if (rest.length) fams.push({ f: { id: "autres", fr: "Autres projets", en: "Other projects" }, ps: rest });
-      ixv = "chap"; try { if (localStorage.getItem("sd-ixv") === "mini") ixv = "mini"; } catch (e) {}
+      ixv = "mini"; try { if (localStorage.getItem("sd-ixv") === "chap") ixv = "chap"; } catch (e) {}
       var card = function (slug, fid, extra) {
         var s = secOf[slug], j = seenS[s.id] ? 1 : 0; seenS[s.id] = 1; n++; var c = cover(slug);
         return '<a class="ix-c fig' + (extra || "") + '"' + (j === 0 ? ' id="ix-' + s.id + '"' : "") + ' data-f="' + fid + '" href="' + href(slug) + '"><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="' + esc(pTitle(slug)) + '" src="' + esc(src(c, true)) + '"></div>' +
           '<div class="ix-tx"><span class="ix-sec">' + esc(L(s)) + '</span><b>' + esc(pTitle(slug)) + (proj(slug).nouveau ? " <i>" + t("isNew") + "</i>" : "") + '</b><span class="ix-n">' + images(slug).length + "</span></div></a>";
       };
       if (ixv === "mini") {
+        /* trois colonnes composées pour que les bas s'alignent (3 titres + 5 rangées chacune) */
+        var COLS = SITE.compact || [], byId = {}, blk = {};
         fams.forEach(function (F, k) {
-          groups.push('<section class="ixm-b" id="ix-f-' + F.f.id + '"><header class="ixm-h"><span>' + pad(k + 1) + '</span><h3>' + esc(L(F.f)) + '</h3><i>' + F.ps.length + "</i></header>" +
-            '<div class="ixm-g">' + F.ps.map(function (slug) { return card(slug, F.f.id, " mini"); }).join("") + "</div></section>");
+          byId[F.f.id] = 1;
+          blk[F.f.id] = '<section class="ixm-b" style="order:' + k + '" id="ix-f-' + F.f.id + '"><header class="ixm-h"><h3>' + esc(L(F.f)) + '</h3><i>' + F.ps.length + "</i></header>" +
+            '<div class="ixm-g">' + F.ps.map(function (slug) { return card(slug, F.f.id, " mini"); }).join("") + "</div></section>";
         });
+        var cols = [[], [], []], rows = [0, 0, 0], done = {};
+        COLS.forEach(function (c, ci) { c.forEach(function (id) { if (blk[id] && ci < 3) { cols[ci].push(id); done[id] = 1; rows[ci] += 1 + Math.ceil(fams.filter(function (F) { return F.f.id === id; })[0].ps.length / 3); } }); });
+        fams.forEach(function (F) { if (done[F.f.id]) return; var m = rows.indexOf(Math.min.apply(null, rows)); cols[m].push(F.f.id); rows[m] += 1 + Math.ceil(F.ps.length / 3); });
+        groups = cols.map(function (c) { return '<div class="ixm-col">' + c.map(function (id) { return blk[id]; }).join("") + "</div>"; });
       } else if (ixv === "chap") {
         fams.forEach(function (F, k) {
           var cnt = F.ps.length, more = cnt > 5;
