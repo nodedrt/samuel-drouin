@@ -61,13 +61,13 @@ window.SITE = {
     { id: "corporate", fr: "Corporate", en: "Corporate", note: { fr: "Entreprises, équipes, savoir-faire et campagnes.", en: "Companies, teams, craft and campaigns." }, projets: ["gamma-construction", "exposition-port-louis", "ciel-textile", "the-hive", "kenya-telkom"] },
     { id: "terroir", fr: "Agriculture et environnement", en: "Farming and environment", note: { fr: "La terre, ceux qui la cultivent et ceux qui la protègent.", en: "The land, those who grow it and those who protect it." }, projets: ["cafe-st-felix", "peizan", "sealife"] },
     { id: "coulisses", fr: "Coulisses de tournage", en: "Behind the scenes", note: { fr: "De l’autre côté de la caméra.", en: "The other side of the camera." }, projets: ["abc", "ferney", "kenya-film", "kfc"] },
-    { id: "restauration", fr: "Restauration", en: "Food and dining", note: { fr: "Cuisines, gestes et assiettes qui donnent faim.", en: "Kitchens, craft and plates that make you hungry." }, projets: ["caprizzio", "mr-bao"] },
+    { id: "restauration", fr: "Restauration", en: "Food and dining", note: { fr: "Cuisines, gestes et assiettes qui donnent faim.", en: "Kitchens, craft and plates that make you hungry." }, projets: ["caprizzio", "biscuit-manioc", "mr-bao"] },
     { id: "bienetre", fr: "Beauté et bien-être", en: "Beauty and wellness", note: { fr: "Soins, gestes précis et moments pour soi.", en: "Care, precise gestures and time for yourself." }, projets: ["samaya", "sasha-academy"] },
     { id: "enfance", fr: "Enfance et éducation", en: "Childhood and education", note: { fr: "Les écoles, les crèches et les enfants qui les font vivre.", en: "Schools, nurseries and the children who bring them to life." }, projets: ["ecole-de-l-ouest", "konekte", "melbees"] },
     { id: "associations", fr: "Associations et événements", en: "Causes and events", note: { fr: "Journées solidaires et actions qui rassemblent.", en: "Days of solidarity and actions that bring people together." }, projets: ["eclosia", "ciel-group", "ome-fam-uni"] }
   ],
 
-  ordre: ["les-paletuviers", "ocean-villa", "paysage", "portrait", "drone", "caprizzio", "samaya", "voyage", "cafe-st-felix", "poste-lafayette", "villa-anahita", "konekte", "peizan", "kenya-telkom", "vert-nature", "villa-horizon", "mr-bao", "villa-la-plage", "le-dalblair", "melbees", "ecole-de-l-ouest", "the-hive", "ferney", "kenya-film", "abc", "kfc", "bluemoon-villa", "yesterday-rodrigues", "sealife", "ciel-textile", "gamma-construction", "exposition-port-louis", "sasha-academy", "eclosia", "ciel-group", "ome-fam-uni", "details"],
+  ordre: ["les-paletuviers", "ocean-villa", "paysage", "portrait", "drone", "caprizzio", "biscuit-manioc", "samaya", "voyage", "cafe-st-felix", "poste-lafayette", "villa-anahita", "konekte", "peizan", "kenya-telkom", "vert-nature", "villa-horizon", "mr-bao", "villa-la-plage", "le-dalblair", "melbees", "ecole-de-l-ouest", "the-hive", "ferney", "kenya-film", "abc", "kfc", "bluemoon-villa", "yesterday-rodrigues", "sealife", "ciel-textile", "gamma-construction", "exposition-port-louis", "sasha-academy", "eclosia", "ciel-group", "ome-fam-uni", "details"],
   sections: [
     { id: "voyage", fr: "Voyage", en: "Travel", projets: ["voyage"] },
     { id: "paysage", fr: "Paysage", en: "Landscape", projets: ["paysage"] },
@@ -85,6 +85,7 @@ window.SITE = {
     { id: "samaya", fr: "Samaya", en: "Samaya", projets: ["samaya"] },
     { id: "mr-bao", fr: "Mr Bao", en: "Mr Bao", projets: ["mr-bao"] },
     { id: "caprizzio", fr: "Caprizzio Pizza", en: "Caprizzio Pizza", projets: ["caprizzio"] },
+    { id: "biscuit-manioc", fr: "Biscuits manioc", en: "Cassava biscuits", projets: ["biscuit-manioc"] },
     { id: "cafe-st-felix", fr: "Café St Félix", en: "Café St Félix", projets: ["cafe-st-felix"] },
     { id: "les-paletuviers", fr: "Les Palétuviers", en: "Les Palétuviers", projets: ["les-paletuviers"] },
     { id: "peizan", fr: "Peizan", en: "Peizan", projets: ["peizan"] },
@@ -109,6 +110,7 @@ window.SITE = {
     "melbees": { titre: "Melbees", dossier: "melbees", couverture: "03", egal: true, lignes: [["01", "02", "03", "04"], ["05", "06", "07", "08"], ["09", "10", "11", "12"], ["13", "14", "15", "16"], ["17", "18", "19", "20"], ["21", "22", "23", "24"], ["25", "26", "27"]] },
     "konekte": { titre: "Konekte", dossier: "konekte", couverture: "01" },
     "drone": { titre: { fr: "Drone", en: "Drone" }, dossier: "drone", couverture: "01", egal: true, sauf: ["03", "05", "07", "11", "15", "16", "18", "19", "21", "27"], lignes: [["01", "13"], ["09", "04", "06"], ["02", "08"], ["12", "10", "22"], ["23", "24", "26"], ["20", "28"], ["29", "17"], ["25"]] },
+    "biscuit-manioc": { titre: { fr: "Biscuits manioc", en: "Cassava biscuits" }, dossier: "biscuit-manioc", couverture: "15", nouveau: true, egal: true, lignes: [["01", "02", "03"], ["04", "05", "06"], ["07", "08", "09", "10"], ["11", "12", "13"], ["14", "15"], ["16", "17", "18"], ["19", "20", "21"], ["22"]] },
     "caprizzio": { titre: "Caprizzio Pizza", dossier: "caprizzio", couverture: "10", nouveau: true, egal: true, lignes: [["01", "02", "03"], ["04", "05", "06"], ["07", "08", "09"], ["10", "11"], ["12", "13"], ["14", "15", "16"]] },
     "ecole-de-l-ouest": { titre: "École de l’Ouest", dossier: "ecole-de-l-ouest", couverture: "01", nouveau: true, egal: true, lignes: [["01", "02"], ["04", "06", "07"], ["08", "12", "14"], ["16", "19"], ["21", "22", "26"], ["25", "28"]], sauf: ["03", "05", "09", "10", "11", "13", "15", "17", "18", "20", "23", "24", "27"] },
     "ciel-aquarelle": { titre: { fr: "Ciel, Aquarelle à la Citadelle", en: "Ciel, Aquarelle at the Citadel" }, dossier: "evenements/ciel-aquarelle", couverture: "10", nouveau: true, egal: true, lignes: [["01", "02", "03"], ["04", "05"], ["06", "07", "08"], ["09", "10", "11"], ["12", "13", "14"], ["15", "16"], ["17", "18", "19", "20"], ["21", "22"], ["23", "24"]] },
