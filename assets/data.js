@@ -14,7 +14,7 @@ window.SITE = {
   // Vitrine de l'accueil, dans l'ordre : le projet et ses 1 ou 2 images.
   une: [
     { projet: "drone", img: ["drone/01"] },
-    { projet: "origine", img: ["creations/origine/05", "creations/origine/14"] },
+    { projet: "origine", img: ["creations/origine/05", "creations/origine/15"] },
     { projet: "les-paletuviers", img: ["paletuviers/01", "paletuviers/04"] },
     { projet: "konekte", img: ["konekte/01", "konekte/03"] },
     { projet: "villa-horizon", img: ["immobilier/villa-horizon/15"] },
@@ -113,7 +113,7 @@ window.SITE = {
     "melbees": { titre: "Melbees", dossier: "melbees", couverture: "03", egal: true, lignes: [["01", "02", "03", "04"], ["05", "06", "07", "08"], ["09", "10", "11", "12"], ["13", "14", "15", "16"], ["17", "18", "19", "20"], ["21", "22", "23", "24"], ["25", "26", "27"]] },
     "konekte": { titre: "Konekte", dossier: "konekte", couverture: "01" },
     "drone": { titre: { fr: "Drone", en: "Drone" }, dossier: "drone", couverture: "01", egal: true, sauf: ["03", "05", "07", "11", "15", "16", "18", "19", "21", "27"], lignes: [["01", "13"], ["09", "04", "06"], ["02", "08"], ["12", "10", "22"], ["23", "24", "26"], ["20", "28"], ["29", "17"], ["25"]] },
-    "origine": { titre: { fr: "Origine", en: "Origin" }, dossier: "creations/origine", couverture: "05", nouveau: true, egal: true, lignes: [["01", "02"], ["04", "05", "06"], ["03", "07", "08"], ["09"], ["10", "11"], ["12", "13"], ["15", "14", "16"], ["17", "18", "19"], ["20", "21"], ["22"]] },
+    "origine": { titre: { fr: "Origine", en: "Origin" }, dossier: "creations/origine", couverture: "05", nouveau: true, egal: true, lignes: [["01", "02"], ["04", "05", "06"], ["03", "07", "08"], ["09", "10", "11"], ["12", "13"], ["14", "15", "16"]] },
     "biscuit-manioc": { titre: { fr: "Biscuits manioc", en: "Cassava biscuits" }, dossier: "biscuit-manioc", couverture: "15", nouveau: true, egal: true, lignes: [["01", "02", "03"], ["04", "05", "06"], ["07", "08", "09", "10"], ["11", "12", "13"], ["14", "15"], ["16", "17", "18"], ["19", "20", "21"], ["22"]] },
     "caprizzio": { titre: "Caprizzio Pizza", dossier: "caprizzio", couverture: "10", nouveau: true, egal: true, lignes: [["01", "02", "03"], ["04", "05", "06"], ["07", "08", "09"], ["10", "11"], ["12", "13"], ["14", "15", "16"]] },
     "ecole-de-l-ouest": { titre: "École de l’Ouest", dossier: "ecole-de-l-ouest", couverture: "01", nouveau: true, egal: true, lignes: [["01", "02"], ["04", "06", "07"], ["08", "12", "14"], ["16", "19"], ["21", "22", "26"], ["25", "28"]], sauf: ["03", "05", "09", "10", "11", "13", "15", "17", "18", "20", "23", "24", "27"] },
@@ -130,7 +130,7 @@ window.SITE = {
     "ferney": { titre: { fr: "Ferney, film", en: "Ferney, film" }, dossier: "ferney", couverture: "01", egal: true, lignes: [["01", "02", "03"], ["04", "05", "06"], ["07", "08", "09"], ["10", "11", "12", "13"], ["14", "15", "16"], ["17", "18", "19"], ["20", "21", "22"], ["23", "24", "25"], ["26"]] },
     "kfc": { titre: { fr: "KFC, film", en: "KFC, film" }, dossier: "coulisses", partie: "KFC Film" },
     "eclosia": { titre: "Groupe Eclosia", dossier: "evenements", partie: "Eclosia Groupe associations", couverture: "13", sauf: ["06", "01", "31", "32", "35", "36"], egal: true, lignes: [["13", "10", "14"], ["15", "09"], ["11", "08", "16"], ["12", "07"], ["04", "05", "03"], ["02", "33", "34", "37"]] },
-    "ciel-group": { titre: "Ciel Aquarelle", dossier: "evenements/ciel-casela", couverture: "06", nouveau: true, egal: true, lignes: [["01", "02", "03"], ["06", "07", "08"], ["05"], ["10", "11"], ["09", "13", "12"], ["04", "14", "15"], ["16", "17", "19"], ["18"], ["20", "21", "22"], ["23", "24", "25"], ["26"]] },
+    "ciel-group": { titre: "Ciel Aquarelle", dossier: "evenements/ciel-casela", couverture: "06", nouveau: true, egal: true, lignes: [["01", "02", "03"], ["06", "07", "08"], ["05", "09"], ["10", "11"], ["13", "12", "04"], ["14", "15", "16"], ["17", "19", "18"], ["20", "21", "22"], ["23", "24", "25", "26"]] },
     "ome-fam-uni": { titre: "Ome Fam Uni", dossier: "evenements", partie: "Ome fam uni assiociation" },
     "ocean-villa": { titre: "Ocean Villa", dossier: "immobilier/ocean-villa", couverture: "23" },
     "villa-anahita": { titre: "Villa Anahita", dossier: "immobilier/villa-anahita", couverture: "14" },
