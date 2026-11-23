@@ -806,3 +806,8 @@ html[data-th=v2] .ex-wall::before{display:block;opacity:1;width:min(1000px,92%);
 .ix-tl button{font-size:clamp(14px,1vw,17px)}
 @media (max-width:1100px){.ix-tl{-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}}
 @media (max-width:1380px) and (min-width:1101px){.ix-tl{gap:14px}.ix-tl button{font-size:14px}}
+/* bouton Accueil, toujours visible dans l'en-tête */
+.hd .home{flex:none;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;margin:-8px 0;border-radius:50%;border:1px solid var(--line);color:var(--tx);align-self:center;transition:background .3s,color .3s,border-color .3s}
+.hd .home svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.hd .home:hover{background:var(--tx);color:var(--bg);border-color:var(--tx)}
+@media (hover:none),(pointer:coarse){.hd .home{width:34px;height:34px}}

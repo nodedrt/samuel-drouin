@@ -224,7 +224,7 @@
     document.documentElement.lang = lang;
     var th = document.documentElement.getAttribute("data-th") || "v1", TH = { v1: lang === "fr" ? "Clair" : "Light", v2: lang === "fr" ? "Basalte" : "Basalt", v3: lang === "fr" ? "Sable" : "Sand" };
     hd.innerHTML = '<span class="whw intro-hd"><a class="who" href="#/">' + t("who") + '</a><span class="th" role="group" aria-label="' + (lang === "fr" ? "Ambiance du site" : "Site mood") + '">' +
-      ["v1", "v2"].map(function (k) { return '<button type="button" data-th="' + k + '" title="' + TH[k] + '" aria-pressed="' + (k === th) + '">' + k.toUpperCase() + "</button>"; }).join("") + '</span></span><span class="loc intro-hd">' + esc(t("role")) + "</span>" +
+      ["v1", "v2"].map(function (k) { return '<button type="button" data-th="' + k + '" title="' + TH[k] + '" aria-pressed="' + (k === th) + '">' + k.toUpperCase() + "</button>"; }).join("") + '</span><a class="home" href="#/photographie" aria-label="' + (lang === "fr" ? "Accueil" : "Home") + '" title="' + (lang === "fr" ? "Accueil" : "Home") + '"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 9.2 10 3l7 6.2"/><path d="M5 8v8.5h3.6v-4.8h2.8v4.8H15V8"/></svg></a></span><span class="loc intro-hd">' + esc(t("role")) + "</span>" +
       '<nav class="intro-hd" aria-label="Navigation"><button type="button" class="u ixb" data-ixo>Index,</button> <a class="u" data-nav="photographie" href="#/photographie">' + t("photo") + ',</a> <a class="u" data-nav="video" href="#/video">' + t("video") + ',</a> ' +
       '<a class="u" data-nav="etalonnage" href="#/etalonnage">' + t("grade") + ',</a> <a class="u" data-nav="info" href="#/info">' + t("info") + ',</a> <a class="u" href="#contact" data-contact>' + t("contact") + "</a>" +
       '<span class="lang"><button class="' + (lang === "fr" ? "" : "off") + '" data-lang="fr">FR</button> / <button class="' + (lang === "en" ? "" : "off") + '" data-lang="en">EN</button></span></nav>' +
@@ -290,7 +290,9 @@
     }
     var l = e.target.closest("[data-lang]");
     if (l) { lang = l.dataset.lang; try { localStorage.setItem("sd-lang", lang); } catch (x) {} chrome(); page = ""; render(true); return; }
-    if (e.target.closest("[data-ixo]")) { e.preventDefault(); toggleMenu(false); openIxo(); return; }
+    var hm0 = e.target.closest(".hd .home");
+    if (hm0) { toggleMenu(false); if (location.hash === "#/photographie" || (page === "home" && location.hash === "#/" && mode === "photo")) { e.preventDefault(); window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); } return; }
+    if (e.target.closest("[data-ixo]")) { e.preventDefault(); toggleMenu(false); goIndex(); return; }
     var xs = e.target.closest("[data-ixs]");
     if (xs) { e.preventDefault(); toggleMenu(false); openIxo(xs.dataset.ixs); return; }
     if (e.target.closest("#ixo .x") || e.target.closest("#ixo a")) { closeIxo(); }
@@ -1571,6 +1573,17 @@
   var ixo = document.createElement("div"), curPrevNext = null;
   ixo.id = "ixo"; ixo.className = "ixo"; ixo.hidden = true; ixo.setAttribute("role", "dialog"); ixo.setAttribute("aria-label", "Index");
   document.body.appendChild(ixo);
+  /* « Index » : va à l'index de la page d'accueil (Photographie, ou Vidéo depuis une page vidéo) */
+  var ixPending = false;
+  function ixScroll(smooth) {
+    var x = document.getElementById("index"); if (!x) return;
+    window.scrollTo({ top: x.getBoundingClientRect().top + window.scrollY - 64, behavior: smooth && !reduce ? "smooth" : "auto" });
+  }
+  function goIndex() {
+    if (page === "home" && document.getElementById("index")) { ixScroll(true); return; }
+    var r = parse().r, vid = r === "video" || r === "film" || (page === "home" && mode === "video");
+    ixPending = true; location.hash = vid ? "#/video" : "#/photographie";
+  }
   function openIxo(focus) {
     ixo.innerHTML = '<div class="top"><span>Index</span><button type="button" class="x">' + t("close") + "</button></div>" + mapCards();
     ixo.querySelectorAll(".ix-c").forEach(function (g, i) { g.style.setProperty("--i", Math.min(i, 20)); if (g.getAttribute("href") === location.hash) g.classList.add("cur"); });
@@ -1637,6 +1650,7 @@
       else if (r === "film") { page = "film"; filmPage(R.sub, R.n); }
       else { page = "404"; notFound(); }
       navOn(); setTitle(R); setTimeout(fnSync, 50);
+      if (ixPending && hm) { ixPending = false; setTimeout(function () { ixScroll(false); }, 60); setTimeout(function () { ixScroll(false); }, 450); }
       var back = hm && from === "projet" && scrollMem[location.hash || "#/"];
       if (hm && back == null && from === "projet") back = homeY;
       if (back) window.scrollTo(0, back); else if (!keepScroll) window.scrollTo(0, 0);
