@@ -1294,7 +1294,7 @@
       } else drawG();
     }
     main.querySelectorAll(".pm [data-m]").forEach(function (b) { b.addEventListener("click", function () { if (pmode !== b.dataset.m) setPm(b.dataset.m, true); }); });
-    var pm0 = "photos", jumpV = false; try { jumpV = !!sessionStorage.getItem("sd-pm1-" + slug); pm0 = sessionStorage.getItem("sd-pm1-" + slug) || sessionStorage.getItem("sd-pm-" + slug) || "photos"; sessionStorage.removeItem("sd-pm1-" + slug); } catch (e) {}
+    var pm0 = "photos", jumpV = false; try { jumpV = !!sessionStorage.getItem("sd-pm1-" + slug); pm0 = sessionStorage.getItem("sd-pm1-" + slug) || "photos"; /* on revient toujours sur les photos, sauf si on vient d'un lien vidéo */ sessionStorage.removeItem("sd-pm1-" + slug); } catch (e) {}
     if (pvids.length) setPm(pm0 === "videos" ? "videos" : "photos", false);
     /* arrivée depuis la page Vidéo sur téléphone : on descend jusqu'au lecteur */
     if (jumpV && window.innerWidth < 900) setTimeout(function () { var c = el.querySelector(".cine"); if (c && c.isConnected) c.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }); }, 450);
