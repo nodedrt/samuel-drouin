@@ -53,6 +53,14 @@ window.SITE = {
   // Les sections, comme sur le Google Site (l'immobilier en dernier).
   // Ordre de l'index (accueil et index général) : les plus beaux projets d'abord.
   // Un projet absent de cette liste se place après, dans l'ordre des sections.
+  /* grandes familles de l'index de l'accueil (dans cet ordre) */
+  familles: [
+    { id: "regard", fr: "Regard personnel", en: "Personal work", note: { fr: "Lumières, visages et voyages : ce que je photographie pour moi.", en: "Light, faces and travels: what I photograph for myself." }, projets: ["paysage", "portrait", "voyage", "drone", "vert-nature"] },
+    { id: "immobilier", fr: "Immobilier et hôtellerie", en: "Real estate and hospitality", note: { fr: "Villas, hôtels et lieux d’exception, révélés par la lumière.", en: "Villas, hotels and remarkable places, revealed by light." }, projets: ["les-paletuviers", "ocean-villa", "poste-lafayette", "villa-anahita", "villa-horizon", "villa-la-plage", "le-dalblair", "bluemoon-villa", "yesterday-rodrigues", "details"] },
+    { id: "marques", fr: "Restaurants, bien-être et marques", en: "Restaurants, wellness and brands", note: { fr: "Des lieux et des gens qui font envie.", en: "Places and people that make you want to come." }, projets: ["caprizzio", "samaya", "cafe-st-felix", "mr-bao", "peizan", "the-hive", "konekte", "melbees"] },
+    { id: "entreprises", fr: "Entreprises et engagements", en: "Companies and causes", note: { fr: "Le travail, les équipes et les actions qui comptent.", en: "Work, teams and the actions that matter." }, projets: ["ciel-textile", "ciel-aquarelle", "gamma-construction", "exposition-port-louis", "kenya-telkom", "sasha-academy", "sealife", "ecole-de-l-ouest", "eclosia", "ciel-group", "ome-fam-uni"] },
+    { id: "coulisses", fr: "Coulisses de tournage", en: "Behind the scenes", note: { fr: "De l’autre côté de la caméra.", en: "The other side of the camera." }, projets: ["abc", "ferney", "kenya-film", "kfc"] }
+  ],
   ordre: ["les-paletuviers", "ocean-villa", "paysage", "portrait", "drone", "caprizzio", "samaya", "voyage", "cafe-st-felix", "poste-lafayette", "villa-anahita", "konekte", "peizan", "kenya-telkom", "vert-nature", "villa-horizon", "mr-bao", "villa-la-plage", "le-dalblair", "melbees", "ecole-de-l-ouest", "the-hive", "ferney", "kenya-film", "abc", "kfc", "bluemoon-villa", "yesterday-rodrigues", "sealife", "ciel-textile", "ciel-aquarelle", "gamma-construction", "exposition-port-louis", "sasha-academy", "eclosia", "ciel-group", "ome-fam-uni", "details"],
   sections: [
     { id: "voyage", fr: "Voyage", en: "Travel", projets: ["voyage"] },

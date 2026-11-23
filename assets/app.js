@@ -849,17 +849,32 @@
   function indexList(anim) {
     var el = main.querySelector(".ix"); if (!el) return;
     var cards = [], groups = [], n = 0;
+    var fams = [], ixv = "tabs";
     if (mode === "photo") {
-      /* les plus beaux projets d'abord (SITE.ordre), puis les autres dans l'ordre des sections */
-      var ent = [], seenS = {};
-      SITE.sections.forEach(function (s) { s.projets.filter(function (slug) { return proj(slug) && images(slug).length; }).forEach(function (slug) { ent.push({ s: s, slug: slug, k: ent.length }); }); });
-      ent.sort(function (a, b) { return rank(a.slug) - rank(b.slug) || a.k - b.k; });
-      ent.forEach(function (e) {
-        var s = e.s, slug = e.slug, j = seenS[s.id] ? 1 : 0; seenS[s.id] = 1;
-        n++; var c = cover(slug);
-          cards.push('<a class="ix-c fig"' + (j === 0 ? ' id="ix-' + s.id + '"' : "") + ' href="' + href(slug) + '"><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="' + esc(pTitle(slug)) + '" src="' + esc(src(c, true)) + '"></div>' +
-            '<div class="ix-tx"><span class="ix-sec">' + esc(L(s)) + '</span><b>' + esc(pTitle(slug)) + (proj(slug).nouveau ? " <i>" + t("isNew") + "</i>" : "") + '</b><span class="ix-n">' + images(slug).length + "</span></div></a>");
-      });
+      /* familles de projets (SITE.familles) ; dans chaque famille, les plus beaux d'abord (SITE.ordre) */
+      var ent = [], seenS = {}, secOf = {};
+      SITE.sections.forEach(function (s) { s.projets.filter(function (slug) { return proj(slug) && images(slug).length; }).forEach(function (slug) { if (!secOf[slug]) { secOf[slug] = s; ent.push(slug); } }); });
+      var FAM = (SITE.familles || []).slice(), used = {};
+      FAM.forEach(function (f) { var ps = f.projets.filter(function (x) { return secOf[x]; }); ps.sort(function (a, b) { return rank(a) - rank(b); }); ps.forEach(function (x) { used[x] = 1; }); if (ps.length) fams.push({ f: f, ps: ps }); });
+      var rest = ent.filter(function (x) { return !used[x]; }).sort(function (a, b) { return rank(a) - rank(b); });
+      if (rest.length) fams.push({ f: { id: "autres", fr: "Autres projets", en: "Other projects" }, ps: rest });
+      try { ixv = localStorage.getItem("sd-ixv") || "tabs"; } catch (e) {}
+      var card = function (slug, fid, extra) {
+        var s = secOf[slug], j = seenS[s.id] ? 1 : 0; seenS[s.id] = 1; n++; var c = cover(slug);
+        return '<a class="ix-c fig' + (extra || "") + '"' + (j === 0 ? ' id="ix-' + s.id + '"' : "") + ' data-f="' + fid + '" href="' + href(slug) + '"><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="' + esc(pTitle(slug)) + '" src="' + esc(src(c, true)) + '"></div>' +
+          '<div class="ix-tx"><span class="ix-sec">' + esc(L(s)) + '</span><b>' + esc(pTitle(slug)) + (proj(slug).nouveau ? " <i>" + t("isNew") + "</i>" : "") + '</b><span class="ix-n">' + images(slug).length + "</span></div></a>";
+      };
+      if (ixv === "chap") {
+        fams.forEach(function (F, k) {
+          var cnt = F.ps.length, more = cnt > 4;
+          groups.push('<section class="ixc' + (more ? "" : " open") + '" id="ix-f-' + F.f.id + '"><header class="ixc-h"><span class="ixc-n">' + pad(k + 1) + '</span><h3>' + esc(L(F.f)) + "</h3>" +
+            (F.f.note ? "<p>" + esc(L(F.f.note)) + "</p>" : "") + '<span class="ixc-k">' + cnt + " " + t("projects") + "</span></header>" +
+            '<div class="ix-grid">' + F.ps.map(function (slug, q) { return card(slug, F.f.id, q >= 4 ? " more" : ""); }).join("") + "</div>" +
+            (more ? '<button type="button" class="ixc-more" aria-expanded="false"><span class="o">' + (lang === "fr" ? "Voir les " + cnt + " projets" : "See all " + cnt + " projects") + '</span><span class="c">' + (lang === "fr" ? "Réduire" : "Show less") + "</span><i aria-hidden=\"true\"></i></button>" : "") + "</section>");
+        });
+      } else {
+        fams.forEach(function (F) { F.ps.forEach(function (slug) { cards.push(card(slug, F.f.id)); }); });
+      }
     } else {
       /* vidéos rangées par catégorie : un titre, puis une grille propre par groupe */
       var groups = [];
@@ -879,7 +894,18 @@
           }).join("") + "</div></div>");
       });
     }
-    el.innerHTML = '<h2 class="ix-h">Index<small>' + n + " " + (mode === "photo" ? t("projects") : t("videos")) + "</small></h2>" + (mode === "photo" ? '<div class="ix-grid">' + cards.join("") + "</div>" : groups.join(""));
+    var sw = "", tabs = "";
+    if (mode === "photo") {
+      var fr = lang === "fr";
+      sw = '<div class="ix-sw" role="group" aria-label="' + (fr ? "Affichage de l’index" : "Index layout") + '"><i class="ix-sw-p" aria-hidden="true"></i>' +
+        '<button type="button" data-v="tabs" aria-pressed="' + (ixv !== "chap") + '"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="3" width="7" height="3" rx="1.5"/><rect x="11" y="3" width="7" height="3" rx="1.5"/><rect x="2" y="9" width="7" height="8" rx="1"/><rect x="11" y="9" width="7" height="8" rx="1"/></svg><span>' + (fr ? "Filtres" : "Filters") + "</span></button>" +
+        '<button type="button" data-v="chap" aria-pressed="' + (ixv === "chap") + '"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="2.5" width="16" height="2" rx="1"/><rect x="2" y="6.5" width="4.5" height="3.5" rx=".8"/><rect x="7.75" y="6.5" width="4.5" height="3.5" rx=".8"/><rect x="13.5" y="6.5" width="4.5" height="3.5" rx=".8"/><rect x="2" y="12" width="16" height="2" rx="1"/><rect x="2" y="15.5" width="4.5" height="2.5" rx=".8"/><rect x="7.75" y="15.5" width="4.5" height="2.5" rx=".8"/></svg><span>' + (fr ? "Chapitres" : "Chapters") + "</span></button></div>";
+      if (ixv !== "chap") tabs = '<div class="ix-tabs"><div class="ix-tl" role="tablist"><button type="button" role="tab" data-f="all" aria-selected="true">' + (fr ? "Tout" : "All") + "<sup>" + n + "</sup></button>" +
+        fams.map(function (F) { return '<button type="button" role="tab" data-f="' + F.f.id + '" aria-selected="false">' + esc(L(F.f)) + "<sup>" + F.ps.length + "</sup></button>"; }).join("") + '<i class="ix-ind" aria-hidden="true"></i></div></div>';
+    }
+    el.innerHTML = '<h2 class="ix-h"><span class="ix-ht">Index<small>' + n + " " + (mode === "photo" ? t("projects") : t("videos")) + "</small></span>" + sw + "</h2>" + tabs +
+      (mode === "photo" ? (ixv === "chap" ? '<div class="ixcs">' + groups.join("") + "</div>" : '<div class="ix-grid">' + cards.join("") + "</div>") : groups.join(""));
+    if (mode === "photo") ixWire(el, ixv);
     el.querySelectorAll(".ix-c[data-pm]").forEach(function (a) { a.addEventListener("click", function () { try { sessionStorage.setItem("sd-pm-" + a.getAttribute("href").split("/").pop(), "photos"); } catch (e) {} }); });
     el.querySelectorAll(".ix-c[data-em]").forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); openVideo(a.dataset.em, a.dataset.t, a); }); });
     el.querySelectorAll(".ix-c[data-pmv]").forEach(function (a) { a.addEventListener("click", pjVids); });
@@ -888,7 +914,66 @@
     });
     observe();
   }
+  /* index de l'accueil : choix Filtres / Chapitres, filtres par famille, chapitres dépliables */
+  function ixWire(el, ixv) {
+    var swp = el.querySelector(".ix-sw-p");
+    function pill() { var b = el.querySelector('.ix-sw [aria-pressed="true"]'); if (b && swp) { swp.style.width = b.offsetWidth + "px"; swp.style.transform = "translateX(" + b.offsetLeft + "px)"; } }
+    pill(); setTimeout(pill, 300); if (document.fonts && document.fonts.ready) document.fonts.ready.then(pill);
+    el.querySelectorAll(".ix-sw button").forEach(function (b) {
+      b.addEventListener("click", function () {
+        if (b.getAttribute("aria-pressed") === "true") return;
+        el.querySelectorAll(".ix-sw button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); pill();
+        try { localStorage.setItem("sd-ixv", b.dataset.v); } catch (e) {}
+        var y = el.getBoundingClientRect().top;
+        var go = function () { indexList(true); var y2 = el.getBoundingClientRect().top; if (Math.abs(y2 - y) > 2) window.scrollBy(0, y2 - y); };
+        var body = el.querySelector(".ix-grid, .ixcs"), tb = el.querySelector(".ix-tabs");
+        if (reduce || !body || !body.animate) return go();
+        [body, tb].forEach(function (x) { if (x) x.animate([{ opacity: 1 }, { opacity: 0, transform: "translateY(10px)" }], { duration: 260, easing: "ease-in", fill: "forwards" }); });
+        setTimeout(go, 270);
+      });
+    });
+    var tl = el.querySelector(".ix-tl");
+    if (tl) {
+      var ind = tl.querySelector(".ix-ind"), grid = el.querySelector(".ix-grid"), cur = "all";
+      var mark = function (b, inst) {
+        tl.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-selected", x === b); });
+        ind.style.transition = inst ? "none" : ""; ind.style.width = b.offsetWidth + "px"; ind.style.transform = "translateX(" + b.offsetLeft + "px)";
+        if (b.offsetLeft < tl.scrollLeft + 10 || b.offsetLeft + b.offsetWidth > tl.scrollLeft + tl.clientWidth - 10) tl.scrollTo({ left: b.offsetLeft - 20, behavior: inst || reduce ? "auto" : "smooth" });
+      };
+      var apply = function (f, anim) {
+        cur = f; try { sessionStorage.setItem("sd-ixf", f); } catch (e) {}
+        var cs = [].slice.call(grid.children), show = cs.filter(function (c) { return f === "all" || c.dataset.f === f; });
+        var swap = function () {
+          cs.forEach(function (c) { c.hidden = show.indexOf(c) < 0; });
+          if (anim && !reduce && grid.animate) {
+            grid.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 10, fill: "forwards" });
+            show.forEach(function (c, k) { c.animate([{ opacity: 0, transform: "translateY(16px) scale(.985)" }, { opacity: 1, transform: "none" }], { duration: 700, delay: Math.min(k, 12) * 45, easing: OUT, fill: "backwards" }); });
+          }
+          observe();
+        };
+        if (anim && !reduce && grid.animate) grid.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, easing: "ease-in", fill: "forwards" }).onfinish = swap; else swap();
+      };
+      tl.querySelectorAll("button").forEach(function (b) { b.addEventListener("click", function () { if (b.dataset.f === cur) return; mark(b); apply(b.dataset.f, true); }); });
+      var f0 = "all"; try { f0 = sessionStorage.getItem("sd-ixf") || "all"; } catch (e) {}
+      var b0 = tl.querySelector('[data-f="' + f0 + '"]') || tl.querySelector('[data-f="all"]');
+      requestAnimationFrame(function () { mark(b0, true); }); setTimeout(function () { mark(tl.querySelector('[aria-selected="true"]') || b0, true); }, 350);
+      if (b0.dataset.f !== "all") apply(b0.dataset.f, false);
+      resizers.push(function () { var b = tl.querySelector('[aria-selected="true"]'); if (b) mark(b, true); pill(); });
+      el._ixAll = function () { var b = tl.querySelector('[data-f="all"]'); mark(b, true); apply("all", false); };
+    } else el._ixAll = null;
+    el.querySelectorAll(".ixc-more").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var sec = b.closest(".ixc"), op = !sec.classList.contains("open");
+        sec.classList.toggle("open", op); b.setAttribute("aria-expanded", op);
+        var ms = [].slice.call(sec.querySelectorAll(".ix-c.more"));
+        if (op) { observe(); if (!reduce) ms.forEach(function (c, k) { c.animate([{ opacity: 0, transform: "translateY(18px)" }, { opacity: 1, transform: "none" }], { duration: 750, delay: k * 55, easing: OUT, fill: "backwards" }); }); }
+        else { var y = sec.getBoundingClientRect().top; if (y < 0) window.scrollTo({ top: y + window.scrollY - 70, behavior: reduce ? "auto" : "smooth" }); }
+      });
+    });
+  }
   function scrollIx(id) {
+    var ixe = main.querySelector(".ix"); if (ixe && ixe._ixAll) { var tx = document.getElementById("ix-" + id); if (tx && tx.hidden) ixe._ixAll(); }
+    var cx = document.getElementById("ix-" + id); if (cx && cx.classList.contains("more")) { var sc = cx.closest(".ixc"); if (sc && !sc.classList.contains("open")) { var mb = sc.querySelector(".ixc-more"); if (mb) mb.click(); } }
     var x = document.getElementById("ix-" + id);
     if (x) window.scrollTo({ top: x.getBoundingClientRect().top + window.scrollY - 80, behavior: reduce ? "auto" : "smooth" });
   }
