@@ -860,7 +860,7 @@
       FAM.forEach(function (f) { var ps = f.projets.filter(function (x) { return secOf[x]; }); ps.forEach(function (x) { used[x] = 1; }); if (ps.length) fams.push({ f: f, ps: ps }); });
       var rest = ent.filter(function (x) { return !used[x]; }).sort(function (a, b) { return rank(a) - rank(b); });
       if (rest.length) fams.push({ f: { id: "autres", fr: "Autres projets", en: "Other projects" }, ps: rest });
-      ixv = "mini"; try { if (localStorage.getItem("sd-ixv") === "chap") ixv = "chap"; } catch (e) {}
+      ixv = "mini"; try { if (localStorage.getItem("sd-ixv") === "flat") ixv = "flat"; } catch (e) {}
       var card = function (slug, fid, extra) {
         var s = secOf[slug], j = seenS[s.id] ? 1 : 0; seenS[s.id] = 1; n++; var c = cover(slug);
         return '<a class="ix-c fig' + (extra || "") + '"' + (j === 0 ? ' id="ix-' + s.id + '"' : "") + ' data-f="' + fid + '" href="' + href(slug) + '"><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="' + esc(pTitle(slug)) + '" src="' + esc(src(c, true)) + '"></div>' +
@@ -878,6 +878,9 @@
         COLS.forEach(function (c, ci) { c.forEach(function (id) { if (blk[id] && ci < 3) { cols[ci].push(id); done[id] = 1; rows[ci] += 1 + Math.ceil(fams.filter(function (F) { return F.f.id === id; })[0].ps.length / 3); } }); });
         fams.forEach(function (F) { if (done[F.f.id]) return; var m = rows.indexOf(Math.min.apply(null, rows)); cols[m].push(F.f.id); rows[m] += 1 + Math.ceil(F.ps.length / 3); });
         groups = cols.map(function (c) { return '<div class="ixm-col">' + c.map(function (id) { return blk[id]; }).join("") + "</div>"; });
+      } else if (ixv === "flat") {
+        /* l'ancien index : tous les projets, les plus beaux d'abord */
+        ent.slice().sort(function (a, b) { return rank(a) - rank(b); }).forEach(function (slug) { var f = fams.filter(function (F) { return F.ps.indexOf(slug) >= 0; })[0]; cards.push(card(slug, f ? f.f.id : "autres")); });
       } else if (ixv === "chap") {
         fams.forEach(function (F, k) {
           var cnt = F.ps.length, more = cnt > 5;
@@ -910,9 +913,9 @@
     }
     var sw = "", tabs = "";
     if (mode === "photo") sw = '<div class="ix-sw" role="group" aria-label="' + (lang === "fr" ? "Affichage de l’index" : "Index layout") + '"><i class="ix-sw-p" aria-hidden="true"></i>' +
-      '<button type="button" data-v="chap" aria-pressed="' + (ixv !== "mini") + '"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="3" width="9" height="9" rx="1"/><rect x="13" y="3" width="5" height="4" rx=".8"/><rect x="13" y="8" width="5" height="4" rx=".8"/><rect x="2" y="14.5" width="16" height="2" rx="1"/></svg><span>' + (lang === "fr" ? "Chapitres" : "Chapters") + "</span></button>" +
-      '<button type="button" data-v="mini" aria-pressed="' + (ixv === "mini") + '"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="2" width="4.5" height="4.5" rx=".8"/><rect x="7.75" y="2" width="4.5" height="4.5" rx=".8"/><rect x="13.5" y="2" width="4.5" height="4.5" rx=".8"/><rect x="2" y="7.75" width="4.5" height="4.5" rx=".8"/><rect x="7.75" y="7.75" width="4.5" height="4.5" rx=".8"/><rect x="13.5" y="7.75" width="4.5" height="4.5" rx=".8"/><rect x="2" y="13.5" width="4.5" height="4.5" rx=".8"/><rect x="7.75" y="13.5" width="4.5" height="4.5" rx=".8"/><rect x="13.5" y="13.5" width="4.5" height="4.5" rx=".8"/></svg><span>' + (lang === "fr" ? "Compact" : "Compact") + "</span></button></div>";
-    if (mode === "photo") tabs = '<nav class="ixn" aria-label="' + (lang === "fr" ? "Chapitres" : "Chapters") + '">' + fams.map(function (F, k) { return '<a href="#ix-f-' + F.f.id + '" data-ixf="' + F.f.id + '"><span>' + pad(k + 1) + "</span>" + esc(L(F.f)) + "</a>"; }).join("") + "</nav>";
+      '<button type="button" data-v="mini" aria-pressed="' + (ixv === "mini") + '"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="2" width="4.5" height="4.5" rx=".8"/><rect x="7.75" y="2" width="4.5" height="4.5" rx=".8"/><rect x="13.5" y="2" width="4.5" height="4.5" rx=".8"/><rect x="2" y="7.75" width="4.5" height="4.5" rx=".8"/><rect x="7.75" y="7.75" width="4.5" height="4.5" rx=".8"/><rect x="13.5" y="7.75" width="4.5" height="4.5" rx=".8"/><rect x="2" y="13.5" width="4.5" height="4.5" rx=".8"/><rect x="7.75" y="13.5" width="4.5" height="4.5" rx=".8"/><rect x="13.5" y="13.5" width="4.5" height="4.5" rx=".8"/></svg><span>' + (lang === "fr" ? "Compact" : "Compact") + "</span></button>" +
+      '<button type="button" data-v="flat" aria-pressed="' + (ixv === "flat") + '"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="2.5" width="7" height="6" rx="1"/><rect x="11" y="2.5" width="7" height="6" rx="1"/><rect x="2" y="11.5" width="7" height="6" rx="1"/><rect x="11" y="11.5" width="7" height="6" rx="1"/></svg><span>' + (lang === "fr" ? "Grille" : "Grid") + "</span></button></div>";
+    if (mode === "photo" && ixv !== "flat") tabs = '<nav class="ixn" aria-label="' + (lang === "fr" ? "Chapitres" : "Chapters") + '">' + fams.map(function (F, k) { return '<a href="#ix-f-' + F.f.id + '" data-ixf="' + F.f.id + '"><span>' + pad(k + 1) + "</span>" + esc(L(F.f)) + "</a>"; }).join("") + "</nav>";
     el.innerHTML = '<h2 class="ix-h"><span class="ix-ht">Index<small>' + n + " " + (mode === "photo" ? t("projects") : t("videos")) + "</small></span>" + sw + "</h2>" + tabs +
       (mode === "photo" ? (ixv === "mini" ? '<div class="ixms">' + groups.join("") + "</div>" : ixv === "chap" ? '<div class="ixcs">' + groups.join("") + "</div>" : '<div class="ix-grid">' + cards.join("") + "</div>") : groups.join(""));
     if (mode === "photo") ixWire(el, ixv);
