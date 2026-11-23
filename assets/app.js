@@ -857,10 +857,10 @@
       var ent = [], seenS = {}, secOf = {};
       SITE.sections.forEach(function (s) { s.projets.filter(function (slug) { return proj(slug) && images(slug).length; }).forEach(function (slug) { if (!secOf[slug]) { secOf[slug] = s; ent.push(slug); } }); });
       var FAM = (SITE.familles || []).slice(), used = {};
-      FAM.forEach(function (f) { var ps = f.projets.filter(function (x) { return secOf[x]; }); ps.sort(function (a, b) { return rank(a) - rank(b); }); ps.forEach(function (x) { used[x] = 1; }); if (ps.length) fams.push({ f: f, ps: ps }); });
+      FAM.forEach(function (f) { var ps = f.projets.filter(function (x) { return secOf[x]; }); ps.forEach(function (x) { used[x] = 1; }); if (ps.length) fams.push({ f: f, ps: ps }); });
       var rest = ent.filter(function (x) { return !used[x]; }).sort(function (a, b) { return rank(a) - rank(b); });
       if (rest.length) fams.push({ f: { id: "autres", fr: "Autres projets", en: "Other projects" }, ps: rest });
-      try { ixv = localStorage.getItem("sd-ixv") || "tabs"; } catch (e) {}
+      ixv = "chap";
       var card = function (slug, fid, extra) {
         var s = secOf[slug], j = seenS[s.id] ? 1 : 0; seenS[s.id] = 1; n++; var c = cover(slug);
         return '<a class="ix-c fig' + (extra || "") + '"' + (j === 0 ? ' id="ix-' + s.id + '"' : "") + ' data-f="' + fid + '" href="' + href(slug) + '"><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="' + esc(pTitle(slug)) + '" src="' + esc(src(c, true)) + '"></div>' +
@@ -868,10 +868,10 @@
       };
       if (ixv === "chap") {
         fams.forEach(function (F, k) {
-          var cnt = F.ps.length, more = cnt > 4;
-          groups.push('<section class="ixc' + (more ? "" : " open") + '" id="ix-f-' + F.f.id + '"><header class="ixc-h"><span class="ixc-n">' + pad(k + 1) + '</span><h3>' + esc(L(F.f)) + "</h3>" +
+          var cnt = F.ps.length, more = cnt > 5;
+          groups.push('<section class="ixc' + (more ? "" : " open") + (cnt === 1 ? " solo" : cnt <= 3 ? " few" : "") + '" id="ix-f-' + F.f.id + '"><header class="ixc-h"><span class="ixc-n">' + pad(k + 1) + '</span><h3>' + esc(L(F.f)) + "</h3>" +
             (F.f.note ? "<p>" + esc(L(F.f.note)) + "</p>" : "") + '<span class="ixc-k">' + cnt + " " + t("projects") + "</span></header>" +
-            '<div class="ix-grid">' + F.ps.map(function (slug, q) { return card(slug, F.f.id, q >= 4 ? " more" : ""); }).join("") + "</div>" +
+            '<div class="ix-grid">' + F.ps.map(function (slug, q) { return card(slug, F.f.id, (q === 0 ? " lead" : "") + (q >= 5 ? " more" : "")); }).join("") + "</div>" +
             (more ? '<button type="button" class="ixc-more" aria-expanded="false"><span class="o">' + (lang === "fr" ? "Voir les " + cnt + " projets" : "See all " + cnt + " projects") + '</span><span class="c">' + (lang === "fr" ? "Réduire" : "Show less") + "</span><i aria-hidden=\"true\"></i></button>" : "") + "</section>");
         });
       } else {
@@ -897,14 +897,7 @@
       });
     }
     var sw = "", tabs = "";
-    if (mode === "photo") {
-      var fr = lang === "fr";
-      sw = '<div class="ix-sw" role="group" aria-label="' + (fr ? "Affichage de l’index" : "Index layout") + '"><i class="ix-sw-p" aria-hidden="true"></i>' +
-        '<button type="button" data-v="tabs" aria-pressed="' + (ixv !== "chap") + '"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="3" width="7" height="3" rx="1.5"/><rect x="11" y="3" width="7" height="3" rx="1.5"/><rect x="2" y="9" width="7" height="8" rx="1"/><rect x="11" y="9" width="7" height="8" rx="1"/></svg><span>' + (fr ? "Filtres" : "Filters") + "</span></button>" +
-        '<button type="button" data-v="chap" aria-pressed="' + (ixv === "chap") + '"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="2.5" width="16" height="2" rx="1"/><rect x="2" y="6.5" width="4.5" height="3.5" rx=".8"/><rect x="7.75" y="6.5" width="4.5" height="3.5" rx=".8"/><rect x="13.5" y="6.5" width="4.5" height="3.5" rx=".8"/><rect x="2" y="12" width="16" height="2" rx="1"/><rect x="2" y="15.5" width="4.5" height="2.5" rx=".8"/><rect x="7.75" y="15.5" width="4.5" height="2.5" rx=".8"/></svg><span>' + (fr ? "Chapitres" : "Chapters") + "</span></button></div>";
-      if (ixv !== "chap") tabs = '<div class="ix-tabs"><div class="ix-tl" role="tablist"><button type="button" role="tab" data-f="all" aria-selected="true">' + (fr ? "Tout" : "All") + "<sup>" + n + "</sup></button>" +
-        fams.map(function (F) { return '<button type="button" role="tab" data-f="' + F.f.id + '" aria-selected="false">' + esc(L(F.f)) + "<sup>" + F.ps.length + "</sup></button>"; }).join("") + '<i class="ix-ind" aria-hidden="true"></i></div></div>';
-    }
+    if (mode === "photo") tabs = '<nav class="ixn" aria-label="' + (lang === "fr" ? "Chapitres" : "Chapters") + '">' + fams.map(function (F, k) { return '<a href="#ix-f-' + F.f.id + '" data-ixf="' + F.f.id + '"><span>' + pad(k + 1) + "</span>" + esc(L(F.f)) + "</a>"; }).join("") + "</nav>";
     el.innerHTML = '<h2 class="ix-h"><span class="ix-ht">Index<small>' + n + " " + (mode === "photo" ? t("projects") : t("videos")) + "</small></span>" + sw + "</h2>" + tabs +
       (mode === "photo" ? (ixv === "chap" ? '<div class="ixcs">' + groups.join("") + "</div>" : '<div class="ix-grid">' + cards.join("") + "</div>") : groups.join(""));
     if (mode === "photo") ixWire(el, ixv);
@@ -918,6 +911,7 @@
   }
   /* index de l'accueil : choix Filtres / Chapitres, filtres par famille, chapitres dépliables */
   function ixWire(el, ixv) {
+    el.querySelectorAll(".ixn a").forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); var x = document.getElementById("ix-f-" + a.dataset.ixf); if (x) window.scrollTo({ top: x.getBoundingClientRect().top + window.scrollY - 70, behavior: reduce ? "auto" : "smooth" }); }); });
     var swp = el.querySelector(".ix-sw-p");
     function pill() { var b = el.querySelector('.ix-sw [aria-pressed="true"]'); if (b && swp) { swp.style.width = b.offsetWidth + "px"; swp.style.transform = "translateX(" + b.offsetLeft + "px)"; } }
     pill(); setTimeout(pill, 300); if (document.fonts && document.fonts.ready) document.fonts.ready.then(pill);

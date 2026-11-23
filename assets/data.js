@@ -22,7 +22,6 @@ window.SITE = {
     { projet: "mr-bao", img: ["mr-bao/01"] },
     { projet: "samaya", img: ["samaya/01", "samaya/16"] },
     { projet: "the-hive", img: ["the-hive/04"] },
-    { projet: "poste-lafayette", img: ["immobilier/poste-lafayette/02"] },
     { projet: "sealife", img: ["corporate/sealife/10"] },
     { projet: "portrait", img: ["portrait/20", "portrait/18"] },
     { projet: "cafe-st-felix", img: ["cafe-st-felix/19"] },
@@ -55,15 +54,15 @@ window.SITE = {
   // Un projet absent de cette liste se place après, dans l'ordre des sections.
   /* grandes familles de l'index de l'accueil (dans cet ordre) */
   familles: [
-    { id: "regard", fr: "Regard personnel", en: "Personal work", note: { fr: "Lumières, visages et voyages : ce que je photographie pour moi.", en: "Light, faces and travels: what I photograph for myself." }, projets: ["paysage", "portrait", "voyage", "drone", "vert-nature"] },
-    { id: "immobilier", fr: "Immobilier", en: "Real estate", note: { fr: "Villas, hôtels et lieux d’exception, révélés par la lumière.", en: "Villas, hotels and remarkable places, revealed by light." }, projets: ["les-paletuviers", "ocean-villa", "poste-lafayette", "villa-anahita", "villa-horizon", "villa-la-plage", "le-dalblair", "bluemoon-villa", "yesterday-rodrigues", "details"] },
-    { id: "corporate", fr: "Corporate", en: "Corporate", note: { fr: "Entreprises, équipes, savoir-faire et campagnes.", en: "Companies, teams, craft and campaigns." }, projets: ["ciel-textile", "gamma-construction", "exposition-port-louis", "the-hive", "kenya-telkom"] },
+    { id: "regard", fr: "Regard personnel", en: "Personal work", note: { fr: "Lumières, visages et voyages : ce que je photographie pour moi.", en: "Light, faces and travels: what I photograph for myself." }, projets: ["voyage", "paysage", "portrait", "vert-nature", "drone"] },
+    { id: "immobilier", fr: "Immobilier", en: "Real estate", note: { fr: "Villas, hôtels et lieux d’exception, révélés par la lumière.", en: "Villas, hotels and remarkable places, revealed by light." }, projets: ["les-paletuviers", "ocean-villa", "villa-anahita", "villa-horizon", "villa-la-plage", "le-dalblair", "bluemoon-villa", "yesterday-rodrigues", "details"] },
+    { id: "corporate", fr: "Corporate", en: "Corporate", note: { fr: "Entreprises, équipes, savoir-faire et campagnes.", en: "Companies, teams, craft and campaigns." }, projets: ["gamma-construction", "exposition-port-louis", "ciel-textile", "the-hive", "kenya-telkom"] },
     { id: "terroir", fr: "Agriculture et environnement", en: "Farming and environment", note: { fr: "La terre, ceux qui la cultivent et ceux qui la protègent.", en: "The land, those who grow it and those who protect it." }, projets: ["cafe-st-felix", "peizan", "sealife"] },
+    { id: "coulisses", fr: "Coulisses de tournage", en: "Behind the scenes", note: { fr: "De l’autre côté de la caméra.", en: "The other side of the camera." }, projets: ["abc", "ferney", "kenya-film", "kfc"] },
     { id: "restauration", fr: "Restauration", en: "Food and dining", note: { fr: "Cuisines, gestes et assiettes qui donnent faim.", en: "Kitchens, craft and plates that make you hungry." }, projets: ["caprizzio", "mr-bao"] },
     { id: "bienetre", fr: "Beauté et bien-être", en: "Beauty and wellness", note: { fr: "Soins, gestes précis et moments pour soi.", en: "Care, precise gestures and time for yourself." }, projets: ["samaya", "sasha-academy"] },
     { id: "enfance", fr: "Enfance et éducation", en: "Childhood and education", note: { fr: "Les écoles, les crèches et les enfants qui les font vivre.", en: "Schools, nurseries and the children who bring them to life." }, projets: ["ecole-de-l-ouest", "konekte", "melbees"] },
-    { id: "associations", fr: "Associations et événements", en: "Causes and events", note: { fr: "Journées solidaires et actions qui rassemblent.", en: "Days of solidarity and actions that bring people together." }, projets: ["ciel-aquarelle", "eclosia", "ciel-group", "ome-fam-uni"] },
-    { id: "coulisses", fr: "Coulisses de tournage", en: "Behind the scenes", note: { fr: "De l’autre côté de la caméra.", en: "The other side of the camera." }, projets: ["abc", "ferney", "kenya-film", "kfc"] }
+    { id: "associations", fr: "Associations et événements", en: "Causes and events", note: { fr: "Journées solidaires et actions qui rassemblent.", en: "Days of solidarity and actions that bring people together." }, projets: ["ciel-aquarelle", "eclosia", "ciel-group", "ome-fam-uni"] }
   ],
 
   ordre: ["les-paletuviers", "ocean-villa", "paysage", "portrait", "drone", "caprizzio", "samaya", "voyage", "cafe-st-felix", "poste-lafayette", "villa-anahita", "konekte", "peizan", "kenya-telkom", "vert-nature", "villa-horizon", "mr-bao", "villa-la-plage", "le-dalblair", "melbees", "ecole-de-l-ouest", "the-hive", "ferney", "kenya-film", "abc", "kfc", "bluemoon-villa", "yesterday-rodrigues", "sealife", "ciel-textile", "ciel-aquarelle", "gamma-construction", "exposition-port-louis", "sasha-academy", "eclosia", "ciel-group", "ome-fam-uni", "details"],
@@ -91,13 +90,13 @@ window.SITE = {
     { id: "konekte", fr: "Konekte", en: "Konekte", projets: ["konekte"] },
     { id: "associations", fr: "Associations", en: "Associations", projets: ["eclosia", "ciel-group", "ome-fam-uni"] },
     { id: "immobilier", fr: "Immobilier", en: "Real estate",
-      projets: ["poste-lafayette", "villa-la-plage", "ocean-villa", "villa-anahita", "le-dalblair", "yesterday-rodrigues", "villa-horizon", "bluemoon-villa", "details"] }
+      projets: ["villa-la-plage", "ocean-villa", "villa-anahita", "le-dalblair", "yesterday-rodrigues", "villa-horizon", "bluemoon-villa", "details"] }
   ],
 
   projets: {
     "paysage": { titre: { fr: "Paysage", en: "Landscape" }, dossier: "paysage", couverture: "03", lignes: [["03", "02"], ["05", "10"], ["04", "08", "06"], ["07", "11"], ["12", "13"], ["14", "15"]] },
     "vert-nature": { titre: { fr: "Vert nature", en: "Green nature" }, dossier: "vert-nature", couverture: "08" },
-    "the-hive": { titre: "The Hive", dossier: "the-hive", couverture: "04", egal: true, lignes: [["01", "03"], ["04", "05", "06"], ["07", "08"], ["09", "11", "14"], ["15", "16"], ["20", "21", "22"]] },
+    "the-hive": { titre: "The Hive", dossier: "the-hive", couverture: "07", egal: true, lignes: [["01", "03"], ["04", "05", "06"], ["07", "08"], ["09", "11", "14"], ["15", "16"], ["20", "21", "22"]] },
     "samaya": { titre: "Samaya", dossier: "samaya", couverture: "01", egal: true, lignes: [["01", "02"], ["03", "04", "05"], ["06", "07", "08", "09"], ["10", "11", "12"], ["13", "14", "15"], ["16", "17"], ["18", "19", "20", "21"], ["22", "23", "24"], ["25", "26"], ["27", "28", "29", "30"]] },
     "abc": { titre: "ABC, coulisses", dossier: "abc", couverture: "19", lignes: [["01", "02", "03"], ["04", "05"], ["06", "07"], ["08", "09"], ["10", "11", "12"], ["13", "14", "15", "16"], ["17", "18", "19"], ["20", "21", "22", "23"], ["24", "25", "28"], ["26", "27", "29"]] },
     "poste-lafayette": { titre: "Poste Lafayette", dossier: "immobilier/poste-lafayette", couverture: "02", nouveau: true, egal: true, lignes: [["01", "02"], ["03", "04", "05"], ["06", "07"], ["08", "09"], ["10", "11", "12", "13"], ["14", "15"], ["16", "17"], ["18", "19", "20", "21"], ["22", "23", "24"]] },
