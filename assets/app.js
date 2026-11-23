@@ -860,13 +860,18 @@
       FAM.forEach(function (f) { var ps = f.projets.filter(function (x) { return secOf[x]; }); ps.forEach(function (x) { used[x] = 1; }); if (ps.length) fams.push({ f: f, ps: ps }); });
       var rest = ent.filter(function (x) { return !used[x]; }).sort(function (a, b) { return rank(a) - rank(b); });
       if (rest.length) fams.push({ f: { id: "autres", fr: "Autres projets", en: "Other projects" }, ps: rest });
-      ixv = "chap";
+      ixv = "chap"; try { if (localStorage.getItem("sd-ixv") === "mini") ixv = "mini"; } catch (e) {}
       var card = function (slug, fid, extra) {
         var s = secOf[slug], j = seenS[s.id] ? 1 : 0; seenS[s.id] = 1; n++; var c = cover(slug);
         return '<a class="ix-c fig' + (extra || "") + '"' + (j === 0 ? ' id="ix-' + s.id + '"' : "") + ' data-f="' + fid + '" href="' + href(slug) + '"><div class="ix-im"><img loading="lazy" decoding="async" draggable="false" alt="' + esc(pTitle(slug)) + '" src="' + esc(src(c, true)) + '"></div>' +
           '<div class="ix-tx"><span class="ix-sec">' + esc(L(s)) + '</span><b>' + esc(pTitle(slug)) + (proj(slug).nouveau ? " <i>" + t("isNew") + "</i>" : "") + '</b><span class="ix-n">' + images(slug).length + "</span></div></a>";
       };
-      if (ixv === "chap") {
+      if (ixv === "mini") {
+        fams.forEach(function (F, k) {
+          groups.push('<section class="ixm-b" id="ix-f-' + F.f.id + '"><header class="ixm-h"><span>' + pad(k + 1) + '</span><h3>' + esc(L(F.f)) + '</h3><i>' + F.ps.length + "</i></header>" +
+            '<div class="ixm-g">' + F.ps.map(function (slug) { return card(slug, F.f.id, " mini"); }).join("") + "</div></section>");
+        });
+      } else if (ixv === "chap") {
         fams.forEach(function (F, k) {
           var cnt = F.ps.length, more = cnt > 5;
           groups.push('<section class="ixc' + (more ? "" : " open") + (cnt === 1 ? " solo" : cnt <= 3 ? " few" : "") + '" id="ix-f-' + F.f.id + '"><header class="ixc-h"><span class="ixc-n">' + pad(k + 1) + '</span><h3>' + esc(L(F.f)) + "</h3>" +
@@ -897,9 +902,12 @@
       });
     }
     var sw = "", tabs = "";
+    if (mode === "photo") sw = '<div class="ix-sw" role="group" aria-label="' + (lang === "fr" ? "Affichage de l’index" : "Index layout") + '"><i class="ix-sw-p" aria-hidden="true"></i>' +
+      '<button type="button" data-v="chap" aria-pressed="' + (ixv !== "mini") + '"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="3" width="9" height="9" rx="1"/><rect x="13" y="3" width="5" height="4" rx=".8"/><rect x="13" y="8" width="5" height="4" rx=".8"/><rect x="2" y="14.5" width="16" height="2" rx="1"/></svg><span>' + (lang === "fr" ? "Chapitres" : "Chapters") + "</span></button>" +
+      '<button type="button" data-v="mini" aria-pressed="' + (ixv === "mini") + '"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="2" width="4.5" height="4.5" rx=".8"/><rect x="7.75" y="2" width="4.5" height="4.5" rx=".8"/><rect x="13.5" y="2" width="4.5" height="4.5" rx=".8"/><rect x="2" y="7.75" width="4.5" height="4.5" rx=".8"/><rect x="7.75" y="7.75" width="4.5" height="4.5" rx=".8"/><rect x="13.5" y="7.75" width="4.5" height="4.5" rx=".8"/><rect x="2" y="13.5" width="4.5" height="4.5" rx=".8"/><rect x="7.75" y="13.5" width="4.5" height="4.5" rx=".8"/><rect x="13.5" y="13.5" width="4.5" height="4.5" rx=".8"/></svg><span>' + (lang === "fr" ? "Compact" : "Compact") + "</span></button></div>";
     if (mode === "photo") tabs = '<nav class="ixn" aria-label="' + (lang === "fr" ? "Chapitres" : "Chapters") + '">' + fams.map(function (F, k) { return '<a href="#ix-f-' + F.f.id + '" data-ixf="' + F.f.id + '"><span>' + pad(k + 1) + "</span>" + esc(L(F.f)) + "</a>"; }).join("") + "</nav>";
     el.innerHTML = '<h2 class="ix-h"><span class="ix-ht">Index<small>' + n + " " + (mode === "photo" ? t("projects") : t("videos")) + "</small></span>" + sw + "</h2>" + tabs +
-      (mode === "photo" ? (ixv === "chap" ? '<div class="ixcs">' + groups.join("") + "</div>" : '<div class="ix-grid">' + cards.join("") + "</div>") : groups.join(""));
+      (mode === "photo" ? (ixv === "mini" ? '<div class="ixms">' + groups.join("") + "</div>" : ixv === "chap" ? '<div class="ixcs">' + groups.join("") + "</div>" : '<div class="ix-grid">' + cards.join("") + "</div>") : groups.join(""));
     if (mode === "photo") ixWire(el, ixv);
     el.querySelectorAll(".ix-c[data-pm]").forEach(function (a) { a.addEventListener("click", function () { try { sessionStorage.setItem("sd-pm-" + a.getAttribute("href").split("/").pop(), "photos"); } catch (e) {} }); });
     el.querySelectorAll(".ix-c[data-em]").forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); openVideo(a.dataset.em, a.dataset.t, a); }); });
@@ -922,7 +930,7 @@
         try { localStorage.setItem("sd-ixv", b.dataset.v); } catch (e) {}
         var y = el.getBoundingClientRect().top;
         var go = function () { indexList(true); var y2 = el.getBoundingClientRect().top; if (Math.abs(y2 - y) > 2) window.scrollBy(0, y2 - y); };
-        var body = el.querySelector(".ix-grid, .ixcs"), tb = el.querySelector(".ix-tabs");
+        var body = el.querySelector(".ix-grid, .ixcs, .ixms"), tb = el.querySelector(".ix-tabs");
         if (reduce || !body || !body.animate) return go();
         [body, tb].forEach(function (x) { if (x) x.animate([{ opacity: 1 }, { opacity: 0, transform: "translateY(10px)" }], { duration: 260, easing: "ease-in", fill: "forwards" }); });
         setTimeout(go, 270);
