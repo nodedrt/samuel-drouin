@@ -99,8 +99,8 @@ window.SITE = {
   ],
 
   projets: {
-    "paysage": { titre: { fr: "Paysage", en: "Landscape" }, dossier: "paysage", couverture: "03", sauf: ["12", "13", "14", "15"], lignes: [["03", "02"], ["05", "10"], ["04", "07", "06"], ["08", "11"]] },
-    "vert-nature": { titre: { fr: "Vert nature", en: "Green nature" }, dossier: "vert-nature", couverture: "08" },
+    "paysage": { titre: { fr: "Paysage", en: "Landscape" }, dossier: "paysage", couverture: "03", nouveau: true, egal: true, sauf: ["12", "13", "14", "15"], lignes: [["03", "02"], ["16", "17", "18"], ["04", "19", "05"], ["21", "10"], ["07", "06", "23"], ["08", "20"], ["22", "24", "11"]] },
+    "vert-nature": { titre: { fr: "Vert nature", en: "Green nature" }, dossier: "vert-nature", couverture: "08", nouveau: true, egal: true, sauf: ["11"], lignes: [["12", "13"], ["19", "04", "14"], ["15", "16"], ["06", "08", "22"], ["10", "24"], ["23", "21", "09"], ["17", "18", "25"], ["20", "26"], ["03", "01", "05", "07"]] },
     "the-hive": { titre: "The Hive", dossier: "the-hive", couverture: "07", egal: true, lignes: [["01", "03"], ["04", "05", "06"], ["07", "08"], ["09", "11", "14"], ["15", "16"], ["20", "21", "22"]] },
     "samaya": { titre: "Samaya", dossier: "samaya", couverture: "01", egal: true, lignes: [["01", "02"], ["03", "04", "05"], ["06", "07", "08", "09"], ["10", "11", "12"], ["13", "14", "15"], ["16", "17"], ["18", "19", "20", "21"], ["22", "23", "24"], ["25", "26"], ["27", "28", "29", "30"]] },
     "abc": { titre: "ABC, coulisses", dossier: "abc", couverture: "19", lignes: [["01", "02", "03"], ["04", "05"], ["06", "07"], ["08", "09"], ["10", "11", "12"], ["13", "14", "15", "16"], ["17", "18", "19"], ["20", "21", "22", "23"], ["24", "25", "28"], ["26", "27", "29"]] },
