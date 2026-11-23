@@ -373,12 +373,12 @@
     var ex = main.querySelector(".hero");
     if (mode !== "video") { if (heroOff) { heroOff(); heroOff = null; } if (ex) ex.remove(); return; }
     var st0 = main.querySelector(".st"); if (ex || !st0) return;
-    var N = 5, FIRST = 5, XF = 1.8, big = window.innerWidth * (window.devicePixelRatio || 1) > 2200;
-    var src = function (i) { return "videos/hero/" + pad(i + FIRST) + (big ? "-1440" : "") + ".mp4"; };
+    var N = 5, FIRST = 5, XF = 1.4, big = window.innerWidth * (window.devicePixelRatio || 1) > 2200;
+    var src = function (i) { return "videos/hero/" + pad(i + FIRST) + (big ? "-1440" : "") + ".mp4?v=2"; };
     var h = document.createElement("section"); h.className = "hero";
     h.setAttribute("aria-label", lang === "fr" ? "Extraits de films" : "Film excerpts");
     var segs = ""; for (var s = 0; s < N; s++) segs += "<i><b></b></i>";
-    h.innerHTML = '<div class="hr-v"><video muted playsinline preload="auto" poster="videos/hero/poster.jpg" aria-hidden="true"></video><video muted playsinline preload="auto" aria-hidden="true"></video></div>' +
+    h.innerHTML = '<div class="hr-v"><video muted playsinline preload="auto" poster="videos/hero/poster.jpg?v=2" aria-hidden="true"></video><video muted playsinline preload="auto" aria-hidden="true"></video></div>' +
       '<a class="hr-b" href="#/photographie">← ' + (lang === "fr" ? "Accueil" : "Home") + "</a>" +
       '<p class="hr-l">' + (lang === "fr" ? "Images en mouvement" : "Moving pictures") + "</p>" +
       '<div class="hr-p" aria-hidden="true">' + segs + "</div>" +
@@ -913,9 +913,9 @@
     }
     var sw = "", tabs = "";
     if (mode === "photo") sw = '<div class="ix-sw" role="group" aria-label="' + (lang === "fr" ? "Affichage de l’index" : "Index layout") + '"><i class="ix-sw-p" aria-hidden="true"></i>' +
-      '<button type="button" data-v="mini" aria-pressed="' + (ixv === "mini") + '"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="2" width="4.5" height="4.5" rx=".8"/><rect x="7.75" y="2" width="4.5" height="4.5" rx=".8"/><rect x="13.5" y="2" width="4.5" height="4.5" rx=".8"/><rect x="2" y="7.75" width="4.5" height="4.5" rx=".8"/><rect x="7.75" y="7.75" width="4.5" height="4.5" rx=".8"/><rect x="13.5" y="7.75" width="4.5" height="4.5" rx=".8"/><rect x="2" y="13.5" width="4.5" height="4.5" rx=".8"/><rect x="7.75" y="13.5" width="4.5" height="4.5" rx=".8"/><rect x="13.5" y="13.5" width="4.5" height="4.5" rx=".8"/></svg><span>' + (lang === "fr" ? "Compact" : "Compact") + "</span></button>" +
-      '<button type="button" data-v="flat" aria-pressed="' + (ixv === "flat") + '"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="2.5" width="7" height="6" rx="1"/><rect x="11" y="2.5" width="7" height="6" rx="1"/><rect x="2" y="11.5" width="7" height="6" rx="1"/><rect x="11" y="11.5" width="7" height="6" rx="1"/></svg><span>' + (lang === "fr" ? "Grille" : "Grid") + "</span></button></div>";
-    if (mode === "photo" && ixv !== "flat") tabs = '<nav class="ixn" aria-label="' + (lang === "fr" ? "Chapitres" : "Chapters") + '">' + fams.map(function (F, k) { return '<a href="#ix-f-' + F.f.id + '" data-ixf="' + F.f.id + '"><span>' + pad(k + 1) + "</span>" + esc(L(F.f)) + "</a>"; }).join("") + "</nav>";
+      '<button type="button" data-v="mini" aria-pressed="' + (ixv === "mini") + '"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="2" width="4.5" height="4.5" rx=".8"/><rect x="7.75" y="2" width="4.5" height="4.5" rx=".8"/><rect x="13.5" y="2" width="4.5" height="4.5" rx=".8"/><rect x="2" y="7.75" width="4.5" height="4.5" rx=".8"/><rect x="7.75" y="7.75" width="4.5" height="4.5" rx=".8"/><rect x="13.5" y="7.75" width="4.5" height="4.5" rx=".8"/><rect x="2" y="13.5" width="4.5" height="4.5" rx=".8"/><rect x="7.75" y="13.5" width="4.5" height="4.5" rx=".8"/><rect x="13.5" y="13.5" width="4.5" height="4.5" rx=".8"/></svg><span>' + (lang === "fr" ? "Catégories" : "Categories") + "</span></button>" +
+      '<button type="button" data-v="flat" aria-pressed="' + (ixv === "flat") + '"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="2.5" width="7" height="6" rx="1"/><rect x="11" y="2.5" width="7" height="6" rx="1"/><rect x="2" y="11.5" width="7" height="6" rx="1"/><rect x="11" y="11.5" width="7" height="6" rx="1"/></svg><span>' + "All" + "</span></button></div>";
+    if (false) tabs = '<nav class="ixn" aria-label="' + (lang === "fr" ? "Chapitres" : "Chapters") + '">' + fams.map(function (F, k) { return '<a href="#ix-f-' + F.f.id + '" data-ixf="' + F.f.id + '"><span>' + pad(k + 1) + "</span>" + esc(L(F.f)) + "</a>"; }).join("") + "</nav>";
     el.innerHTML = '<h2 class="ix-h"><span class="ix-ht">Index<small>' + n + " " + (mode === "photo" ? t("projects") : t("videos")) + "</small></span>" + sw + "</h2>" + tabs +
       (mode === "photo" ? (ixv === "mini" ? '<div class="ixms">' + groups.join("") + "</div>" : ixv === "chap" ? '<div class="ixcs">' + groups.join("") + "</div>" : '<div class="ix-grid">' + cards.join("") + "</div>") : groups.join(""));
     if (mode === "photo") ixWire(el, ixv);

@@ -718,7 +718,7 @@ html[data-th=v2] .ex-wall::before{display:block;opacity:1;width:min(1000px,92%);
 @keyframes hrIn{from{opacity:0}to{opacity:1}}
 .hr-v{position:absolute;inset:0;clip-path:inset(47% 0 47% 0);transition:clip-path 2.4s cubic-bezier(.65,0,.2,1)}
 .hero.open .hr-v{clip-path:inset(0 0 0 0)}
-.hr-v video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity 1.8s cubic-bezier(.4,0,.2,1)}
+.hr-v video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity 1.4s cubic-bezier(.4,0,.2,1)}
 .hr-v video.on{opacity:1}
 @keyframes hrZ{from{transform:scale(1.07)}to{transform:scale(1)}}
 .hr-v::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.38) 100%)}
