@@ -394,15 +394,19 @@
     vs[0].classList.add("on"); zoom(vs[0]); seg();
     vs[0].addEventListener("playing", function () { h.classList.add("open"); }, { once: true });
     setTimeout(function () { h.classList.add("open"); }, 2500);
+    /* fondu entre les plans, sauf 3 → 4 et 4 → 5 : coupe franche */
+    var CUT = { 2: 1, 3: 1 };
     function next() {
       if (dead || crossing) return; crossing = true;
-      var a = vs[cur], b = vs[1 - cur]; k = (k + 1) % N;
+      var cut = !!CUT[k], a = vs[cur], b = vs[1 - cur]; k = (k + 1) % N;
       try { b.currentTime = 0; } catch (e) {}
+      if (cut) { a.style.transition = b.style.transition = "none"; }
       play(b); zoom(b); b.classList.add("on"); a.classList.remove("on"); seg(); cur = 1 - cur;
-      setTimeout(function () { crossing = false; if (dead) return; a.pause(); a.classList.remove("z"); load(a, (k + 1) % N); }, XF * 1000 + 150);
+      if (cut) requestAnimationFrame(function () { requestAnimationFrame(function () { a.style.transition = b.style.transition = ""; }); });
+      setTimeout(function () { crossing = false; if (dead) return; a.pause(); a.classList.remove("z"); load(a, (k + 1) % N); }, cut ? 300 : XF * 1000 + 150);
     }
     vs.forEach(function (v) {
-      v.addEventListener("timeupdate", function () { if (v === vs[cur] && v.duration && v.currentTime > v.duration - XF) next(); });
+      v.addEventListener("timeupdate", function () { if (v === vs[cur] && v.duration && v.currentTime > v.duration - (CUT[k] ? 0.12 : XF)) next(); });
       v.addEventListener("ended", function () { if (v === vs[cur]) next(); });
     });
     play(vs[0]);
