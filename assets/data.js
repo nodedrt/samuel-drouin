@@ -14,7 +14,7 @@ window.SITE = {
   // Vitrine de l'accueil, dans l'ordre : le projet et ses 1 ou 2 images.
   une: [
     { projet: "drone", img: ["drone/01"] },
-    { projet: "origine", img: ["creations/origine/05", "creations/origine/15"] },
+    { projet: "origine", img: ["creations/origine/05", "creations/origine/10"] },
     { projet: "les-paletuviers", img: ["paletuviers/01", "paletuviers/04"] },
     { projet: "konekte", img: ["konekte/01", "konekte/03"] },
     { projet: "villa-horizon", img: ["immobilier/villa-horizon/15"] },
@@ -113,7 +113,7 @@ window.SITE = {
     "melbees": { titre: "Melbees", dossier: "melbees", couverture: "03", egal: true, lignes: [["01", "02", "03", "04"], ["05", "06", "07", "08"], ["09", "10", "11", "12"], ["13", "14", "15", "16"], ["17", "18", "19", "20"], ["21", "22", "23", "24"], ["25", "26", "27"]] },
     "konekte": { titre: "Konekte", dossier: "konekte", couverture: "01" },
     "drone": { titre: { fr: "Drone", en: "Drone" }, dossier: "drone", couverture: "01", egal: true, sauf: ["03", "05", "07", "11", "15", "16", "18", "19", "21", "27"], lignes: [["01", "13"], ["09", "04", "06"], ["02", "08"], ["12", "10", "22"], ["23", "24", "26"], ["20", "28"], ["29", "17"], ["25"]] },
-    "origine": { titre: { fr: "Origine", en: "Origin" }, dossier: "creations/origine", couverture: "05", nouveau: true, egal: true, lignes: [["01", "02"], ["04", "05", "06"], ["03", "07", "08"], ["09", "10", "11"], ["12", "13"], ["14", "15", "16"]] },
+    "origine": { titre: { fr: "Origine", en: "Origin" }, dossier: "creations/origine", couverture: "05", nouveau: true, egal: true, lignes: [["01", "02"], ["04", "05", "06"], ["03", "07", "08"], ["13", "14", "15"], ["16", "17"], ["09", "10"], ["11", "12"]] },
     "biscuit-manioc": { titre: { fr: "Biscuits manioc", en: "Cassava biscuits" }, dossier: "biscuit-manioc", couverture: "15", nouveau: true, egal: true, lignes: [["01", "02", "03"], ["04", "05", "06"], ["07", "08", "09", "10"], ["11", "12", "13"], ["14", "15"], ["16", "17", "18"], ["19", "20", "21"], ["22"]] },
     "caprizzio": { titre: "Caprizzio Pizza", dossier: "caprizzio", couverture: "10", nouveau: true, egal: true, lignes: [["01", "02", "03"], ["04", "05", "06"], ["07", "08", "09"], ["10", "11"], ["12", "13"], ["14", "15", "16"]] },
     "ecole-de-l-ouest": { titre: "École de l’Ouest", dossier: "ecole-de-l-ouest", couverture: "01", nouveau: true, egal: true, lignes: [["01", "02"], ["04", "06", "07"], ["08", "12", "14"], ["16", "19"], ["21", "22", "26"], ["25", "28"]], sauf: ["03", "05", "09", "10", "11", "13", "15", "17", "18", "20", "23", "24", "27"] },
