@@ -26,7 +26,7 @@ window.SITE = {
     { projet: "portrait", img: ["portrait/20", "portrait/18"] },
     { projet: "cafe-st-felix", img: ["cafe-st-felix/19"] },
     { projet: "abc", img: ["abc/04", "abc/14"] },
-    { projet: "ferney", img: ["ferney/26"] },
+    { projet: "ferney", img: ["ferney/01"] },
     { projet: "villa-anahita", img: ["immobilier/villa-anahita/02"] },
     { projet: "melbees", img: ["melbees/03"] },
     { projet: "paysage", img: ["paysage/03"] },
@@ -64,10 +64,10 @@ window.SITE = {
     { id: "restauration", fr: "Restauration", en: "Food and dining", note: { fr: "Cuisines, gestes et assiettes qui donnent faim.", en: "Kitchens, craft and plates that make you hungry." }, projets: ["caprizzio", "mr-bao"] },
     { id: "bienetre", fr: "Beauté et bien-être", en: "Beauty and wellness", note: { fr: "Soins, gestes précis et moments pour soi.", en: "Care, precise gestures and time for yourself." }, projets: ["samaya", "sasha-academy"] },
     { id: "enfance", fr: "Enfance et éducation", en: "Childhood and education", note: { fr: "Les écoles, les crèches et les enfants qui les font vivre.", en: "Schools, nurseries and the children who bring them to life." }, projets: ["ecole-de-l-ouest", "konekte", "melbees"] },
-    { id: "associations", fr: "Associations et événements", en: "Causes and events", note: { fr: "Journées solidaires et actions qui rassemblent.", en: "Days of solidarity and actions that bring people together." }, projets: ["ciel-aquarelle", "eclosia", "ciel-group", "ome-fam-uni"] }
+    { id: "associations", fr: "Associations et événements", en: "Causes and events", note: { fr: "Journées solidaires et actions qui rassemblent.", en: "Days of solidarity and actions that bring people together." }, projets: ["eclosia", "ciel-group", "ome-fam-uni"] }
   ],
 
-  ordre: ["les-paletuviers", "ocean-villa", "paysage", "portrait", "drone", "caprizzio", "samaya", "voyage", "cafe-st-felix", "poste-lafayette", "villa-anahita", "konekte", "peizan", "kenya-telkom", "vert-nature", "villa-horizon", "mr-bao", "villa-la-plage", "le-dalblair", "melbees", "ecole-de-l-ouest", "the-hive", "ferney", "kenya-film", "abc", "kfc", "bluemoon-villa", "yesterday-rodrigues", "sealife", "ciel-textile", "ciel-aquarelle", "gamma-construction", "exposition-port-louis", "sasha-academy", "eclosia", "ciel-group", "ome-fam-uni", "details"],
+  ordre: ["les-paletuviers", "ocean-villa", "paysage", "portrait", "drone", "caprizzio", "samaya", "voyage", "cafe-st-felix", "poste-lafayette", "villa-anahita", "konekte", "peizan", "kenya-telkom", "vert-nature", "villa-horizon", "mr-bao", "villa-la-plage", "le-dalblair", "melbees", "ecole-de-l-ouest", "the-hive", "ferney", "kenya-film", "abc", "kfc", "bluemoon-villa", "yesterday-rodrigues", "sealife", "ciel-textile", "gamma-construction", "exposition-port-louis", "sasha-academy", "eclosia", "ciel-group", "ome-fam-uni", "details"],
   sections: [
     { id: "voyage", fr: "Voyage", en: "Travel", projets: ["voyage"] },
     { id: "paysage", fr: "Paysage", en: "Landscape", projets: ["paysage"] },
@@ -76,7 +76,7 @@ window.SITE = {
     { id: "portrait", fr: "Portrait", en: "Portrait", projets: ["portrait"] },
     { id: "coulisses", fr: "Coulisses de tournage", en: "Behind the scenes", projets: ["abc", "ferney", "kenya-film", "kfc"] },
     { id: "kenya-telkom", fr: "Kenya Telkom", en: "Kenya Telkom", projets: ["kenya-telkom"] },
-    { id: "ciel-textile", fr: "Groupe Ciel", en: "Ciel Group", projets: ["ciel-textile", "ciel-aquarelle"] },
+    { id: "ciel-textile", fr: "Groupe Ciel", en: "Ciel Group", projets: ["ciel-textile"] },
     { id: "sealife", fr: "Sealife", en: "Sealife", projets: ["sealife"] },
     { id: "gamma", fr: "Gamma Construction", en: "Gamma Construction", projets: ["gamma-construction", "exposition-port-louis"] },
     { id: "sasha-academy", fr: "Sasha Academy", en: "Sasha Academy", projets: ["sasha-academy"] },
@@ -121,7 +121,7 @@ window.SITE = {
     "portrait": { titre: "Portrait", dossier: "portrait", couverture: "15", apercu: ["20", "18", "23", "19"], egal: true, sauf: ["13", "41"], lignes: [["20", "18", "23"], ["15", "21", "32"], ["19", "17", "27"], ["22", "26", "30"], ["33", "34", "35", "36", "37"], ["38", "39", "40"], ["16", "29", "14"], ["25", "24", "28"], ["11", "12"], ["02", "06", "03", "05"], ["04", "01", "08"], ["10", "07", "09"]] },
     "voyage": { titre: { fr: "Voyage", en: "Travel" }, dossier: "voyage", apercu: ["32", "24", "25", "08"] },
     "kenya-film": { titre: { fr: "Kenya Telkom, film", en: "Kenya Telkom, film" }, dossier: "coulisses", partie: "Kenya Film Telkom", couverture: "26" },
-    "ferney": { titre: { fr: "Ferney, film", en: "Ferney, film" }, dossier: "ferney", couverture: "09", egal: true, lignes: [["01", "02", "03"], ["04", "05", "06"], ["07", "08", "09", "10"], ["11", "12", "13", "14"], ["15", "16", "17", "18"], ["19", "20", "21"], ["22", "23"], ["24", "25", "26"], ["27", "28"], ["29", "30"], ["31"]] },
+    "ferney": { titre: { fr: "Ferney, film", en: "Ferney, film" }, dossier: "ferney", couverture: "01", egal: true, lignes: [["01", "02", "03"], ["04", "05", "06"], ["07", "08", "09"], ["10", "11", "12", "13"], ["14", "15", "16"], ["17", "18", "19"], ["20", "21", "22"], ["23", "24", "25"], ["26"]] },
     "kfc": { titre: { fr: "KFC, film", en: "KFC, film" }, dossier: "coulisses", partie: "KFC Film" },
     "eclosia": { titre: "Groupe Eclosia", dossier: "evenements", partie: "Eclosia Groupe associations", couverture: "13", sauf: ["06", "01", "31", "32", "35", "36"], egal: true, lignes: [["13", "10", "14"], ["15", "09"], ["11", "08", "16"], ["12", "07"], ["04", "05", "03"], ["02", "33", "34", "37"]] },
     "ciel-group": { titre: "Ciel Groupe", dossier: "evenements", partie: "Ciel Groupe association" },
