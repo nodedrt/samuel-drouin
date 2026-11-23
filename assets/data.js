@@ -14,6 +14,7 @@ window.SITE = {
   // Vitrine de l'accueil, dans l'ordre : le projet et ses 1 ou 2 images.
   une: [
     { projet: "drone", img: ["drone/01"] },
+    { projet: "origine", img: ["creations/origine/05", "creations/origine/14"] },
     { projet: "les-paletuviers", img: ["paletuviers/01", "paletuviers/04"] },
     { projet: "konekte", img: ["konekte/01", "konekte/03"] },
     { projet: "villa-horizon", img: ["immobilier/villa-horizon/15"] },
@@ -54,9 +55,10 @@ window.SITE = {
   // Un projet absent de cette liste se place après, dans l'ordre des sections.
   /* grandes familles de l'index de l'accueil (dans cet ordre) */
   /* index compact : trois colonnes (Immobilier en haut à droite) */
-  compact: [["regard", "terroir", "coulisses"], ["corporate", "enfance", "associations"], ["immobilier", "restauration", "bienetre"]],
+  compact: [["regard", "terroir", "coulisses"], ["creations", "corporate", "enfance", "associations"], ["immobilier", "restauration", "bienetre"]],
   familles: [
     { id: "regard", fr: "Regard personnel", en: "Personal work", note: { fr: "Lumières, visages et voyages : ce que je photographie pour moi.", en: "Light, faces and travels: what I photograph for myself." }, projets: ["voyage", "paysage", "portrait", "vert-nature", "drone"] },
+    { id: "creations", fr: "Créations", en: "Creations", note: { fr: "Recherches personnelles : la matière, la lumière, l’invisible.", en: "Personal research: matter, light, the unseen." }, projets: ["origine"] },
     { id: "immobilier", fr: "Immobilier", en: "Real estate", note: { fr: "Villas, hôtels et lieux d’exception, révélés par la lumière.", en: "Villas, hotels and remarkable places, revealed by light." }, projets: ["les-paletuviers", "ocean-villa", "villa-anahita", "villa-horizon", "villa-la-plage", "le-dalblair", "bluemoon-villa", "yesterday-rodrigues", "details"] },
     { id: "corporate", fr: "Corporate", en: "Corporate", note: { fr: "Entreprises, équipes, savoir-faire et campagnes.", en: "Companies, teams, craft and campaigns." }, projets: ["gamma-construction", "exposition-port-louis", "ciel-textile", "the-hive", "kenya-telkom"] },
     { id: "terroir", fr: "Agriculture et environnement", en: "Farming and environment", note: { fr: "La terre, ceux qui la cultivent et ceux qui la protègent.", en: "The land, those who grow it and those who protect it." }, projets: ["cafe-st-felix", "peizan", "sealife"] },
@@ -67,13 +69,14 @@ window.SITE = {
     { id: "associations", fr: "Associations et événements", en: "Causes and events", note: { fr: "Journées solidaires et actions qui rassemblent.", en: "Days of solidarity and actions that bring people together." }, projets: ["eclosia", "ciel-group", "ome-fam-uni"] }
   ],
 
-  ordre: ["les-paletuviers", "ocean-villa", "paysage", "portrait", "drone", "caprizzio", "biscuit-manioc", "samaya", "voyage", "cafe-st-felix", "poste-lafayette", "villa-anahita", "konekte", "peizan", "kenya-telkom", "vert-nature", "villa-horizon", "mr-bao", "villa-la-plage", "le-dalblair", "melbees", "ecole-de-l-ouest", "the-hive", "ferney", "kenya-film", "abc", "kfc", "bluemoon-villa", "yesterday-rodrigues", "sealife", "ciel-textile", "gamma-construction", "exposition-port-louis", "sasha-academy", "eclosia", "ciel-group", "ome-fam-uni", "details"],
+  ordre: ["les-paletuviers", "origine", "ocean-villa", "paysage", "portrait", "drone", "caprizzio", "biscuit-manioc", "samaya", "voyage", "cafe-st-felix", "poste-lafayette", "villa-anahita", "konekte", "peizan", "kenya-telkom", "vert-nature", "villa-horizon", "mr-bao", "villa-la-plage", "le-dalblair", "melbees", "ecole-de-l-ouest", "the-hive", "ferney", "kenya-film", "abc", "kfc", "bluemoon-villa", "yesterday-rodrigues", "sealife", "ciel-textile", "gamma-construction", "exposition-port-louis", "sasha-academy", "eclosia", "ciel-group", "ome-fam-uni", "details"],
   sections: [
     { id: "voyage", fr: "Voyage", en: "Travel", projets: ["voyage"] },
     { id: "paysage", fr: "Paysage", en: "Landscape", projets: ["paysage"] },
     { id: "vert-nature", fr: "Vert nature", en: "Green nature", projets: ["vert-nature"] },
     { id: "drone", fr: "Drone", en: "Drone", projets: ["drone"] },
     { id: "portrait", fr: "Portrait", en: "Portrait", projets: ["portrait"] },
+    { id: "origine", fr: "Origine", en: "Origin", projets: ["origine"] },
     { id: "coulisses", fr: "Coulisses de tournage", en: "Behind the scenes", projets: ["abc", "ferney", "kenya-film", "kfc"] },
     { id: "kenya-telkom", fr: "Kenya Telkom", en: "Kenya Telkom", projets: ["kenya-telkom"] },
     { id: "ciel-textile", fr: "Groupe Ciel", en: "Ciel Group", projets: ["ciel-textile"] },
@@ -110,6 +113,7 @@ window.SITE = {
     "melbees": { titre: "Melbees", dossier: "melbees", couverture: "03", egal: true, lignes: [["01", "02", "03", "04"], ["05", "06", "07", "08"], ["09", "10", "11", "12"], ["13", "14", "15", "16"], ["17", "18", "19", "20"], ["21", "22", "23", "24"], ["25", "26", "27"]] },
     "konekte": { titre: "Konekte", dossier: "konekte", couverture: "01" },
     "drone": { titre: { fr: "Drone", en: "Drone" }, dossier: "drone", couverture: "01", egal: true, sauf: ["03", "05", "07", "11", "15", "16", "18", "19", "21", "27"], lignes: [["01", "13"], ["09", "04", "06"], ["02", "08"], ["12", "10", "22"], ["23", "24", "26"], ["20", "28"], ["29", "17"], ["25"]] },
+    "origine": { titre: { fr: "Origine", en: "Origin" }, dossier: "creations/origine", couverture: "05", nouveau: true, egal: true, lignes: [["01", "02"], ["04", "05", "06"], ["03", "07", "08"], ["09"], ["10", "11"], ["12", "13"], ["15", "14", "16"], ["17", "18", "19"], ["20", "21"], ["22"]] },
     "biscuit-manioc": { titre: { fr: "Biscuits manioc", en: "Cassava biscuits" }, dossier: "biscuit-manioc", couverture: "15", nouveau: true, egal: true, lignes: [["01", "02", "03"], ["04", "05", "06"], ["07", "08", "09", "10"], ["11", "12", "13"], ["14", "15"], ["16", "17", "18"], ["19", "20", "21"], ["22"]] },
     "caprizzio": { titre: "Caprizzio Pizza", dossier: "caprizzio", couverture: "10", nouveau: true, egal: true, lignes: [["01", "02", "03"], ["04", "05", "06"], ["07", "08", "09"], ["10", "11"], ["12", "13"], ["14", "15", "16"]] },
     "ecole-de-l-ouest": { titre: "École de l’Ouest", dossier: "ecole-de-l-ouest", couverture: "01", nouveau: true, egal: true, lignes: [["01", "02"], ["04", "06", "07"], ["08", "12", "14"], ["16", "19"], ["21", "22", "26"], ["25", "28"]], sauf: ["03", "05", "09", "10", "11", "13", "15", "17", "18", "20", "23", "24", "27"] },
