@@ -394,8 +394,8 @@
     vs[0].classList.add("on"); zoom(vs[0]); seg();
     vs[0].addEventListener("playing", function () { h.classList.add("open"); }, { once: true });
     setTimeout(function () { h.classList.add("open"); }, 2500);
-    /* fondu entre les plans, sauf 3 → 4 et 4 → 5 : coupe franche */
-    var CUT = { 2: 1, 3: 1 };
+    /* fondu entre les plans, sauf 3 → 4 : coupe franche */
+    var CUT = { 2: 1 };
     function next() {
       if (dead || crossing) return; crossing = true;
       var cut = !!CUT[k], a = vs[cur], b = vs[1 - cur]; k = (k + 1) % N;
