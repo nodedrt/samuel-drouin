@@ -22,7 +22,6 @@ window.SITE = {
     { projet: "ocean-villa", img: ["immobilier/ocean-villa/23"] },
     { projet: "mr-bao", img: ["mr-bao/01"] },
     { projet: "samaya", img: ["samaya/01", "samaya/16"] },
-    { projet: "the-hive", img: ["the-hive/04"] },
     { projet: "sealife", img: ["corporate/sealife/10"] },
     { projet: "portrait", img: ["portrait/20", "portrait/18"] },
     { projet: "cafe-st-felix", img: ["cafe-st-felix/19"] },
@@ -59,7 +58,7 @@ window.SITE = {
   familles: [
     { id: "regard", fr: "Regard personnel", en: "Personal work", note: { fr: "Lumières, visages et voyages : ce que je photographie pour moi.", en: "Light, faces and travels: what I photograph for myself." }, projets: ["voyage", "paysage", "portrait", "vert-nature", "drone", "bardenas"] },
     { id: "immobilier", fr: "Immobilier", en: "Real estate", note: { fr: "Villas, hôtels et lieux d’exception, révélés par la lumière.", en: "Villas, hotels and remarkable places, revealed by light." }, projets: ["les-paletuviers", "ocean-villa", "villa-anahita", "villa-horizon", "villa-la-plage", "le-dalblair", "bluemoon-villa", "yesterday-rodrigues", "details"] },
-    { id: "corporate", fr: "Corporate", en: "Corporate", note: { fr: "Entreprises, équipes, savoir-faire et campagnes.", en: "Companies, teams, craft and campaigns." }, projets: ["gamma-construction", "exposition-port-louis", "ciel-textile", "the-hive", "kenya-telkom"] },
+    { id: "corporate", fr: "Corporate", en: "Corporate", note: { fr: "Entreprises, équipes, savoir-faire et campagnes.", en: "Companies, teams, craft and campaigns." }, projets: ["gamma-construction", "exposition-port-louis", "ciel-textile", "kenya-telkom"] },
     { id: "terroir", fr: "Agriculture et environnement", en: "Farming and environment", note: { fr: "La terre, ceux qui la cultivent et ceux qui la protègent.", en: "The land, those who grow it and those who protect it." }, projets: ["cafe-st-felix", "peizan", "sealife"] },
     { id: "coulisses", fr: "Coulisses de tournage", en: "Behind the scenes", note: { fr: "De l’autre côté de la caméra.", en: "The other side of the camera." }, projets: ["abc", "ferney", "kenya-film", "kfc"] },
     { id: "restauration", fr: "Restauration", en: "Food and dining", note: { fr: "Cuisines, gestes et assiettes qui donnent faim.", en: "Kitchens, craft and plates that make you hungry." }, projets: ["caprizzio", "biscuit-manioc", "mr-bao"] },
@@ -68,7 +67,7 @@ window.SITE = {
     { id: "associations", fr: "Associations et événements", en: "Causes and events", note: { fr: "Journées solidaires et actions qui rassemblent.", en: "Days of solidarity and actions that bring people together." }, projets: ["eclosia", "ciel-group", "ome-fam-uni"] }
   ],
 
-  ordre: ["les-paletuviers", "bardenas", "ocean-villa", "paysage", "portrait", "drone", "caprizzio", "biscuit-manioc", "samaya", "voyage", "cafe-st-felix", "poste-lafayette", "villa-anahita", "konekte", "peizan", "kenya-telkom", "vert-nature", "villa-horizon", "mr-bao", "villa-la-plage", "le-dalblair", "melbees", "ecole-de-l-ouest", "the-hive", "ferney", "kenya-film", "abc", "kfc", "bluemoon-villa", "yesterday-rodrigues", "sealife", "ciel-textile", "gamma-construction", "exposition-port-louis", "sasha-academy", "eclosia", "ciel-group", "ome-fam-uni", "details"],
+  ordre: ["les-paletuviers", "bardenas", "ocean-villa", "paysage", "portrait", "drone", "caprizzio", "biscuit-manioc", "samaya", "voyage", "cafe-st-felix", "poste-lafayette", "villa-anahita", "konekte", "peizan", "kenya-telkom", "vert-nature", "villa-horizon", "mr-bao", "villa-la-plage", "le-dalblair", "melbees", "ecole-de-l-ouest", "ferney", "kenya-film", "abc", "kfc", "bluemoon-villa", "yesterday-rodrigues", "sealife", "ciel-textile", "gamma-construction", "exposition-port-louis", "sasha-academy", "eclosia", "ciel-group", "ome-fam-uni", "details"],
   sections: [
     { id: "voyage", fr: "Voyage", en: "Travel", projets: ["voyage"] },
     { id: "bardenas", fr: "Bardenas Reales", en: "Bardenas Reales", projets: ["bardenas"] },
@@ -82,7 +81,6 @@ window.SITE = {
     { id: "sealife", fr: "Sealife", en: "Sealife", projets: ["sealife"] },
     { id: "gamma", fr: "Gamma Construction", en: "Gamma Construction", projets: ["gamma-construction", "exposition-port-louis"] },
     { id: "sasha-academy", fr: "Sasha Academy", en: "Sasha Academy", projets: ["sasha-academy"] },
-    { id: "the-hive", fr: "The Hive", en: "The Hive", projets: ["the-hive"] },
     { id: "ecole-de-l-ouest", fr: "École de l’Ouest", en: "École de l’Ouest", projets: ["ecole-de-l-ouest"] },
     { id: "samaya", fr: "Samaya", en: "Samaya", projets: ["samaya"] },
     { id: "mr-bao", fr: "Mr Bao", en: "Mr Bao", projets: ["mr-bao"] },
