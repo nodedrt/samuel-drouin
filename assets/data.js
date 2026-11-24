@@ -14,7 +14,7 @@ window.SITE = {
   // Vitrine de l'accueil, dans l'ordre : le projet et ses 1 ou 2 images.
   une: [
     { projet: "drone", img: ["drone/01"] },
-    { projet: "les-paletuviers", img: ["paletuviers/01", "paletuviers/04"] },
+    { projet: "les-paletuviers", img: ["paletuviers/09", "paletuviers/04"] },
     { projet: "bardenas", img: ["bardenas/04", "bardenas/08"] },
     { projet: "konekte", img: ["konekte/01", "konekte/03"] },
     { projet: "villa-horizon", img: ["immobilier/villa-horizon/15"] },
@@ -105,7 +105,7 @@ window.SITE = {
     "poste-lafayette": { titre: "Poste Lafayette", dossier: "immobilier/poste-lafayette", couverture: "02", nouveau: true, egal: true, lignes: [["01", "02"], ["03", "04", "05"], ["06", "07"], ["08", "09"], ["10", "11", "12", "13"], ["14", "15"], ["16", "17"], ["18", "19", "20", "21"], ["22", "23", "24"]] },
     "mr-bao": { titre: "Mr Bao", dossier: "mr-bao", couverture: "01", egal: true, lignes: [["01", "02"], ["03", "04", "05", "06"], ["23", "09", "11", "12"], ["13", "14", "16", "17"], ["19", "20", "21", "24"]] },
     "cafe-st-felix": { titre: "Café St Félix", dossier: "cafe-st-felix", couverture: "19", egal: true, lignes: [["01", "02"], ["03", "04", "05"], ["06", "07", "08", "09"], ["10", "11", "12"], ["13", "14", "15"], ["16", "17", "18"], ["19", "20"], ["21", "22", "23"]] },
-    "les-paletuviers": { titre: "Les Palétuviers", dossier: "paletuviers", couverture: "09", egal: true, lignes: [["09", "35", "39"], ["11", "12", "36"], ["07", "53", "54", "34"], ["08", "15", "37"], ["04", "05", "10", "41"], ["23", "40"], ["16", "17", "18", "20"], ["02", "01", "03"], ["28", "25", "26", "27"], ["43", "48"], ["44", "29", "45", "30"], ["49", "50"], ["31", "46", "33"], ["47"]], sauf: ["06", "13", "14", "19", "21", "22", "24", "32", "38", "42", "51", "52"] },
+    "les-paletuviers": { titre: "Les Palétuviers", dossier: "paletuviers", couverture: "09", egal: true, lignes: [["09", "35", "39"], ["11", "12", "36"], ["07", "53", "54", "34"], ["08", "15", "37"], ["04", "05", "02"], ["10", "41", "45"], ["23", "40"], ["16", "17", "18", "20"], ["28", "25", "26", "27"], ["44", "29", "30"], ["43", "48"], ["49", "50"], ["46", "31", "33"], ["47"]], sauf: ["01", "03", "06", "13", "14", "19", "21", "22", "24", "32", "38", "42", "51", "52"] },
     "peizan": { titre: "Peizan", dossier: "peizan", couverture: "01", egal: true, lignes: [["01", "02", "04"], ["05", "06", "08", "09"], ["10", "11", "12", "13"], ["14", "15", "16", "17"], ["18", "19", "20", "21", "22"], ["23", "24", "25"]] },
     "melbees": { titre: "Melbees", dossier: "melbees", couverture: "03", egal: true, lignes: [["01", "02", "03", "04"], ["05", "06", "07", "08"], ["09", "10", "11", "12"], ["13", "14", "15", "16"], ["17", "18", "19", "20"], ["21", "22", "23", "24"], ["25", "26", "27"]] },
     "konekte": { titre: "Konekte", dossier: "konekte", couverture: "01" },
