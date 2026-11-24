@@ -14,7 +14,6 @@ window.SITE = {
   // Vitrine de l'accueil, dans l'ordre : le projet et ses 1 ou 2 images.
   une: [
     { projet: "drone", img: ["drone/01"] },
-    { projet: "origine", img: ["creations/origine/05", "creations/origine/02"] },
     { projet: "les-paletuviers", img: ["paletuviers/01", "paletuviers/04"] },
     { projet: "bardenas", img: ["bardenas/04", "bardenas/08"] },
     { projet: "konekte", img: ["konekte/01", "konekte/03"] },
@@ -58,7 +57,7 @@ window.SITE = {
   /* index compact : trois colonnes (Immobilier en haut à droite) */
   compact: [["regard", "terroir", "coulisses"], ["corporate", "enfance", "associations"], ["immobilier", "restauration", "bienetre"]],
   familles: [
-    { id: "regard", fr: "Regard personnel", en: "Personal work", note: { fr: "Lumières, visages et voyages : ce que je photographie pour moi.", en: "Light, faces and travels: what I photograph for myself." }, projets: ["voyage", "paysage", "portrait", "vert-nature", "drone", "origine", "bardenas"] },
+    { id: "regard", fr: "Regard personnel", en: "Personal work", note: { fr: "Lumières, visages et voyages : ce que je photographie pour moi.", en: "Light, faces and travels: what I photograph for myself." }, projets: ["voyage", "paysage", "portrait", "vert-nature", "drone", "bardenas"] },
     { id: "immobilier", fr: "Immobilier", en: "Real estate", note: { fr: "Villas, hôtels et lieux d’exception, révélés par la lumière.", en: "Villas, hotels and remarkable places, revealed by light." }, projets: ["les-paletuviers", "ocean-villa", "villa-anahita", "villa-horizon", "villa-la-plage", "le-dalblair", "bluemoon-villa", "yesterday-rodrigues", "details"] },
     { id: "corporate", fr: "Corporate", en: "Corporate", note: { fr: "Entreprises, équipes, savoir-faire et campagnes.", en: "Companies, teams, craft and campaigns." }, projets: ["gamma-construction", "exposition-port-louis", "ciel-textile", "the-hive", "kenya-telkom"] },
     { id: "terroir", fr: "Agriculture et environnement", en: "Farming and environment", note: { fr: "La terre, ceux qui la cultivent et ceux qui la protègent.", en: "The land, those who grow it and those who protect it." }, projets: ["cafe-st-felix", "peizan", "sealife"] },
@@ -69,7 +68,7 @@ window.SITE = {
     { id: "associations", fr: "Associations et événements", en: "Causes and events", note: { fr: "Journées solidaires et actions qui rassemblent.", en: "Days of solidarity and actions that bring people together." }, projets: ["eclosia", "ciel-group", "ome-fam-uni"] }
   ],
 
-  ordre: ["les-paletuviers", "bardenas", "origine", "ocean-villa", "paysage", "portrait", "drone", "caprizzio", "biscuit-manioc", "samaya", "voyage", "cafe-st-felix", "poste-lafayette", "villa-anahita", "konekte", "peizan", "kenya-telkom", "vert-nature", "villa-horizon", "mr-bao", "villa-la-plage", "le-dalblair", "melbees", "ecole-de-l-ouest", "the-hive", "ferney", "kenya-film", "abc", "kfc", "bluemoon-villa", "yesterday-rodrigues", "sealife", "ciel-textile", "gamma-construction", "exposition-port-louis", "sasha-academy", "eclosia", "ciel-group", "ome-fam-uni", "details"],
+  ordre: ["les-paletuviers", "bardenas", "ocean-villa", "paysage", "portrait", "drone", "caprizzio", "biscuit-manioc", "samaya", "voyage", "cafe-st-felix", "poste-lafayette", "villa-anahita", "konekte", "peizan", "kenya-telkom", "vert-nature", "villa-horizon", "mr-bao", "villa-la-plage", "le-dalblair", "melbees", "ecole-de-l-ouest", "the-hive", "ferney", "kenya-film", "abc", "kfc", "bluemoon-villa", "yesterday-rodrigues", "sealife", "ciel-textile", "gamma-construction", "exposition-port-louis", "sasha-academy", "eclosia", "ciel-group", "ome-fam-uni", "details"],
   sections: [
     { id: "voyage", fr: "Voyage", en: "Travel", projets: ["voyage"] },
     { id: "bardenas", fr: "Bardenas Reales", en: "Bardenas Reales", projets: ["bardenas"] },
@@ -77,7 +76,6 @@ window.SITE = {
     { id: "vert-nature", fr: "Vert nature", en: "Green nature", projets: ["vert-nature"] },
     { id: "drone", fr: "Drone", en: "Drone", projets: ["drone"] },
     { id: "portrait", fr: "Portrait", en: "Portrait", projets: ["portrait"] },
-    { id: "origine", fr: "Origine", en: "Origin", projets: ["origine"] },
     { id: "coulisses", fr: "Coulisses de tournage", en: "Behind the scenes", projets: ["abc", "ferney", "kenya-film", "kfc"] },
     { id: "kenya-telkom", fr: "Kenya Telkom", en: "Kenya Telkom", projets: ["kenya-telkom"] },
     { id: "ciel-textile", fr: "Groupe Ciel", en: "Ciel Group", projets: ["ciel-textile"] },
@@ -115,7 +113,7 @@ window.SITE = {
     "konekte": { titre: "Konekte", dossier: "konekte", couverture: "01" },
     "drone": { titre: { fr: "Drone", en: "Drone" }, dossier: "drone", couverture: "01", egal: true, sauf: ["03", "05", "07", "11", "15", "16", "18", "19", "21", "27"], lignes: [["01", "13"], ["09", "04", "06"], ["02", "08"], ["12", "10", "22"], ["23", "24", "26"], ["20", "28"], ["29", "17"], ["25"]] },
     "origine": { titre: { fr: "Origine", en: "Origin" }, dossier: "creations/origine", couverture: "05", nouveau: true, egal: true, sauf: ["03", "07", "09", "10", "11", "12", "13", "14", "15", "16", "17"], lignes: [["01", "02"], ["04", "05", "06"], ["08"]] },
-    "bardenas": { titre: { fr: "Bardenas Reales, Espagne", en: "Bardenas Reales, Spain" }, dossier: "bardenas", couverture: "04", nouveau: true, egal: true, lignes: [["01", "02", "03"], ["04", "05"], ["06", "07", "08"]] },
+    "bardenas": { titre: { fr: "Bardenas Reales, Espagne", en: "Bardenas Reales, Spain" }, dossier: "bardenas", couverture: "04", nouveau: true, egal: true, lignes: [["01", "02", "03", "04"], ["05", "06", "07", "08"]] },
     "biscuit-manioc": { titre: { fr: "Biscuits manioc", en: "Cassava biscuits" }, dossier: "biscuit-manioc", couverture: "15", nouveau: true, egal: true, lignes: [["01", "02", "03"], ["04", "05", "06"], ["07", "08", "09", "10"], ["11", "12", "13"], ["14", "15"], ["16", "17", "18"], ["19", "20", "21"], ["22"]] },
     "caprizzio": { titre: "Caprizzio Pizza", dossier: "caprizzio", couverture: "10", nouveau: true, egal: true, lignes: [["01", "02", "03"], ["04", "05", "06"], ["07", "08", "09"], ["10", "11"], ["12", "13"], ["14", "15", "16"]] },
     "ecole-de-l-ouest": { titre: "École de l’Ouest", dossier: "ecole-de-l-ouest", couverture: "01", nouveau: true, egal: true, lignes: [["01", "02"], ["04", "06", "07"], ["08", "12", "14"], ["16", "19"], ["21", "22", "26"], ["25", "28"]], sauf: ["03", "05", "09", "10", "11", "13", "15", "17", "18", "20", "23", "24", "27"] },
@@ -126,8 +124,8 @@ window.SITE = {
     "sasha-academy": { titre: "Sasha Academy", dossier: "corporate/sasha-academy", couverture: "18" },
     "kenya-telkom": { titre: { fr: "Kenya Telkom", en: "Kenya Telkom" }, dossier: "corporate/kenya-telkom", couverture: "02" },
     "exposition-port-louis": { titre: { fr: "Exposition à Port-Louis", en: "Port Louis exhibition" }, dossier: "corporate/exposition-port-louis" },
-    "portrait": { titre: "Portrait", dossier: "portrait", couverture: "15", apercu: ["20", "18", "23", "19"], egal: true, sauf: ["13", "41", "43"], lignes: [["20", "18", "23"], ["15", "21", "32"], ["19", "17", "27"], ["22", "26", "30"], ["33", "34", "35", "36", "37"], ["38", "39", "40"], ["44", "42", "45"], ["16", "29", "14"], ["25", "24", "28"], ["11", "12"], ["02", "06", "03", "05"], ["04", "01", "08"], ["10", "07", "09"]] },
-    "voyage": { titre: { fr: "Voyage", en: "Travel" }, dossier: "voyage", sauf: ["35", "36", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52"], apercu: ["32", "24", "25", "08"] },
+    "portrait": { titre: "Portrait", dossier: "portrait", couverture: "15", apercu: ["20", "18", "23", "19"], egal: true, sauf: ["13", "41", "42", "43", "44", "45"], lignes: [["20", "18", "23"], ["15", "21", "32"], ["19", "17", "27"], ["22", "26", "30"], ["33", "34", "35", "36", "37"], ["38", "39", "40"], ["16", "29", "14"], ["25", "24", "28"], ["11", "12"], ["02", "06", "03", "05"], ["04", "01", "08"], ["10", "07", "09"]] },
+    "voyage": { titre: { fr: "Voyage", en: "Travel" }, dossier: "voyage", sauf: ["35", "36", "37", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52"], apercu: ["32", "24", "25", "08"] },
     "kenya-film": { titre: { fr: "Kenya Telkom, film", en: "Kenya Telkom, film" }, dossier: "coulisses", partie: "Kenya Film Telkom", couverture: "26" },
     "ferney": { titre: { fr: "Ferney, film", en: "Ferney, film" }, dossier: "ferney", couverture: "01", egal: true, lignes: [["01", "02", "03"], ["04", "05", "06"], ["07", "08", "09"], ["10", "11", "12", "13"], ["14", "15", "16"], ["17", "18", "19"], ["20", "21", "22"], ["23", "24", "25"], ["26"]] },
     "kfc": { titre: { fr: "KFC, film", en: "KFC, film" }, dossier: "coulisses", partie: "KFC Film" },
