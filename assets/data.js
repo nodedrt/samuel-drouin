@@ -58,7 +58,7 @@ window.SITE = {
   /* index compact : trois colonnes (Immobilier en haut à droite) */
   compact: [["regard", "terroir", "coulisses"], ["corporate", "enfance", "associations"], ["immobilier", "restauration", "bienetre"]],
   familles: [
-    { id: "regard", fr: "Regard personnel", en: "Personal work", note: { fr: "Lumières, visages et voyages : ce que je photographie pour moi.", en: "Light, faces and travels: what I photograph for myself." }, projets: ["voyage", "bardenas", "paysage", "portrait", "vert-nature", "drone", "origine"] },
+    { id: "regard", fr: "Regard personnel", en: "Personal work", note: { fr: "Lumières, visages et voyages : ce que je photographie pour moi.", en: "Light, faces and travels: what I photograph for myself." }, projets: ["voyage", "paysage", "portrait", "vert-nature", "drone", "origine", "bardenas"] },
     { id: "immobilier", fr: "Immobilier", en: "Real estate", note: { fr: "Villas, hôtels et lieux d’exception, révélés par la lumière.", en: "Villas, hotels and remarkable places, revealed by light." }, projets: ["les-paletuviers", "ocean-villa", "villa-anahita", "villa-horizon", "villa-la-plage", "le-dalblair", "bluemoon-villa", "yesterday-rodrigues", "details"] },
     { id: "corporate", fr: "Corporate", en: "Corporate", note: { fr: "Entreprises, équipes, savoir-faire et campagnes.", en: "Companies, teams, craft and campaigns." }, projets: ["gamma-construction", "exposition-port-louis", "ciel-textile", "the-hive", "kenya-telkom"] },
     { id: "terroir", fr: "Agriculture et environnement", en: "Farming and environment", note: { fr: "La terre, ceux qui la cultivent et ceux qui la protègent.", en: "The land, those who grow it and those who protect it." }, projets: ["cafe-st-felix", "peizan", "sealife"] },
@@ -101,7 +101,7 @@ window.SITE = {
   ],
 
   projets: {
-    "paysage": { titre: { fr: "Paysage", en: "Landscape" }, dossier: "paysage", couverture: "03", nouveau: true, egal: true, sauf: ["12", "13", "14", "15"], lignes: [["03", "02"], ["16", "17", "18"], ["04", "19", "05"], ["21", "10"], ["07", "06", "23"], ["08", "20"], ["22", "24", "11"]] },
+    "paysage": { titre: { fr: "Paysage", en: "Landscape" }, dossier: "paysage", couverture: "03", nouveau: true, egal: true, sauf: ["12", "13", "14", "15"], lignes: [["03", "02"], ["16", "17", "18"], ["04", "19", "05"], ["21", "10"], ["07", "06", "23"], ["08", "20"], ["28", "27", "26", "25"], ["22", "24", "11"]] },
     "vert-nature": { titre: { fr: "Vert nature", en: "Green nature" }, dossier: "vert-nature", couverture: "08", nouveau: true, egal: true, sauf: ["11"], lignes: [["12", "13"], ["19", "04", "14"], ["15", "16"], ["06", "08", "22"], ["10", "24"], ["23", "21", "09"], ["17", "18", "25"], ["20", "26"], ["03", "01", "05", "07"]] },
     "the-hive": { titre: "The Hive", dossier: "the-hive", couverture: "07", egal: true, lignes: [["01", "03"], ["04", "05", "06"], ["07", "08"], ["09", "11", "14"], ["15", "16"], ["20", "21", "22"]] },
     "samaya": { titre: "Samaya", dossier: "samaya", couverture: "01", egal: true, lignes: [["01", "02"], ["03", "04", "05"], ["06", "07", "08", "09"], ["10", "11", "12"], ["13", "14", "15"], ["16", "17"], ["18", "19", "20", "21"], ["22", "23", "24"], ["25", "26"], ["27", "28", "29", "30"]] },
@@ -126,8 +126,8 @@ window.SITE = {
     "sasha-academy": { titre: "Sasha Academy", dossier: "corporate/sasha-academy", couverture: "18" },
     "kenya-telkom": { titre: { fr: "Kenya Telkom", en: "Kenya Telkom" }, dossier: "corporate/kenya-telkom", couverture: "02" },
     "exposition-port-louis": { titre: { fr: "Exposition à Port-Louis", en: "Port Louis exhibition" }, dossier: "corporate/exposition-port-louis" },
-    "portrait": { titre: "Portrait", dossier: "portrait", couverture: "15", apercu: ["20", "18", "23", "19"], egal: true, sauf: ["13", "41"], lignes: [["20", "18", "23"], ["15", "21", "32"], ["19", "17", "27"], ["22", "26", "30"], ["33", "34", "35", "36", "37"], ["38", "39", "40"], ["16", "29", "14"], ["25", "24", "28"], ["11", "12"], ["02", "06", "03", "05"], ["04", "01", "08"], ["10", "07", "09"]] },
-    "voyage": { titre: { fr: "Voyage", en: "Travel" }, dossier: "voyage", apercu: ["32", "24", "25", "08"] },
+    "portrait": { titre: "Portrait", dossier: "portrait", couverture: "15", apercu: ["20", "18", "23", "19"], egal: true, sauf: ["13", "41", "43"], lignes: [["20", "18", "23"], ["15", "21", "32"], ["19", "17", "27"], ["22", "26", "30"], ["33", "34", "35", "36", "37"], ["38", "39", "40"], ["44", "42", "45"], ["16", "29", "14"], ["25", "24", "28"], ["11", "12"], ["02", "06", "03", "05"], ["04", "01", "08"], ["10", "07", "09"]] },
+    "voyage": { titre: { fr: "Voyage", en: "Travel" }, dossier: "voyage", sauf: ["35", "36", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52"], apercu: ["32", "24", "25", "08"] },
     "kenya-film": { titre: { fr: "Kenya Telkom, film", en: "Kenya Telkom, film" }, dossier: "coulisses", partie: "Kenya Film Telkom", couverture: "26" },
     "ferney": { titre: { fr: "Ferney, film", en: "Ferney, film" }, dossier: "ferney", couverture: "01", egal: true, lignes: [["01", "02", "03"], ["04", "05", "06"], ["07", "08", "09"], ["10", "11", "12", "13"], ["14", "15", "16"], ["17", "18", "19"], ["20", "21", "22"], ["23", "24", "25"], ["26"]] },
     "kfc": { titre: { fr: "KFC, film", en: "KFC, film" }, dossier: "coulisses", partie: "KFC Film" },
