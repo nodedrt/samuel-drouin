@@ -16,12 +16,12 @@ window.SITES = [
     lien: "https://samueldrouin.github.io/",
     img: { d: "img/sd-d.jpg", d2: "img/sdv-d.jpg", m: "img/sd-m.jpg" },
     texte: {
-      fr: "Mon propre portfolio, et le terrain où tout a été affiné : plus de quarante projets photo, une page vidéo qui s’ouvre en plein écran, et une petite application Mac pour ajouter un projet sans écrire une ligne de code.",
-      en: "My own portfolio, and the place where everything was refined: over forty photo projects, a video page that opens full screen, and a small Mac app to add a project without writing a line of code."
+      fr: "Mon propre portfolio, et le terrain où tout a été affiné : plus de quarante projets photo, et une page vidéo qui s’ouvre en plein écran.",
+      en: "My own portfolio, and the place where everything was refined: over forty photo projects, and a video page that opens full screen."
     },
     points: {
-      fr: ["Vitrine animée réglée sur la lumière de chaque photo", "Ouverture vidéo plein écran en fondus enchaînés", "Index par familles, visionneuse photo au clavier et au doigt", "Français et anglais, référencement local à Maurice", "Application Mac pour publier en un clic"],
-      en: ["Animated showcase tuned to the light of each photo", "Full-screen video opening with cross-fades", "Index by family, photo viewer for keyboard and touch", "French and English, local SEO for Mauritius", "Mac app to publish in one click"]
+      fr: ["Vitrine animée réglée sur la lumière de chaque photo", "Ouverture vidéo plein écran en fondus enchaînés", "Index par familles, visionneuse photo au clavier et au doigt", "Français et anglais, référencement local à Maurice"],
+      en: ["Animated showcase tuned to the light of each photo", "Full-screen video opening with cross-fades", "Index by family, photo viewer for keyboard and touch", "French and English, local SEO for Mauritius"]
     }
   },
   {
