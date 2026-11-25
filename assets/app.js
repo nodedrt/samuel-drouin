@@ -373,7 +373,7 @@
     var ex = main.querySelector(".hero");
     if (mode !== "video") { if (heroOff) { heroOff(); heroOff = null; } if (ex) ex.remove(); return; }
     var st0 = main.querySelector(".st"); if (ex || !st0) return;
-    var N = 7, FIRST = 5, XF = 1.4, big = window.innerWidth * (window.devicePixelRatio || 1) > 2200;
+    var N = 5, FIRST = 5, XF = 1.4, big = window.innerWidth * (window.devicePixelRatio || 1) > 2200;
     var src = function (i) { return "videos/hero/" + pad(i + FIRST) + (big ? "-1440" : "") + ".mp4?v=2"; };
     var h = document.createElement("section"); h.className = "hero";
     h.setAttribute("aria-label", lang === "fr" ? "Extraits de films" : "Film excerpts");
