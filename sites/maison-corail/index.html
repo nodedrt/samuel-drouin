@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maison Corail | Boutique-hôtel sur le lagon, île Maurice (projet concept)</title>
+<meta name="description" content="Maison Corail, six chambres face au lagon sur la côte nord-ouest de l’île Maurice. Projet concept, marque fictive : site imaginé et réalisé par Samuel Drouin.">
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#0E3A40">
+<meta property="og:title" content="Maison Corail | Projet concept de Samuel Drouin">
+<meta property="og:description" content="Un boutique-hôtel imaginaire sur le lagon mauricien : site concept, design et photographie de Samuel Drouin.">
+<meta property="og:image" content="img/corail.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23E36B48'/%3E%3Ctext x='16' y='22' font-family='Georgia' font-style='italic' font-size='17' text-anchor='middle' fill='%23F6EFE4'%3Ec%3C/text%3E%3C/svg%3E">
+<link rel="preload" href="../fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="img/mer.jpg" as="image">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Aller au contenu</a>
+
+<div class="concept" role="note">
+  <span data-en="Concept project · fictional brand · website designed and built by">Projet concept · marque fictive · site imaginé et réalisé par</span>
+  <a href="../index.html">Samuel Drouin</a>
+</div>
+
+<header class="hd" id="hd">
+  <a class="logo" href="#top" aria-label="Maison Corail, haut de page"><i>Maison</i> Corail</a>
+  <nav class="nav" aria-label="Navigation">
+    <a href="#chambres" data-en="Rooms">Chambres</a>
+    <a href="#maison" data-en="The house">La maison</a>
+    <a href="#table" data-en="Table">La table</a>
+    <a href="#lagon" data-en="Lagoon">Le lagon</a>
+  </nav>
+  <div class="hd-r">
+    <button class="lang" type="button" aria-label="Switch to English">EN</button>
+    <button class="btn btn-s" type="button" data-book data-en="Book">Réserver</button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top" aria-label="Maison Corail">
+    <div class="hero-sl" aria-hidden="true">
+      <img src="img/mer.jpg" alt="" class="on">
+      <img data-src="img/facade.jpg" alt="">
+      <img data-src="img/corail.jpg" alt="">
+      <img data-src="img/couchant.jpg" alt="">
+    </div>
+    <div class="hero-in">
+      <p class="kick" data-en="Boutique hotel · North-west coast, Mauritius">Boutique-hôtel · Côte nord-ouest, île Maurice</p>
+      <h1 class="hero-t"><span data-en="Six rooms,">Six chambres,</span> <span data-en="one lagoon,">un lagon,</span> <em data-en="no hurry.">aucune hâte.</em></h1>
+    </div>
+    <div class="hero-b">
+      <p class="clock"><span data-en="In Mauritius it is">À Maurice, il est</span> <b id="now">--:--</b> · <span data-en="sunset at">coucher du soleil à</span> <b id="sun">--:--</b></p>
+      <div class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div>
+    </div>
+  </section>
+
+  <section class="intro wrap">
+    <p class="big reveal-words" data-en="A family house turned into a small hotel, a few steps from the water. Floors warmed by the sun, linen on the beds, the sea in every window. Here, breakfast lasts as long as you want.">Une maison de famille devenue petit hôtel, à quelques pas de l’eau. Des sols chauffés par le soleil, du lin sur les lits, la mer dans chaque fenêtre. Ici, le petit-déjeuner dure aussi longtemps que vous le voulez.</p>
+    <dl class="facts">
+      <div><dt data-en="Rooms">Chambres</dt><dd>6</dd></div>
+      <div><dt data-en="To the beach">Jusqu’à la plage</dt><dd>40 <small data-en="steps">pas</small></dd></div>
+      <div><dt data-en="Water">Eau du lagon</dt><dd>27 <small>°C</small></dd></div>
+      <div><dt data-en="Airport">Aéroport</dt><dd>1 h 10</dd></div>
+    </dl>
+  </section>
+
+  <section class="rooms" id="chambres" aria-labelledby="rooms-t">
+    <div class="wrap sec-h">
+      <p class="kick">01</p>
+      <h2 id="rooms-t" data-en="The rooms">Les chambres</h2>
+      <p class="sec-n" data-en="Each one named after what you see when you wake up. Drag or scroll to browse.">Chacune porte le nom de ce que l’on voit au réveil. Faites glisser pour les parcourir.</p>
+      <div class="arr"><button type="button" class="ar" data-d="-1" aria-label="Chambre précédente">←</button><button type="button" class="ar" data-d="1" aria-label="Chambre suivante">→</button></div>
+    </div>
+    <div class="rail" id="rail" tabindex="0" aria-label="Liste des chambres"></div>
+  </section>
+
+  <section class="house wrap" id="maison" aria-labelledby="house-t">
+    <div class="sec-h">
+      <p class="kick">02</p>
+      <h2 id="house-t" data-en="The house">La maison</h2>
+      <p class="sec-n" data-en="Woven armchairs, blue cushions, painted tiles. Click a picture to see it full screen.">Fauteuils tressés, coussins bleus, carreaux peints. Touchez une image pour la voir en grand.</p>
+    </div>
+    <div class="mosaic" id="mosaic"></div>
+  </section>
+
+  <section class="table" id="table" aria-labelledby="table-t">
+    <div class="table-img">
+      <img src="img/cuisine-s.jpg" srcset="img/cuisine-s.jpg 900w, img/cuisine.jpg 1800w" sizes="(max-width:800px) 100vw, 55vw" alt="La cuisine ouverte de la maison, carreaux peints et étagères en bois" loading="lazy">
+    </div>
+    <div class="table-tx">
+      <p class="kick">03</p>
+      <h2 id="table-t" data-en="The table">La table d’hôtes</h2>
+      <p data-en="Every evening, one menu for everyone, cooked with what the fishermen and the market brought in the morning. You eat on the terrace, feet almost in the sand.">Chaque soir, un seul menu pour tout le monde, cuisiné avec ce que les pêcheurs et le marché ont apporté le matin. On dîne sur la terrasse, les pieds presque dans le sable.</p>
+      <div class="menu-card">
+        <p class="mc-h"><span data-en="Tonight">Ce soir</span> · <span id="today"></span></p>
+        <ul>
+          <li data-en="Palm heart salad, lime and green mango">Salade de cœur de palmier, citron vert et mangue verte</li>
+          <li data-en="Catch of the day, Creole rougaille, saffron rice">Poisson du jour, rougaille créole, riz au safran</li>
+          <li data-en="Roasted pineapple, vanilla from the island">Ananas rôti, vanille de l’île</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="lagoon" id="lagon" aria-labelledby="lagoon-t">
+    <div class="lg-bg"><img src="img/baie-s.jpg" srcset="img/baie-s.jpg 900w, img/baie.jpg 1800w" sizes="100vw" alt="Vue aérienne d’une baie turquoise et de ses bateaux" loading="lazy"></div>
+    <div class="lg-in wrap">
+      <p class="kick">04</p>
+      <h2 id="lagoon-t" data-en="The lagoon, from dawn to dusk">Le lagon, de l’aube au soir</h2>
+      <ol class="exp">
+        <li><span>06:15</span><b data-en="Outrigger canoe at sunrise">Pirogue au lever du soleil</b><em data-en="With Joseph, fisherman in the bay for forty years.">Avec Joseph, pêcheur dans la baie depuis quarante ans.</em></li>
+        <li><span>10:30</span><b data-en="Snorkelling on the reef">Masque et tuba sur le récif</b><em data-en="Turtles some mornings, parrotfish every day.">Des tortues certains matins, des poissons-perroquets tous les jours.</em></li>
+        <li><span>17:40</span><b data-en="Sunset on the jetty">Coucher de soleil sur le ponton</b><em data-en="A rum punch, and nothing else to do.">Un ti-punch, et plus rien à faire.</em></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="strip" aria-label="Galerie du lagon">
+    <figure><img src="img/couchant-s.jpg" alt="Soleil couchant doré sur la mer" loading="lazy"></figure>
+    <figure><img src="img/eclat.jpg" alt="Reflets du soleil sur l’eau" loading="lazy"></figure>
+    <figure><img src="img/mer-s.jpg" alt="Paddle sur un lagon calme face à la montagne" loading="lazy"></figure>
+    <figure><img src="img/pirogue.jpg" alt="Pirogue tirée sur le sable sous les cocotiers" loading="lazy"></figure>
+  </section>
+
+  <section class="book wrap" id="reserver" aria-labelledby="book-t">
+    <div class="sec-h">
+      <p class="kick">05</p>
+      <h2 id="book-t" data-en="Book your stay">Réserver un séjour</h2>
+    </div>
+    <form class="bk" id="bk" novalidate>
+      <label><span data-en="Arrival">Arrivée</span><input type="date" name="in" required></label>
+      <label><span data-en="Departure">Départ</span><input type="date" name="out" required></label>
+      <label><span data-en="Guests">Voyageurs</span>
+        <span class="step"><button type="button" data-g="-1" aria-label="Moins">−</button><output name="g">2</output><button type="button" data-g="1" aria-label="Plus">+</button></span>
+      </label>
+      <label class="wide"><span data-en="Room">Chambre</span><select name="room" id="roomSel"></select></label>
+      <div class="sum" aria-live="polite"><p id="sum">—</p><button class="btn" type="submit" data-en="Check availability">Voir les disponibilités</button></div>
+      <p class="err" id="err" role="alert"></p>
+    </form>
+  </section>
+</main>
+
+<footer class="ft">
+  <div class="wrap ft-in">
+    <p class="logo"><i>Maison</i> Corail</p>
+    <p data-en="North-west coast, Mauritius · Six rooms on the lagoon">Côte nord-ouest, île Maurice · Six chambres sur le lagon</p>
+    <p class="ft-c"><span data-en="Fictional brand. Concept website designed, photographed and built by">Marque fictive. Site concept imaginé, photographié et réalisé par</span> <a href="../index.html">Samuel Drouin</a>.</p>
+  </div>
+</footer>
+
+<div class="bar" id="bar"><span id="barTx" data-en="From €190 a night">Dès 190 € la nuit</span><button class="btn" type="button" data-book data-en="Book">Réserver</button></div>
+
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dr-t" hidden>
+  <div class="dr-bg" data-close></div>
+  <article class="dr-in">
+    <button class="x" type="button" data-close aria-label="Fermer">×</button>
+    <div class="dr-img"></div>
+    <div class="dr-tx"></div>
+  </article>
+</div>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Visionneuse" hidden>
+  <button class="x" type="button" aria-label="Fermer">×</button>
+  <button class="lb-a p" type="button" aria-label="Image précédente">←</button>
+  <figure><img alt=""><figcaption></figcaption></figure>
+  <button class="lb-a n" type="button" aria-label="Image suivante">→</button>
+</div>
+
+<div class="toast" id="toast" role="status" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

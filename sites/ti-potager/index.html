@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ti Potager | Table du jardin, île Maurice (projet concept)</title>
+<meta name="description" content="Ti Potager, une table imaginaire où tout vient du jardin : cueilli le matin, cuisiné le soir. Projet concept, marque fictive : site imaginé et réalisé par Samuel Drouin.">
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#FBFAF6">
+<meta property="og:title" content="Ti Potager | Projet concept de Samuel Drouin">
+<meta property="og:image" content="img/cueillette.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23FBFAF6' stroke='%23384332'/%3E%3Cpath d='M16 24V12m0 4c-3-4-7-3-7-3s1 5 7 3m0-3c3-4 7-3 7-3s-1 5-7 3' fill='none' stroke='%23384332' stroke-width='1.4'/%3E%3C/svg%3E">
+<link rel="preload" href="../fonts/inter-tight.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Aller au contenu</a>
+
+<aside class="side" aria-label="Ti Potager">
+  <div class="side-top">
+    <a class="logo" href="#top"><i>Ti</i> Potager</a>
+    <p class="side-sub" data-en="Garden table · South of Mauritius">Table du jardin · Sud de l’île Maurice</p>
+  </div>
+  <nav class="nav" aria-label="Navigation">
+    <a href="#carte" data-en="Menu">La carte</a>
+    <a href="#potager" data-en="The garden">Le potager</a>
+    <a href="#resa" data-en="Book a table">Réserver</a>
+    <a href="#infos" data-en="Information">Informations</a>
+  </nav>
+  <div class="side-bot">
+    <p class="open" id="open"></p>
+    <p class="hrs" data-en="Tue – Sun · 12:00 – 14:30 · 19:00 – 22:00">Mar. – dim. · 12 h – 14 h 30 · 19 h – 22 h</p>
+    <p class="side-l"><button class="lang" type="button">English</button></p>
+    <p class="concept"><span data-en="Concept project, fictional brand. Website by">Projet concept, marque fictive. Site de</span> <a href="../index.html">Samuel Drouin</a></p>
+  </div>
+</aside>
+
+<main id="main">
+  <section class="hero" id="top">
+    <figure class="hero-img"><img src="img/cueillette.jpg" srcset="img/cueillette-s.jpg 900w, img/cueillette.jpg 1800w" sizes="(max-width:900px) 100vw, 66vw" alt="Une main cueille des aubergines au potager"></figure>
+    <h1 class="hero-t"><span data-en="Picked in the morning,">Cueilli le matin,</span><br><em data-en="cooked at night.">cuisiné le soir.</em></h1>
+    <p class="lead" data-en="A small table at the end of a dirt road. Twenty-four seats, a garden of forty beds, and a menu that changes with the harvest.">Une petite table au bout d’un chemin de terre. Vingt-quatre couverts, un potager de quarante planches, et une carte qui change avec la récolte.</p>
+  </section>
+
+  <section class="today" aria-labelledby="today-t">
+    <header class="sh"><h2 id="today-t" data-en="This morning in the garden">Ce matin au potager</h2><p class="meta" id="harvest"></p></header>
+    <div class="veg" id="veg"></div>
+  </section>
+
+  <section class="carte" id="carte" aria-labelledby="carte-t">
+    <header class="sh"><h2 id="carte-t" data-en="The menu">La carte</h2><p class="meta" data-en="Prices in Mauritian rupees">Prix en roupies mauriciennes</p></header>
+    <div class="ctl">
+      <div class="tabs" role="tablist" id="tabs"></div>
+      <div class="chips" id="chips" aria-label="Filtres"></div>
+    </div>
+    <ul class="dishes" id="dishes" aria-live="polite"></ul>
+  </section>
+
+  <section class="story" id="potager" aria-labelledby="story-t">
+    <header class="sh"><h2 id="story-t" data-en="From seed to plate">De la graine à l’assiette</h2></header>
+    <div class="st">
+      <div class="st-img" aria-hidden="true">
+        <img src="img/pousse-s.jpg" alt="" class="on">
+        <img src="img/cueillette-s.jpg" alt="">
+        <img src="img/basilic-s.jpg" alt="">
+      </div>
+      <div class="st-tx">
+        <article class="stp" data-i="0"><b>I.</b><h3 data-en="Sow">Semer</h3><p data-en="Forty beds behind the kitchen, sown by the moon calendar. No pesticides, just compost and patience.">Quarante planches derrière la cuisine, semées selon le calendrier lunaire. Pas de pesticides, du compost et de la patience.</p></article>
+        <article class="stp" data-i="1"><b>II.</b><h3 data-en="Pick">Cueillir</h3><p data-en="Every morning at half past six, Mireille walks the rows and decides the menu with what is ripe.">Chaque matin à six heures et demie, Mireille parcourt les rangs et décide de la carte avec ce qui est mûr.</p></article>
+        <article class="stp" data-i="2"><b>III.</b><h3 data-en="Cook">Cuisiner</h3><p data-en="Twelve hours later it is on your plate: grilled, raw, in a curry or a rougaille. Nothing is wasted.">Douze heures plus tard, c’est dans votre assiette : grillé, cru, en carri ou en rougaille. Rien ne se perd.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="resa" id="resa" aria-labelledby="resa-t">
+    <header class="sh"><h2 id="resa-t" data-en="Book a table">Réserver une table</h2><p class="meta" data-en="Closed on Mondays">Fermé le lundi</p></header>
+    <form class="rf" id="rf" novalidate>
+      <fieldset><legend data-en="Day">Jour</legend><div class="days" id="days"></div></fieldset>
+      <fieldset><legend data-en="Time">Heure</legend><div class="slots" id="slots"></div></fieldset>
+      <div class="row2">
+        <fieldset><legend data-en="Guests">Couverts</legend><div class="stepper"><button type="button" data-p="-1" aria-label="Moins">−</button><output id="pax">2</output><button type="button" data-p="1" aria-label="Plus">+</button></div></fieldset>
+        <label class="nm"><span data-en="Name">Nom</span><input name="nom" autocomplete="name" placeholder="Mireille Payet"></label>
+      </div>
+      <p class="err" id="err" role="alert"></p>
+      <button class="btn" type="submit" data-en="Confirm the table">Confirmer la table</button>
+    </form>
+    <div class="ticket" id="ticket" hidden></div>
+  </section>
+
+  <section class="infos" id="infos" aria-label="Informations">
+    <div><h3 data-en="Hours">Horaires</h3><p data-en="Tuesday to Sunday, 12:00 to 14:30 and 19:00 to 22:00.">Du mardi au dimanche, de 12 h à 14 h 30 et de 19 h à 22 h.</p></div>
+    <div><h3 data-en="Getting here">Venir</h3><p data-en="At the end of a dirt road in the south of the island. Follow the smell of grilled corn.">Au bout d’un chemin de terre, dans le sud de l’île. Suivez l’odeur du maïs grillé.</p></div>
+    <div><h3 data-en="Good to know">Bon à savoir</h3><p data-en="Vegetarian menu every day. Children are welcome, the garden is theirs.">Menu végétarien tous les jours. Les enfants sont les bienvenus, le jardin est à eux.</p></div>
+  </section>
+
+  <footer class="ft">
+    <p class="ft-big"><i>Ti</i> Potager</p>
+    <p class="ft-c"><span data-en="Fictional brand. Concept website designed, photographed and built by">Marque fictive. Site concept imaginé, photographié et réalisé par</span> <a href="../index.html">Samuel Drouin</a>.</p>
+  </footer>
+</main>
+
+<a class="fab" href="#resa" data-en="Book">Réserver</a>
+<div class="peek" id="peek" aria-hidden="true"><img alt=""></div>
+<script src="app.js"></script>
+</body>
+</html>
