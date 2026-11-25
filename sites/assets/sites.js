@@ -33,12 +33,12 @@ window.SITES = [
     lien: "maison-corail/index.html",
     img: { d: "img/mc-d.jpg", m: "img/mc-m.jpg" },
     texte: {
-      fr: "Un petit hôtel imaginaire de six chambres. Une interface lente et aérienne, ivoire et filets fins, où l’on prend le temps comme on le prendrait sur place.",
-      en: "An imaginary six-room hotel. A slow, airy interface in ivory and fine lines, where you take your time as you would on site."
+      fr: "Un petit hôtel imaginaire de six chambres sur la côte est, face à l’île aux Cerfs. Une interface lente et aérienne, ivoire et filets fins, où l’on prend le temps comme on le prendrait sur place.",
+      en: "An imaginary six-room hotel on the east coast, facing Île aux Cerfs. A slow, airy interface in ivory and fine lines, where you take your time as you would on site."
     },
     points: {
-      fr: ["Ouverture en fondus lents, heure et coucher du soleil à Maurice en direct", "Chambres à faire glisser, fiche détaillée pour chacune", "Réservation qui calcule le séjour et vérifie la capacité", "Photos adoucies pour une palette ivoire cohérente"],
-      en: ["Slow cross-fade opening, live Mauritius time and sunset", "Draggable rooms, a detailed sheet for each", "Booking that totals the stay and checks capacity", "Softened photos for a consistent ivory palette"]
+      fr: ["Ouverture en fondus lents, heure et lever du soleil à Maurice en direct", "Chambres à faire glisser, fiche détaillée pour chacune", "Réservation qui calcule le séjour et vérifie la capacité", "Photos adoucies pour une palette ivoire cohérente"],
+      en: ["Slow cross-fade opening, live Mauritius time and sunrise", "Draggable rooms, a detailed sheet for each", "Booking that totals the stay and checks capacity", "Softened photos for a consistent ivory palette"]
     }
   },
   {

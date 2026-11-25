@@ -13,7 +13,7 @@
 
   /* ---------- données ---------- */
   var ROOMS = [
-    { id: "corail", fr: "Chambre Corail", en: "Coral Room", m2: 28, pax: 2, prix: 240, vue: ["Vue mer", "Sea view"], img: ["corail", "lagon", "plage"],
+    { id: "corail", fr: "Chambre Corail", en: "Coral Room", m2: 28, pax: 2, prix: 240, vue: ["Vue sur l’île aux Cerfs", "View of Île aux Cerfs"], img: ["corail", "lagon", "plage"],
       txt: ["Le grand lit bleu, les coussins corail et la mer qui entre par la fenêtre. La chambre qui a donné son nom à la maison.", "The big blue bed, coral cushions and the sea coming in through the window. The room that gave the house its name."],
       plus: [["Lit king size", "King-size bed"], ["Fenêtre sur le lagon", "Window on the lagoon"], ["Douche à l’italienne", "Walk-in shower"], ["Climatisation silencieuse", "Quiet air conditioning"]] },
     { id: "lagon", fr: "Chambre Lagon", en: "Lagoon Room", m2: 32, pax: 2, prix: 280, vue: ["Vue lagon", "Lagoon view"], img: ["lagon", "corail", "mer"],
@@ -93,7 +93,7 @@
   if (!reduce) setInterval(function () { if (!document.hidden && scrollY < innerHeight) nextSlide(); }, 6500);
 
   /* ---------- heure et coucher du soleil à Maurice ---------- */
-  var SUN = [1132, 1127, 1110, 1088, 1071, 1067, 1074, 1084, 1091, 1097, 1109, 1124]; // minutes, le 15 de chaque mois
+  var SUN = [345, 365, 375, 382, 392, 404, 406, 395, 370, 345, 328, 330]; // lever du soleil, en minutes, le 15 de chaque mois
   function mu() { var d = new Date(); return new Date(d.getTime() + (d.getTimezoneOffset() + 240) * 60000); }
   function hm(m) { m = Math.round(m); return String(Math.floor(m / 60)).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0"); }
   function clock() {
@@ -231,7 +231,7 @@
     else if (g > r.pax) msg = L(r.fr + " accueille " + r.pax + " personnes au plus. Essayez La Perchée pour les familles.", r.en + " sleeps " + r.pax + " at most. Try The Loft for families.");
     err.textContent = msg; err.classList.toggle("on", !!msg);
     $("#sum").innerHTML = n > 0 ? n + " " + L(n > 1 ? "nuits" : "nuit", n > 1 ? "nights" : "night") + " · " + (n * r.prix).toLocaleString(lang === "en" ? "en-GB" : "fr-FR") + " €" +
-      "<small>" + L("Petit-déjeuner et pirogue du matin inclus", "Breakfast and morning canoe included") + "</small>" : "—";
+      "<small>" + L("Petit-déjeuner et traversée en pirogue inclus", "Breakfast and outrigger crossing included") + "</small>" : "—";
     $("#barTx").textContent = L("Dès 190 € la nuit", "From €190 a night");
     return !msg;
   }

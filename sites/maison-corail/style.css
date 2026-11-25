@@ -127,7 +127,7 @@ em,i{font-family:var(--serif);font-style:italic;font-weight:200}
 .lagoon{position:relative;min-height:105vh;color:#fff;overflow:hidden;display:flex;align-items:flex-end}
 .lg-bg{position:absolute;inset:-10% 0;will-change:transform}
 .lg-bg img{width:100%;height:100%;object-fit:cover}
-.lagoon::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,28,24,0) 40%,rgba(30,28,24,.45) 100%)}
+.lagoon::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,28,24,0) 25%,rgba(30,28,24,.38) 55%,rgba(30,28,24,.66) 100%)}
 .lg-in{position:relative;z-index:2;width:100%;padding-bottom:clamp(50px,7vw,100px)}
 .lagoon .kick{color:rgba(255,255,255,.85)}
 .lagoon h2{font-size:clamp(38px,4.8vw,72px);line-height:1.05;max-width:16ch;margin-bottom:46px}
