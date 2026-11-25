@@ -380,7 +380,6 @@
     var segs = ""; for (var s = 0; s < N; s++) segs += "<i><b></b></i>";
     h.innerHTML = '<div class="hr-v"><video muted playsinline preload="auto" poster="videos/hero/poster.jpg?v=2" aria-hidden="true"></video><video muted playsinline preload="auto" aria-hidden="true"></video></div>' +
       '<a class="hr-b" href="#/photographie">← ' + (lang === "fr" ? "Accueil" : "Home") + "</a>" +
-      '<p class="hr-l">' + (lang === "fr" ? "Images en mouvement" : "Moving pictures") + "</p>" +
       '<div class="hr-p" aria-hidden="true">' + segs + "</div>" +
       '<button type="button" class="hr-d" aria-label="' + (lang === "fr" ? "Voir les films" : "See the films") + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg></button>';
     st0.parentNode.insertBefore(h, st0);
