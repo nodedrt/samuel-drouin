@@ -4,8 +4,9 @@
 @font-face{font-family:"Fraunces";src:url(../fonts/fraunces-italic.woff2) format("woff2");font-weight:100 900;font-style:italic;font-display:swap}
 :root{--bg:#FBFAF6;--sage:#EEF0E8;--line:rgba(56,67,50,.16);--ink:#2F372B;--mute:#868B80;--leaf:#6C7C55;
   --s:"Inter Tight",system-ui,sans-serif;--it:"Fraunces",Georgia,serif;--side:clamp(270px,27vw,400px);--p:clamp(24px,4.4vw,72px);--ease:cubic-bezier(.25,.75,.2,1);--tone:saturate(.78) contrast(.96) brightness(1.03)}
+[hidden]{display:none!important}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;scroll-padding-top:var(--sp,0px);-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:300 16px/1.7 var(--s);-webkit-font-smoothing:antialiased}
 img{display:block;max-width:100%}
 main img,.peek img{filter:var(--tone)}
@@ -158,3 +159,4 @@ legend{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--
 .rv{opacity:0;transform:translateY(22px);transition:opacity 1.4s var(--ease),transform 1.4s var(--ease)}
 .rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}.rv{opacity:1;transform:none}}
+@media (max-width:900px){html{--sp:64px}}

@@ -10,8 +10,9 @@
   --m:clamp(22px,5vw,80px);--ease:cubic-bezier(.25,.75,.2,1);
   --tone:saturate(.8) contrast(.97) brightness(1.02);
 }
+[hidden]{display:none!important}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;scroll-padding-top:80px;-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--ivory);color:var(--ink);font:300 16px/1.7 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{display:block;max-width:100%}
 main img,.dr-img img,.lb img{filter:var(--tone)}
