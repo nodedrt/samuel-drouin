@@ -1107,6 +1107,10 @@
     });
     curPrevNext = [href(pr), href(nx)];
     var el = document.getElementById("jg");
+    // L'ordre choisi dans « lignes » vaut aussi sur téléphone et dans la visionneuse.
+    if (p.lignes) { var ordL = {}, kL = 0; p.lignes.forEach(function (r) { r.forEach(function (n) { if (ordL[n] == null) ordL[n] = kL++; }); });
+      var rangL = list.map(function (q, i) { return ordL[q.n] != null ? ordL[q.n] : 1e6 + i; });
+      list = list.map(function (q, i) { return [rangL[i], q]; }).sort(function (x, y) { return x[0] - y[0]; }).map(function (x) { return x[1]; }); }
     var opt = { target: function (vw) { return (vw < 600 ? 240 : vw < 1100 ? 280 : Math.min(500, vw * 0.3)) * zoom; } }, pos = {};
     list.forEach(function (q, i) { pos[q.n] = i; });
     if (p.lignes) {
@@ -1173,6 +1177,10 @@
       gal.classList.toggle("ex", vue === "expo"); gal.classList.toggle("ex-cadre", vue === "expo" && kind === "cadre"); gal.classList.toggle("ex-edito", vue === "expo" && kind === "edito");
       /* zoom différent de 1 : rangées recalculées (même ordre), sinon les rangées choisies à la main */
       var o2 = opt; if ((Math.abs(zoom - 1) > 0.02 || window.innerWidth < 600) && opt.rows) { o2 = {}; for (var kk in opt) o2[kk] = opt[kk]; delete o2.rows; delete o2.egal; }
+      // Sur téléphone : une photo large par ligne, deux verticales côte à côte, jamais une verticale écrasée à côté d'une large.
+      if (window.innerWidth < 600 && opt.rows && Math.abs(zoom - 1) <= 0.02) { var mr = [], vq = null; list.forEach(function (q, i) { var ver = q.h > q.w * 1.05;
+        if (!ver) { if (vq != null) { mr.push([vq]); vq = null; } mr.push([i]); } else if (vq == null) vq = i; else { mr.push([vq, i]); vq = null; } });
+        if (vq != null) mr.push([vq]); o2.rows = mr; }
       if (vue === "expo") expo(el, items, kind, L(p.titre), "black"); else justify(el, items, o2);
     }
     function setVue(v, anim) {
